@@ -1,0 +1,76 @@
+{% extends 'adminTemplate.html.twig' %}
+{% block title %}Catégories - Dashboard{% endblock %}
+{% block content %}
+    <form id="delete_form" method="POST" action="">
+        <input type="hidden" value="{{ session._sf2_attributes.token }}" id="formtoken" name="formtoken">
+        <input type="hidden" name="submit_delete_form">
+    </form>
+
+    <h2>Gérer les catégories</h2>
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+            <tr>
+                <th scope="col">Type de catégorie</th>
+                <th scope="col">Modifier</th>
+                <th scope="col">Supprimer</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <form action="/admin/categorie/add"  method="post">
+                    <div class="form-group">
+                        <input type="hidden" value="{{ session._sf2_attributes.token }}" id="formtoken" name="formtoken"/>
+                    </div>
+                    <td>
+                        <input type="text" id="type" name="type" required/>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <input type="submit" value="Ajouter">
+                        </div>
+                    </td>
+                </form>
+                <td>
+                </td>
+            </tr>
+            {% for categorie in categories %}
+                <tr>
+                    <form action="/admin/categorie/update/{{ categorie.catId }}"  method="post">
+                        <div class="form-group">
+                            <input type="hidden" value="{{ session._sf2_attributes.token }}" id="formtoken" name="formtoken"/>
+                        </div>
+                        <td>
+                            <input type="text" id="type" name="type" value="{{ categorie.type }}" required/>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="submit" value="Modifier">
+                            </div>
+                        </td>
+                    </form>
+                    <td class="text-center">
+                        <a href="" data-id="{{ categorie.catId }}" class="fa-solid fa-trash-can submit-form"></a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block addjavascripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("a.submit-form").click(function (eventObject) {
+                eventObject.preventDefault();
+                var answer = confirm("Etes-vous sûr de vouloir supprimer ce projet?");
+                if (answer) {
+                    var id = $(this).attr("data-id");
+                    form = $("#delete_form");
+                    form.attr("action", "/admin/categorie/delete/" + id);
+                    form.submit();
+                }
+            });
+        });
+    </script>
+{% endblock %}

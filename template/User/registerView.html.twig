@@ -1,0 +1,34 @@
+{% extends 'template.html.twig' %}
+{% block title %}Inscription{% endblock %}
+{% block content %}
+    <div class="d-flex flex-row align-items-center box">
+        <div class="w-50 bg_register" style="background-image: url('../../images/image_2.jpg');">
+
+        </div>
+        <div class="w-50">
+            <form enctype="multipart/form-data" method="post" action="/register" class="p-5 contact-form">
+                <h3>Inscrivez-vous</h3>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Nom d'utilisateur" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-control" placeholder="Adresse Email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="Mot de passe" id="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="Confirmation du mot de passe" id="password" name="password_confirm" required>
+                </div>
+                <div class="form-group">
+                    <label for="image">Image :</label>
+                    <input type="file" class="form-control" id="image" name="image" accept="image/png, image/jpeg, image/webp">
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="S'inscrire" name="inscription" class="btn btn-primary py-3 px-5">
+                    <a href="/login" class="text-muted text-decoration-none"><small>ou connectez-vous</small></a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

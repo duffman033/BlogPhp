@@ -1,0 +1,110 @@
+{% extends 'adminTemplate.html.twig' %}
+{% block title %}Compétences - Dashboard{% endblock %}
+{% block content %}
+    <form id="delete_form" method="POST" action="">
+        <input type="hidden" value="{{ session._sf2_attributes.token }}" id="formtoken" name="formtoken">
+        <input type="hidden" name="submit_delete_form">
+    </form>
+
+    <h2>Gérer les compétences</h2>
+        <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Progression</th>
+                <th scope="col">Type</th>
+                <th scope="col">Modifier</th>
+                <th scope="col">Supprimer</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <form action="/admin/skill/add"  method="post">
+                    <div class="form-group">
+                        <input type="hidden" value="{{ session._sf2_attributes.token }}" id="formtoken" name="formtoken"/>
+                    </div>
+                    <td>
+                        <input type="text" id="name" name="name" required/>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <input type="range" class="form-range" min="0" max="100" step="5" id="progress" name="progress" oninput="progressOut.value = progress.value" > <output name="progressOut" id="progressOut">50</output>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <select id="type" name="type">
+                                {% for type in types %}
+                                <option>{{ type.type }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <input type="submit" value="Ajouter">
+                        </div>
+                    </td>
+                </form>
+                <td>
+                </td>
+            </tr>
+            {% for skill in skills %}
+                <tr>
+                    <form action="/admin/skill/update/{{ skill.id }}"  method="post">
+                        <div class="form-group">
+                            <input type="hidden" value="{{ session._sf2_attributes.token }}" id="formtoken" name="formtoken"/>
+                        </div>
+                        <td>
+                            <input type="text" id="name" name="name" value="{{ skill.name }}" required/>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="range" class="form-range" min="0" max="100" step="5" value="{{ skill.progress }}" id="progress" name="progress" oninput="progressOut.value = progress.value" > <output name="progressOut" id="progressOut">{{ skill.progress }}</output>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <select id="type" name="type">
+                                    <option selected>{{ skill.type }}</option>
+                                    {% for type in types %}
+                                        {% if type.type != skill.type %}
+                                            <option>{{ type.type }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="submit" value="Modifier">
+                            </div>
+                        </td>
+                    </form>
+                    <td class="text-center">
+                        <a href="" data-id="{{ skill.id }}" class="fa-solid fa-trash-can submit-form"></a>
+                    </td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block addjavascripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("a.submit-form").click(function (eventObject) {
+                eventObject.preventDefault();
+                var answer = confirm("Etes-vous sûr de vouloir supprimer ce projet?");
+                if (answer) {
+                    var id = $(this).attr("data-id");
+                    form = $("#delete_form");
+                    form.attr("action", "/admin/skill/delete/" + id);
+                    form.submit();
+                }
+            });
+        });
+    </script>
+{% endblock %}

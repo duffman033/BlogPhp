@@ -1,0 +1,46 @@
+{% extends 'adminTemplate.html.twig' %}
+{% block title %}Modifier - Dashboard{% endblock %}
+{% block content %}
+    <h1>Modifier un Projet</h1>
+    <p><a href="/admin/post">Retour à la liste des projets</a></p>
+    <form action="/admin/post/update/{{ listpost.postId }}"  method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <input type="hidden" value="{{ session._sf2_attributes.token }}" id="formtoken" name="formtoken"/>
+        </div>
+        <div class="form-group">
+            <label for="title">Titre</label><br/>
+            <input type="text" id="title" name="title" value="{{ listpost.title }}" class="form-control" required/>
+        </div>
+        <div class="form-group">
+            <label for="chapo">Chapo</label><br/>
+            <input type="text" id="chapo" name="chapo" value="{{ listpost.chapo }}" class="form-control" required/>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label><br/>
+            <textarea id="description" name="description" rows="10" class="form-control" required>{{ listpost.description }}</textarea>
+        </div>
+        {% for categorie in categories %}
+
+
+
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="{{ categorie.type }}" name="{{ categorie.type }}" value="1"
+                        {% for relation in relations %}
+                            {% if relation.catId == categorie.catId %}
+                                checked
+                            {% endif %}
+                        {% endfor %}
+                >
+                <label class="form-check-label" for="inlineCheckbox1">{{ categorie.type }}</label>
+            </div>
+        {% endfor %}
+        <div class="form-group">
+            <img src="../../{{ listpost.imgUrl }}" alt="Image Projet" style="width: 25%"><br>
+            <label for="image">Image :</label>
+            <input type="file" class="form-control" id="image" name="image" accept="image/png, image/jpeg, image/webp">
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Modifier">
+        </div>
+    </form>
+{% endblock %}

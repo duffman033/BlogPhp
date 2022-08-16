@@ -1,0 +1,59 @@
+{% extends 'adminTemplate.html.twig' %}
+{% block title %}Modifier Formation - Dashboard{% endblock %}
+{% block content %}
+    <h1>Modifier une formation</h1>
+    <form action="/admin/formation/update/{{ formation.id }}"  method="post">
+
+        <div class="form-group">
+            <input type="hidden" value="{{ session._sf2_attributes.token }}" id="formtoken" name="formtoken"/>
+        </div>
+        <div class="form-group">
+            <label for="title">Diplôme</label><br/>
+            <input type="text" id="name" name="name" value="{{ formation.name }}" class="form-control" required/>
+        </div>
+        <div class="form-row">
+            <div class="col">
+                <label for="chapo">Ecole</label><br/>
+                <input type="text" id="school" name="school" value="{{ formation.school }}" class="form-control" required/>
+            </div>
+            <div class="col">
+                <label for="chapo">Lieu</label><br/>
+                <input type="text" id="place" name="place" value="{{ formation.place }}" class="form-control" required/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label><br/>
+            <textarea id="description" name="description" rows="10" class="form-control" required>{{ formation.description }}</textarea>
+        </div>
+        <div class="form-row">
+            <div class="col">
+                <label for="startDate">Date début</label><br/>
+                <select class="form-control" id="startDate" name="startDate">
+                    {% for date in dates %}
+                        {% if date != formation.startDate %}
+                            <option>{{ date }}</option>
+                        {% endif %}
+                    {% endfor %}
+                    <option selected>{{ formation.startDate }}</option>
+                </select>
+            </div>
+            <div class="col">
+                <label for="startDate">Date fin</label><br/>
+                <select class="form-control" id="endDate" name="endDate">
+                    {% for date in dates %}
+                        {% if date != formation.endDate %}
+                            <option>{{ date }}</option>
+                        {% endif %}
+                    {% endfor %}
+                    {% if formation.endDate != 'Présent' %}
+                        <option>Présent</option>
+                    {% endif %}
+                    <option selected>{{ formation.endDate }}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Modifier">
+        </div>
+    </form>
+{% endblock %}

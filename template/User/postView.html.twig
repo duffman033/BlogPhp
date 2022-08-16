@@ -1,0 +1,84 @@
+{% extends 'template.html.twig' %}
+{% block title %}Projet {{ post.title }}{% endblock %}
+{% block content %}
+    <section class="ftco-section ftco-no-pt ftco-no-pb">
+        <div class="container">
+            <div class="row d-flex">
+                <div class="col-lg-8 px-md-5 py-5">
+                    <div class="col-md-12 d-flex flex-column">
+                        <h1 class="mb-3">{{ post.title }}</h1>
+                        <p>{{ post.chapo }}</p>
+                        <p>
+                            <img src="../{{ post.imgUrl }}" alt="" class="img-fluid">
+                        </p>
+                        <p>{{ post.description|nl2br }}</p>
+                        <div class="tag-widget post-tag-container mb-5 mt-5">
+                            <div class="tagcloud">
+                                {% for categorie in categories %}
+                                    <a href="#" class="tag-cloud-link">{{ categorie.type }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="about-author d-flex p-4 bg-light">
+                            <div class="prez" style="background-image: url('../{{ post.userImgUrl }}')">
+                            </div>
+                            <div class="desc">
+                                <h3>{{ post.username }}</h3>
+                                <span><i class="icon-calendar mr-2"></i>{% if post.dateUpdate %} {{ post.dateUpdate }} {% else %} {{ post.dateCreation }} {% endif %}</span>
+                            </div>
+                        </div>
+                        {% set size = listcomments | length %}
+                        <div class="pt-5 mt-5">
+                            {% if listcomments %}
+                            <h3 class="mb-5 font-weight-bold">{{ size }} Commentaire{% if size > 1 %}s{% endif %}</h3>
+                            {% for comment in listcomments %}
+                            <ul class="comment-list">
+                                <li class="comment">
+                                    <div class="vcard prez_com" style="background-image: url('../{{ comment.userImgUrl }}')">
+                                    </div>
+                                    <div class="comment-body">
+                                        <h3>{{ comment.username }}</h3>
+                                        <div class="meta">{{ comment.commentDate }}</div>
+                                        <p>{{ comment.comment }}</p>
+                                    </div>
+                                </li>
+                            </ul>
+                            {% endfor %}
+                            {% else %}
+                                <div class="alert alert-dark" role="alert">
+                                    Pas encore de commentaires pour cet article!
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="pt-5 mt-5">
+                            {% if session._sf2_attributes.auth is defined %}
+                            <div class="comment-form-wrap pt-5">
+                                <h3 class="mb-5">Laisser un commentaire</h3>
+                                <form action="/comment/add" method="post" class="p-3 p-md-5 bg-light">
+                                    <input type="hidden" value="{{ post.postId }}" id="postid" name="postid"/>
+                                    <input type="hidden" value="{{ session._sf2_attributes.token }}" id="formtoken" name="formtoken"/>
+                                    <input type="hidden" id="authorid" name="authorid" value="{{ session._sf2_attributes.auth.userId }}" class="form-control"/>
+                                    <div class="form-group">
+                                        <label for="name">Nom d'utilisateur : {{ session._sf2_attributes.auth.username }}</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description">Votre commentaire</label>
+                                        <textarea name="description" id="description" cols="30" rows="10" class="form-control" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="submit" value="Ajouter" class="btn py-3 px-4 btn-primary">
+                                    </div>
+                                </form>
+                            </div>
+                            {% else %}
+                                <div class="alert alert-danger py-3" role="alert">
+                                    Vous devez être connecté pour ajouter un commentaire.
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

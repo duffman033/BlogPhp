@@ -1,0 +1,50 @@
+{% extends 'adminTemplate.html.twig' %}
+{% block title %}Métier - Dashboard{% endblock %}
+{% block content %}
+    <form id="delete_form" method="POST" action="">
+        <input type="hidden" value="{{ session._sf2_attributes.token }}" id="formtoken" name="formtoken">
+        <input type="hidden" name="submit_delete_form">
+    </form>
+    <h2>Gestion des experiences professionnelles</h2>
+    <a href="/admin/job/add">Ajouter une nouvelle experience</a>
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Entreprise</th>
+                <th scope="col">Date</th>
+                <th scope="col">Editer</th>
+                <th scope="col">Supprimer</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for job in jobs %}
+                <tr>
+                    <td>{{ job.name }}</td>
+                    <td>{{ job.company }}</td>
+                    <td>{{ job.startDate }} - {{ job.endDate }}</td>
+                    <td class="text-center"><a href="/admin/job/update/{{ job.id }}" class="fa-solid fa-pen-to-square"></a></td>
+                    <td class="text-center"><a href="" data-id="{{ job.id }}" class="fa-solid fa-trash-can submit-form"></a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block addjavascripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("a.submit-form").click(function (eventObject) {
+                eventObject.preventDefault();
+                var answer = confirm("Etes-vous sûr de vouloir supprimer ce projet?");
+                if (answer) {
+                    var id = $(this).attr("data-id");
+                    form = $("#delete_form");
+                    form.attr("action", "/admin/job/delete/" + id);
+                    form.submit();
+                }
+            });
+        });
+    </script>
+{% endblock %}

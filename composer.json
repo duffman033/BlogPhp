@@ -1,0 +1,23 @@
+{
+    "name": "bmore/blog-php",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Bastien Moreau",
+            "email": "bmoreau72@gmail.com"
+        }
+    ],
+    "require": {
+        "twig/twig": "^2.0",
+        "altorouter/altorouter": "^2.0",
+        "symfony/var-dumper": "^5.4",
+        "symfony/mailer": "^5.4",
+        "symfony/http-foundation": "^5.4",
+        "swiftmailer/swiftmailer": "^6.3",
+        "ext-pdo": "*"
+    }
+}
