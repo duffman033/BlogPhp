@@ -65,6 +65,7 @@ class PostController extends AdminController
                         }
                     }
 
+
                     if ($result === false) {
                         $this->session->set('warning', "Impossible d'ajouter le projet !");
                     }
