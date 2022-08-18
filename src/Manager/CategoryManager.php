@@ -43,7 +43,7 @@ class CategoryManager extends Database
         $custom_array = [];
 
         while ($datas = $result->fetch(\PDO::FETCH_ASSOC)) {
-            array_push($custom_array, New Category($datas));
+            $custom_array[] = new Category($datas);
         }
 
         return $custom_array;

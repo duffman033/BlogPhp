@@ -11,16 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class JobController extends AdminController
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    public function __destruct()
-    {
-        parent::__destruct();
-    }
-
     /**
      * Render the Jobs view from the job manager
      */
@@ -77,15 +67,13 @@ class JobController extends AdminController
 
                 if ($result === false) {
                     $this->session->set('warning', "Impossible d'ajouer le métier !");
-                } else {
-                    $this->session->set('success', "Votre métier a bien été ajoutée.");
                 }
+                $this->session->set('success', "Votre métier a bien été ajoutée.");
                 header('Location: /admin/job');
             }
-        } else {
-            $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-            header('Location: /logout');
         }
+        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        header('Location: /logout');
     }
 
     /**
@@ -110,15 +98,13 @@ class JobController extends AdminController
 
                 if ($result === false) {
                     $this->session->set('warning', "Impossible de modifier le métier !");
-                } else {
-                    $this->session->set('success', "Votre métier a bien été modifié.");
                 }
+                $this->session->set('success', "Votre métier a bien été modifié.");
                 header('Location: /admin/job');
             }
-        } else {
-            $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-            header('Location: /logout');
         }
+        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        header('Location: /logout');
     }
 
     /**
@@ -135,13 +121,11 @@ class JobController extends AdminController
             $deleteRequest = $this->jobManager->deleteJob($jobId);
             if ($deleteRequest === false) {
                 $this->session->set('warning', "Impossible de supprimer le métier !");
-            } else {
-                $this->session->set('success', "Votre métier a bien été supprimé.");
             }
+            $this->session->set('success', "Votre métier a bien été supprimé.");
             header('Location: /admin/job');
-        } else {
-            $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-            header('Location: /logout');
         }
+        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        header('Location: /logout');
     }
 }

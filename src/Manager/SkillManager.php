@@ -15,7 +15,7 @@ class SkillManager extends Database
      *
      * @return array|mixed
      */
-    public function getSkill()
+    public function getSkills()
     {
         $req = 'SELECT * FROM skills ORDER BY type DESC';
         $result = $this->sql($req);

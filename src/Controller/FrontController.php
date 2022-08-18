@@ -80,7 +80,7 @@ Class FrontController
         $formationManager = $this->formationManager->getFormations();
         $jobManager = $this->jobManager->getJobs();
         $certificateManager = $this->certificateManager->getCertificate();
-        $skillManager = $this->skillManager->getSkill();
+        $skillManager = $this->skillManager->getSkills();
         $type = $this->skillManager->getSkillType();
         $this->renderer->render('User/aboutView.html', ['formations'=>$formationManager ,'jobs'=>$jobManager ,'certificates'=>$certificateManager ,'skills'=>$skillManager ,'types'=>$type ,"current" => 3]);
     }

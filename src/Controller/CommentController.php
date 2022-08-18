@@ -10,16 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class CommentController extends AdminController
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    public function __destruct()
-    {
-        parent::__destruct();
-    }
-
     /**
      * Render the Comments view from the comment manager
      */
@@ -42,14 +32,12 @@ class CommentController extends AdminController
             $deleteRequest = $this->commentManager->deleteComment($commentId);
             if ($deleteRequest === false) {
                 $this->session->set('warning', "Impossible de supprimer le commentaire !");
-            } else {
-                $this->session->set('success', "Le commentaire a bien été supprimé.");
             }
+            $this->session->set('success', "Le commentaire a bien été supprimé.");
             header('Location: /admin/comments');
-        } else {
-            $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-            header('Location: /logout');
         }
+        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        header('Location: /logout');
     }
 
     /**
@@ -62,9 +50,8 @@ class CommentController extends AdminController
         $request = $this->commentManager->validateComment($commentId);
         if ($request === false) {
             $this->session->set('warning', "Impossible de valider le commentaire !");
-        } else {
-            $this->session->set('success', "Le commentaire a bien été validé.");
         }
+        $this->session->set('success', "Le commentaire a bien été validé.");
         header('Location: /admin/comments');
     }
 

@@ -11,16 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class CategorieController extends AdminController
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    public function __destruct()
-    {
-        parent::__destruct();
-    }
-
     /**
      * Render the Jobs view from the job manager
      */
@@ -42,15 +32,13 @@ class CategorieController extends AdminController
                 $result = $this->categoryManager->addCategory($datas);
                 if ($result === false) {
                     $this->session->set('warning', "Impossible d'ajouer le catégorie !");
-                } else {
-                    $this->session->set('success', "Votre catégorie a bien été ajoutée.");
                 }
+                $this->session->set('success', "Votre catégorie a bien été ajoutée.");
                 header('Location: /admin/categorie');
             }
-        } else {
-            $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-            header('Location: /logout');
         }
+        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        header('Location: /logout');
     }
 
     /**
@@ -67,15 +55,13 @@ class CategorieController extends AdminController
                 $result = $this->categoryManager->updateCategory($catId,$datas);
                 if ($result === false) {
                     $this->session->set('warning', "Impossible de modifier le catégorie !");
-                } else {
-                    $this->session->set('success', "Votre catégorie a bien été modifiée.");
                 }
+                $this->session->set('success', "Votre catégorie a bien été modifiée.");
                 header('Location: /admin/categorie');
             }
-        } else {
-            $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-            header('Location: /logout');
         }
+        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        header('Location: /logout');
     }
 
     /**
@@ -90,13 +76,11 @@ class CategorieController extends AdminController
             $deleteRequest = $this->categoryManager->deleteCategory($catId);
             if ($deleteRequest === false) {
                 $this->session->set('warning', "Impossible de supprimer la catégorie !");
-            } else {
-                $this->session->set('success', "Votre catégorie a bien été supprimée.");
             }
+            $this->session->set('success', "Votre catégorie a bien été supprimée.");
             header('Location: /admin/categorie');
-        } else {
-            $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-            header('Location: /logout');
         }
+        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        header('Location: /logout');
     }
 }

@@ -11,22 +11,12 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class SkillController extends AdminController
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    public function __destruct()
-    {
-        parent::__destruct();
-    }
-
     /**
      * Render the Skill view from the skill manager
      */
     public function skillView()
     {
-        $skillManager = $this->skillManager->getSkill();
+        $skillManager = $this->skillManager->getSkills();
         $type = $this->skillManager->getSkillType();
         $this->renderer->render('Admin/aboutView.html', ['skills'=>$skillManager ,'types'=>$type]);
     }
@@ -47,15 +37,13 @@ class SkillController extends AdminController
 
                 if ($result === false) {
                     $this->session->set('warning', "Impossible d'ajouer la compétence !");
-                } else {
-                    $this->session->set('success', "Votre compétence ".$datas['name']." a bien été ajoutée.");
                 }
+                $this->session->set('success', "Votre compétence ".$datas['name']." a bien été ajoutée.");
                 header('Location: /admin/skill');
             }
-        }else{
-            $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-            header('Location: /logout');
         }
+        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        header('Location: /logout');
     }
 
     /**
@@ -76,15 +64,13 @@ class SkillController extends AdminController
 
                 if ($result === false) {
                     $this->session->set('warning', "Impossible de modifier la compétence !");
-                } else {
-                    $this->session->set('success', "Votre compétence ".$datas['name']." a bien été modifiée.");
                 }
+                $this->session->set('success', "Votre compétence ".$datas['name']." a bien été modifiée.");
                 header('Location: /admin/skill');
             }
-        }else{
-            $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-            header('Location: /logout');
         }
+        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        header('Location: /logout');
     }
 
     /**
@@ -100,13 +86,11 @@ class SkillController extends AdminController
             $deleteRequest = $this->skillManager->deleteSkill($skillId);
             if ($deleteRequest === false) {
                 $this->session->set('warning', "Impossible de supprimer la compétence !");
-            } else {
-                $this->session->set('success', "La compétence a bien été supprimée.");
             }
+            $this->session->set('success', "La compétence a bien été supprimée.");
             header('Location: /admin/skill');
-        } else {
-            $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-            header('Location: /logout');
         }
+        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        header('Location: /logout');
     }
 }

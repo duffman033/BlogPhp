@@ -11,16 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class PostController extends AdminController
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    public function __destruct()
-    {
-        parent::__destruct();
-    }
-
     /**
      * Render the Posts view from the post manager
      */
@@ -77,20 +67,18 @@ class PostController extends AdminController
 
                     if ($result === false) {
                         $this->session->set('warning', "Impossible d'ajouter le projet !");
-                    } else {
-                        $this->session->set('success', "Votre projet a bien été ajouté.");
                     }
+                    $this->session->set('success', "Votre projet a bien été ajouté.");
                     header('Location: /admin/post');
                 }
-            }else{
                 $this->session->set('warning', "Merci d'inserer une image valide (Jpeg, Png ou Webp)");
                 header('Location: /admin/add');
             }
-
-        } else {
-            $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-            header('Location: /logout');
+            $this->session->set('warning', "Merci de bien remplir le formulaire");
+            header('Location: /admin/add');
         }
+        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        header('Location: /logout');
     }
 
     /**
@@ -129,13 +117,11 @@ class PostController extends AdminController
                         $fileName = md5(uniqid()).'.'.$file->guessExtension();
                         $repertory = "uploads/images/";
                         $file->move($repertory, $fileName);
-                    }else {
-                        $this->session->set('warning', "Merci d'inserer une image valide (Jpeg, Png ou Webp)");
-                        header('Location: /admin/post/' . $postId);
-                        return;
                     }
+                    $this->session->set('warning', "Merci d'inserer une image valide (Jpeg, Png ou Webp)");
+                    header('Location: /admin/post/' . $postId);
+                    return;
                 }
-
                 $datas['title'] = FormValidator::purifyLow($request->get('title'));
                 $datas['chapo'] = FormValidator::purifyLow($request->get('chapo'));
                 $datas['description'] = FormValidator::purifyContent($request->get('description'));
@@ -158,15 +144,15 @@ class PostController extends AdminController
 
                 if ($result === false) {
                     $this->session->set('warning', "Impossible de modifier le projet !");
-                } else {
-                    $this->session->set('success', "Votre projet a bien été modifié.");
                 }
+                $this->session->set('success', "Votre projet a bien été modifié.");
                 header('Location: /admin/post');
             }
-        }else{
-            $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-            header('Location: /logout');
+            $this->session->set('warning', "Merci de bien remplir le formulaire");
+            header('Location: /admin/post/' . $postId);
         }
+        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        header('Location: /logout');
     }
 
     /**
@@ -183,13 +169,11 @@ class PostController extends AdminController
             $deleteRequest = $this->postManager->deletePost($postId);
             if ($deleteRequest === false) {
                 $this->session->set('warning', "Impossible de supprimer le projet !");
-            } else {
-                $this->session->set('success', "Votre projet a bien été supprimé.");
             }
+            $this->session->set('success', "Votre projet a bien été supprimé.");
             header('Location: /admin/post');
-        } else {
-            $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-            header('Location: /logout');
         }
+        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        header('Location: /logout');
     }
 }

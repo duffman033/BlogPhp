@@ -10,16 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class UserController extends AdminController
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    public function __destruct()
-    {
-        parent::__destruct();
-    }
-
     /**
      * Render the User view from the post manager
      */
@@ -42,13 +32,11 @@ class UserController extends AdminController
             $deleteRequest = $this->userManager->deleteUser($userId);
             if ($deleteRequest === false) {
                 $this->session->set('warning', "Impossible de supprimer l'utilisateur !");
-            } else {
-                $this->session->set('success', "L'utilisateur a bien été supprimé.");
             }
+            $this->session->set('success', "L'utilisateur a bien été supprimé.");
             header('Location: /admin');
-        } else {
-            $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-            header('Location: /logout');
         }
+        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        header('Location: /logout');
     }
 }

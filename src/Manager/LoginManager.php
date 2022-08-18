@@ -59,9 +59,8 @@ class LoginManager extends Database
         $result = $this->sql($sql, $parameters);
         if ($result->rowCount() >= 1) {
             return false;
-        } else {
-            return true;
         }
+        return true;
     }
 
     /**
