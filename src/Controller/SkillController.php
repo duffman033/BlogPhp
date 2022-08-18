@@ -37,10 +37,15 @@ class SkillController extends AdminController
 
                 if ($result === false) {
                     $this->session->set('warning', "Impossible d'ajouer la compétence !");
+                    return;
                 }
                 $this->session->set('success', "Votre compétence ".$datas['name']." a bien été ajoutée.");
                 header('Location: /admin/skill');
+                return;
             }
+            $this->session->set('warning', "Merci de bien remplir le formulaire");
+            header('Location: /admin/add');
+            return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
         header('Location: /logout');
@@ -64,10 +69,15 @@ class SkillController extends AdminController
 
                 if ($result === false) {
                     $this->session->set('warning', "Impossible de modifier la compétence !");
+                    return;
                 }
                 $this->session->set('success', "Votre compétence ".$datas['name']." a bien été modifiée.");
                 header('Location: /admin/skill');
+                return;
             }
+            $this->session->set('warning', "Merci de bien remplir le formulaire");
+            header('Location: /admin/skill/update/' . $skillId);
+            return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
         header('Location: /logout');
@@ -86,9 +96,11 @@ class SkillController extends AdminController
             $deleteRequest = $this->skillManager->deleteSkill($skillId);
             if ($deleteRequest === false) {
                 $this->session->set('warning', "Impossible de supprimer la compétence !");
+                return;
             }
             $this->session->set('success', "La compétence a bien été supprimée.");
             header('Location: /admin/skill');
+            return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
         header('Location: /logout');

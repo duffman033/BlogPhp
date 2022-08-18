@@ -7,9 +7,9 @@ namespace App\Model;
 class Job
 {
     /**
-     * @var int $id id
+     * @var int $job_id id
      */
-    private $id;
+    private $job_id;
 
     /**
      * @var string $name name
@@ -64,17 +64,17 @@ class Job
     /**
      * @return int
      */
-    public function getId()
+    public function getJobId()
     {
-        return $this->id;
+        return $this->job_id;
     }
 
     /**
-     * @param int $id
+     * @param int $job_id
      */
-    public function setId($id)
+    public function setJobId($job_id)
     {
-        $this->id = $id;
+        $this->job_id = $job_id;
     }
 
     /**

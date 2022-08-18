@@ -67,10 +67,15 @@ class JobController extends AdminController
 
                 if ($result === false) {
                     $this->session->set('warning', "Impossible d'ajouer le métier !");
+                    return;
                 }
                 $this->session->set('success', "Votre métier a bien été ajoutée.");
                 header('Location: /admin/job');
+                return;
             }
+            $this->session->set('warning', "Merci de bien remplir le formulaire");
+            header('Location: /admin/job/add');
+            return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
         header('Location: /logout');
@@ -98,10 +103,15 @@ class JobController extends AdminController
 
                 if ($result === false) {
                     $this->session->set('warning', "Impossible de modifier le métier !");
+                    return;
                 }
                 $this->session->set('success', "Votre métier a bien été modifié.");
                 header('Location: /admin/job');
+                return;
             }
+            $this->session->set('warning', "Merci de bien remplir le formulaire");
+            header('Location: /admin/job/update/' . $jobId);
+            return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
         header('Location: /logout');
@@ -121,9 +131,11 @@ class JobController extends AdminController
             $deleteRequest = $this->jobManager->deleteJob($jobId);
             if ($deleteRequest === false) {
                 $this->session->set('warning', "Impossible de supprimer le métier !");
+                return;
             }
             $this->session->set('success', "Votre métier a bien été supprimé.");
             header('Location: /admin/job');
+            return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
         header('Location: /logout');

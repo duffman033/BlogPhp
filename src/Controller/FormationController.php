@@ -67,10 +67,15 @@ class FormationController extends AdminController
 
                 if ($result === false) {
                     $this->session->set('warning', "Impossible d'ajouer la formation !");
+                    return;
                 }
                 $this->session->set('success', "Votre formation a bien été ajoutée.");
                 header('Location: /admin/formation');
+                return;
             }
+            $this->session->set('warning', "Merci de bien remplir le formulaire");
+            header('Location: /admin/formation/add');
+            return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
         header('Location: /logout');
@@ -98,10 +103,15 @@ class FormationController extends AdminController
 
                 if ($result === false) {
                     $this->session->set('warning', "Impossible de modifier la formation !");
+                    return;
                 }
                 $this->session->set('success', "Votre formation a bien été modifié.");
                 header('Location: /admin/formation');
+                return;
             }
+            $this->session->set('warning', "Merci de bien remplir le formulaire");
+            header('Location: /admin/formation/update'.$formId);
+            return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
         header('Location: /logout');
@@ -118,12 +128,14 @@ class FormationController extends AdminController
 
         if ($request->get('formtoken') == $this->session->get('token')) {
 
-            $deleteRequest = $this->jobManager->deleteFormation($formId);
+            $deleteRequest = $this->formationManager->deleteFormation($formId);
             if ($deleteRequest === false) {
                 $this->session->set('warning', "Impossible de supprimer la formation !");
+                return;
             }
             $this->session->set('success', "Votre formation a bien été supprimé.");
             header('Location: /admin/formation');
+            return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
         header('Location: /logout');

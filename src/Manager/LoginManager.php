@@ -72,9 +72,8 @@ class LoginManager extends Database
     {
         if ($password != $passwordConfirm) {
             return false;
-        } else {
-            return true;
         }
+        return true;
     }
 
     /**

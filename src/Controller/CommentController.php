@@ -32,9 +32,11 @@ class CommentController extends AdminController
             $deleteRequest = $this->commentManager->deleteComment($commentId);
             if ($deleteRequest === false) {
                 $this->session->set('warning', "Impossible de supprimer le commentaire !");
+                return;
             }
             $this->session->set('success', "Le commentaire a bien été supprimé.");
             header('Location: /admin/comments');
+            return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
         header('Location: /logout');
@@ -50,6 +52,7 @@ class CommentController extends AdminController
         $request = $this->commentManager->validateComment($commentId);
         if ($request === false) {
             $this->session->set('warning', "Impossible de valider le commentaire !");
+            return;
         }
         $this->session->set('success', "Le commentaire a bien été validé.");
         header('Location: /admin/comments');

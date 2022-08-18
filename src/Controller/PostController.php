@@ -68,15 +68,19 @@ class PostController extends AdminController
 
                     if ($result === false) {
                         $this->session->set('warning', "Impossible d'ajouter le projet !");
+                        return;
                     }
                     $this->session->set('success', "Votre projet a bien été ajouté.");
                     header('Location: /admin/post');
+                    return;
                 }
                 $this->session->set('warning', "Merci d'inserer une image valide (Jpeg, Png ou Webp)");
                 header('Location: /admin/add');
+                return;
             }
             $this->session->set('warning', "Merci de bien remplir le formulaire");
             header('Location: /admin/add');
+            return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
         header('Location: /logout');
@@ -145,12 +149,15 @@ class PostController extends AdminController
 
                 if ($result === false) {
                     $this->session->set('warning', "Impossible de modifier le projet !");
+                    return;
                 }
                 $this->session->set('success', "Votre projet a bien été modifié.");
                 header('Location: /admin/post');
+                return;
             }
             $this->session->set('warning', "Merci de bien remplir le formulaire");
             header('Location: /admin/post/' . $postId);
+            return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
         header('Location: /logout');
@@ -170,9 +177,11 @@ class PostController extends AdminController
             $deleteRequest = $this->postManager->deletePost($postId);
             if ($deleteRequest === false) {
                 $this->session->set('warning', "Impossible de supprimer le projet !");
+                return;
             }
             $this->session->set('success', "Votre projet a bien été supprimé.");
             header('Location: /admin/post');
+            return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
         header('Location: /logout');

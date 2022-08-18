@@ -32,10 +32,15 @@ class CategorieController extends AdminController
                 $result = $this->categoryManager->addCategory($datas);
                 if ($result === false) {
                     $this->session->set('warning', "Impossible d'ajouer le catégorie !");
+                    return;
                 }
                 $this->session->set('success', "Votre catégorie a bien été ajoutée.");
                 header('Location: /admin/categorie');
+                return;
             }
+            $this->session->set('warning', "Merci de bien remplir le formulaire");
+            header('Location: /admin/categorie/add');
+            return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
         header('Location: /logout');
@@ -55,10 +60,15 @@ class CategorieController extends AdminController
                 $result = $this->categoryManager->updateCategory($catId,$datas);
                 if ($result === false) {
                     $this->session->set('warning', "Impossible de modifier le catégorie !");
+                    return;
                 }
                 $this->session->set('success', "Votre catégorie a bien été modifiée.");
                 header('Location: /admin/categorie');
+                return;
             }
+            $this->session->set('warning', "Merci de bien remplir le formulaire");
+            header('Location: /admin/categorie/update'.$catId);
+            return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
         header('Location: /logout');
@@ -76,9 +86,11 @@ class CategorieController extends AdminController
             $deleteRequest = $this->categoryManager->deleteCategory($catId);
             if ($deleteRequest === false) {
                 $this->session->set('warning', "Impossible de supprimer la catégorie !");
+                return;
             }
             $this->session->set('success', "Votre catégorie a bien été supprimée.");
             header('Location: /admin/categorie');
+            return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
         header('Location: /logout');

@@ -126,17 +126,14 @@ Class FrontController
 
                 if ($request === false) {
                     $this->session->set('warning', "Impossible d'ajouter le commentaire");
-
-                } else {
-                    $this->session->set('success', "Votre commentaire va être soumis à validation.");
                 }
+                $this->session->set('success', "Votre commentaire va être soumis à validation.");
                 $this->post($postId);
+                return;
             }
-        } else {
-            $this->session->set('warning', "Veuillez pour reconnecter");
-            $this->login();
-
         }
+        $this->session->set('warning', "Veuillez pour reconnecter");
+        $this->login();
     }
 
     /**
@@ -233,54 +230,62 @@ Class FrontController
     public function register()
     {
         $request = Request::createFromGlobals();
-        $repertory = "uploads/images/";
-        $file = $request->files->get('image');
-        $accept = ["image/jpeg", "image/png", "image/webp"];
-        if (in_array($file->getClientMimeType(), $accept)) {
+        if (!empty($request->request->all())){
+            $repertory = "uploads/images/";
+            $fileName = "unknow.jpg";
+            $file = $request->files->get('image');
+            $accept = ["image/jpeg", "image/png", "image/webp"];
             if (!empty($file)) {
-                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
-                $file->move($repertory, $fileName);
-            } else {
-                $fileName = "unknow.jpg";
+                if (in_array($file->getClientMimeType(), $accept)) {
+                    if (!empty($file)) {
+                        $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                        $file->move($repertory, $fileName);
+                    }
+                    $this->session->set('warning', "Merci d'inserer une image valide (Jpeg, Png ou Webp)");
+                    $this->registerView();
+                    return;
+                }
             }
+
             $email = FormValidator::purify($request->get('email'));
             $username = FormValidator::purify($request->get('username'));
             $password = FormValidator::purify($request->get('password'));
             $passwordConfirm = FormValidator::purify($request->get('password_confirm'));
             $img_url = $repertory . $fileName;
-
             if (!FormValidator::is_alphanum($username)) {
                 $this->session->set('warning', "Votre pseudo n'est pas valide");
                 $this->registerView();
+                return;
 
             } elseif (!FormValidator::is_alphanum($password) || !FormValidator::is_alphanum($passwordConfirm)) {
                 $this->session->set('warning', "Votre mot de passe n'est pas valide");
                 $this->registerView();
+                return;
 
             } elseif (!FormValidator::is_email($email)) {
                 $this->session->set('warning', "Votre email n'est pas valide");
                 $this->registerView();
-            } else {
-                if ($this->loginManager->isMemberExists($username, $email)) {
-                    if ($this->loginManager->checkPassword($password, $passwordConfirm)) {
-
-                        $this->loginManager->registerUser($username, $password, $email, $img_url);
-                        $this->formManager->registerTraitment($email, $username);
-                        $this->session->set('success', "Votre inscription a bien été prise en compte");
-                        $this->login();
-                    } else {
-                        $this->session->set('warning', "Les mots de passe ne sont pas identiques");
-                        $this->registerView();
-                    }
-                } else {
-                    $this->session->set('warning', "Cet utilisateur existe déjà");
-                    $this->registerView();
-                }
+                return;
             }
-        } else {
-            $this->session->set('warning', "Merci d'inserer une image valide (Jpeg, Png ou Webp)");
-            header('Location: /register');
+            if ($this->loginManager->isMemberExists($username, $email)) {
+                if ($this->loginManager->checkPassword($password, $passwordConfirm)) {
+
+                    $this->loginManager->registerUser($username, $password, $email, $img_url);
+                    $this->formManager->registerTraitment($email, $username);
+                    $this->session->set('success', "Votre inscription a bien été prise en compte");
+                    $this->login();
+                    return;
+                }
+                $this->session->set('warning', "Les mots de passe ne sont pas identiques");
+                $this->registerView();
+                return;
+            }
+            $this->session->set('warning', "Cet utilisateur existe déjà");
+            $this->registerView();
+            return;
         }
+        $this->session->set('warning', "Merci de bien remplir le formulaire");
+        $this->registerView();
     }
 
     /**
@@ -297,20 +302,20 @@ Class FrontController
     public function contactForm()
     {
         $request = Request::createFromGlobals();
-        $name = FormValidator::purify($request->get('name'));
-        $forename = FormValidator::purify($request->get('forename'));
-        $message = FormValidator::purify($request->get('message'));
-        $email = FormValidator::purify($request->get('email'));
+        if (!empty($request->request->all()) && !FormValidator::is_email($request->get('email'))) {
+            $name = FormValidator::purify($request->get('name'));
+            $forename = FormValidator::purify($request->get('forename'));
+            $message = FormValidator::purify($request->get('message'));
+            $email = FormValidator::purify($request->get('email'));
 
-        if (!isset($name) || !isset($forename) || !isset($email) || !isset($message) || !FormValidator::is_email($email)) {
-            $this->session->set('warning', "Tous les champs ne sont pas remplis ou corrects.");
-            $this->contactView();
-            exit;
-        } else {
             $this->formManager->formTraitment($name, $forename, $email, $message);
             $this->session->set('success', "Votre formulaire a bien été envoyé.");
+            $this->home();
+            return;
+
         }
-        $this->home();
+        $this->session->set('warning', "Tous les champs ne sont pas remplis ou corrects.");
+        $this->contactView();
     }
 
     /**
@@ -328,10 +333,9 @@ Class FrontController
             header('Pragma: public');
             header('Content-Length: ' . filesize($file));
             readfile($file);
-        }else{
-            echo "Le fichier n'existe pas";
+            return;
         }
-        echo "Le nom de fichier n'est pas défini.";
+        echo "Le fichier n'existe pas ou le nom de fichier n'est pas défini.";
     }
 
 }

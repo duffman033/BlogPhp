@@ -35,7 +35,7 @@ $router = new Router();
     $router->map('POST', '/admin/job/add', 'JobController#addJob');
     $router->map('POST', '/admin/job/delete/[i:id]', 'JobController#deleteJob');
 
-    //Jobs management
+    //Formation management
     $router->map('GET', '/admin/formation', 'FormationController#aboutFormView');
     $router->map('GET', '/admin/formation/add', 'FormationController#addFormView');
     $router->map('GET', '/admin/formation/update/[i:id]', 'FormationController#updateFormView');
