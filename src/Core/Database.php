@@ -41,10 +41,9 @@ class Database
             $result->execute($parameters);
 
             return $result;
-        } else {
-            $result = $this->dbConnect()->query($sql);
-
-            return $result;
         }
+        $result = $this->dbConnect()->query($sql);
+
+        return $result;
     }
 }

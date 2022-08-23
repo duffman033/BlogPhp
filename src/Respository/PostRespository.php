@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Manager;
+namespace App\Respository;
 
 use App\Core\Database;
-use App\Model\Post;
+use App\Entity\Post;
 use PDO;
 
 /**
- * PostManager Queries for Posts
+ * PostRespository Queries for Posts
  */
-class PostManager extends Database
+class PostRespository extends Database
 {
 
     /**

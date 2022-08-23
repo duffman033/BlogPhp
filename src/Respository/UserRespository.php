@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Manager;
+namespace App\Respository;
 
 use App\Core\Database;
-use App\Model\User;
+use App\Entity\User;
 
 /**
- * UserManager Queries for Comments
+ * UserRespository Queries for Comments
  */
-class UserManager extends Database
+class UserRespository extends Database
 {
     /**
      * Return All Users
@@ -41,8 +41,5 @@ class UserManager extends Database
         $parameters = [':id' => $userId];
 
         $this->sql($users, $parameters);
-
-        header('Location: /admin');
-
     }
 }

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Manager;
+namespace App\Respository;
 
 use App\Core\Database;
-use App\Model\Certificate;
+use App\Entity\Certificate;
 
 /**
- * CertificateManager Queries for Certificate
+ * CertificateRespository Queries for Certificate
  */
-class CertificateManager extends Database
+class CertificateRespository extends Database
 {
     /**
      * Return Certificate

@@ -17,7 +17,7 @@ class FormationController extends AdminController
     public function aboutFormView()
     {
         $formManager = $this->formationManager->getFormations();
-        $this->renderer->render('Admin/FormationView/formationView.html', ['formations' => $formManager]);
+        $this->renderer->render('Admin/FormationView/formationView.html.twig', ['formations' => $formManager]);
     }
 
     /**
@@ -32,7 +32,7 @@ class FormationController extends AdminController
             array_push($date_form, $i);
         }
         $formManager = $this->formationManager->getFormation($formId);
-        $this->renderer->render('Admin/FormationView/updateFormationView.html', ['formation' => $formManager, 'dates' => $date_form]);
+        $this->renderer->render('Admin/FormationView/updateFormationView.html.twig', ['formation' => $formManager, 'dates' => $date_form]);
     }
 
     /**
@@ -44,7 +44,7 @@ class FormationController extends AdminController
         for ($i = 2017; $i <= date('Y')+4; $i++) {
             array_push($date_form, $i);
         }
-        $this->renderer->render('Admin/FormationView/addFormationView.html', ['dates' => $date_form]);
+        $this->renderer->render('Admin/FormationView/addFormationView.html.twig', ['dates' => $date_form]);
     }
 
     /**
@@ -70,15 +70,15 @@ class FormationController extends AdminController
                     return;
                 }
                 $this->session->set('success', "Votre formation a bien été ajoutée.");
-                header('Location: /admin/formation');
+                $this->aboutFormView();
                 return;
             }
             $this->session->set('warning', "Merci de bien remplir le formulaire");
-            header('Location: /admin/formation/add');
+            $this->addFormView();
             return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-        header('Location: /logout');
+        FrontController::deconnect();
     }
 
     /**
@@ -106,15 +106,15 @@ class FormationController extends AdminController
                     return;
                 }
                 $this->session->set('success', "Votre formation a bien été modifié.");
-                header('Location: /admin/formation');
+                $this->aboutFormView();
                 return;
             }
             $this->session->set('warning', "Merci de bien remplir le formulaire");
-            header('Location: /admin/formation/update'.$formId);
+            $this->updateFormView($formId);
             return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-        header('Location: /logout');
+        FrontController::deconnect();
     }
 
     /**
@@ -134,10 +134,10 @@ class FormationController extends AdminController
                 return;
             }
             $this->session->set('success', "Votre formation a bien été supprimé.");
-            header('Location: /admin/formation');
+            $this->aboutFormView();
             return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-        header('Location: /logout');
+        FrontController::deconnect();
     }
 }

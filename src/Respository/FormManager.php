@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Manager;
+namespace App\Respository;
 
 /**
  * FormManager using SwiftMailer for ContactForm

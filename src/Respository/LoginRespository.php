@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Manager;
+namespace App\Respository;
 
 use App\Core\Database;
-use App\Model\User;
+use App\Entity\User;
 use PDO;
 use PDOStatement;
 
 /**
- * LoginManager Queries for Users
+ * LoginRespository Queries for Users
  */
-class LoginManager extends Database
+class LoginRespository extends Database
 {
 
      /**

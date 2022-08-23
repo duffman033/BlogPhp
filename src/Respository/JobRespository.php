@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Manager;
+namespace App\Respository;
 
 use App\Core\Database;
-use App\Model\Job;
+use App\Entity\Job;
 
 /**
- * JobManager Queries for JobView
+ * JobRespository Queries for JobView
  */
-class JobManager extends Database
+class JobRespository extends Database
 {
     /**
      * Return Jobs
@@ -37,7 +37,7 @@ class JobManager extends Database
      */
     public function getJob($jobId)
     {
-        $job = 'SELECT * FROM jobs WHERE id= :id';
+        $job = 'SELECT * FROM jobs WHERE job_id= :id';
         $parameters = [':id' => $jobId];
         $result = $this->sql($job, $parameters);
         $data = $result->fetch(\PDO::FETCH_ASSOC);
@@ -76,7 +76,7 @@ class JobManager extends Database
      */
     public function updateJob($jobId, $datas)
     {
-        $editedJob = 'UPDATE jobs SET name=:name, company=:company, place=:place, description=:description, start_date=:start_date, end_date=:end_date WHERE id=:id';
+        $editedJob = 'UPDATE jobs SET name=:name, company=:company, place=:place, description=:description, start_date=:start_date, end_date=:end_date WHERE job_id=:id';
         $parameters = [
             ':id' => $jobId,
             ':name' => $datas['name'],
@@ -99,7 +99,7 @@ class JobManager extends Database
      */
     public function deleteJob($jobId)
     {
-        $job = 'DELETE FROM jobs WHERE id= :id';
+        $job = 'DELETE FROM jobs WHERE job_id= :id';
         $parameters = [':id' => $jobId];
 
         $this->sql($job, $parameters);

@@ -52,7 +52,7 @@
             </tr>
             {% for skill in skills %}
                 <tr>
-                    <form action="/admin/skill/update/{{ skill.id }}"  method="post">
+                    <form action="/admin/skill/update/{{ skill.skillId }}"  method="post">
                         <div class="form-group">
                             <input type="hidden" value="{{ session._sf2_attributes.token }}" id="formtoken" name="formtoken"/>
                         </div>
@@ -83,7 +83,7 @@
                         </td>
                     </form>
                     <td class="text-center">
-                        <a href="" data-id="{{ skill.id }}" class="fa-solid fa-trash-can submit-form"></a>
+                        <a href="" data-id="{{ skill.skillId }}" class="fa-solid fa-trash-can submit-form"></a>
                     </td>
 
                 </tr>

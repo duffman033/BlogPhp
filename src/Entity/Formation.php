@@ -1,15 +1,15 @@
 <?php
 
 
-namespace App\Model;
+namespace App\Entity;
 
 
 class Formation
 {
     /**
-     * @var int $id id
+     * @var int $formation_id id
      */
-    private $id;
+    private $formationId;
 
     /**
      * @var string $name name
@@ -64,17 +64,17 @@ class Formation
     /**
      * @return int
      */
-    public function getId()
+    public function getFormationId()
     {
-        return $this->id;
+        return $this->formationId;
     }
 
     /**
-     * @param int $id
+     * @param int $formationId
      */
-    public function setId($id)
+    public function setFormationId($formationId)
     {
-        $this->id = $id;
+        $this->formationId = $formationId;
     }
 
     /**

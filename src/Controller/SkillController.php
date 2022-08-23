@@ -18,7 +18,7 @@ class SkillController extends AdminController
     {
         $skillManager = $this->skillManager->getSkills();
         $type = $this->skillManager->getSkillType();
-        $this->renderer->render('Admin/aboutView.html', ['skills'=>$skillManager ,'types'=>$type]);
+        $this->renderer->render('Admin/aboutView.html.twig', ['skills'=>$skillManager ,'types'=>$type]);
     }
 
     /**
@@ -40,15 +40,15 @@ class SkillController extends AdminController
                     return;
                 }
                 $this->session->set('success', "Votre compétence ".$datas['name']." a bien été ajoutée.");
-                header('Location: /admin/skill');
+                $this->skillView();
                 return;
             }
             $this->session->set('warning', "Merci de bien remplir le formulaire");
-            header('Location: /admin/add');
+            $this->skillView();
             return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-        header('Location: /logout');
+        FrontController::deconnect();
     }
 
     /**
@@ -72,15 +72,15 @@ class SkillController extends AdminController
                     return;
                 }
                 $this->session->set('success', "Votre compétence ".$datas['name']." a bien été modifiée.");
-                header('Location: /admin/skill');
+                $this->skillView();
                 return;
             }
             $this->session->set('warning', "Merci de bien remplir le formulaire");
-            header('Location: /admin/skill/update/' . $skillId);
+            $this->skillView();
             return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-        header('Location: /logout');
+        FrontController::deconnect();
     }
 
     /**
@@ -99,10 +99,10 @@ class SkillController extends AdminController
                 return;
             }
             $this->session->set('success', "La compétence a bien été supprimée.");
-            header('Location: /admin/skill');
+            $this->skillView();
             return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-        header('Location: /logout');
+        FrontController::deconnect();
     }
 }

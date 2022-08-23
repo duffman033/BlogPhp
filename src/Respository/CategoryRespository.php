@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Manager;
+namespace App\Respository;
 
 use App\Core\Database;
-use App\Model\Category;
+use App\Entity\Category;
 
 /**
- * PostManager Queries for Posts
+ * PostRespository Queries for Posts
  */
-class CategoryManager extends Database
+class CategoryRespository extends Database
 {
 
     /**

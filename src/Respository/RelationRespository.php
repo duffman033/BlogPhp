@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Manager;
+namespace App\Respository;
 
 use App\Core\Database;
-use App\Model\Relation;
+use App\Entity\Relation;
 
 /**
- * RelationManager Queries for Relation
+ * RelationRespository Queries for Relation
  */
-class RelationManager extends Database
+class RelationRespository extends Database
 {
 
     /**

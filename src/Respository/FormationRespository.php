@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Manager;
+namespace App\Respository;
 
 use App\Core\Database;
-use App\Model\Formation;
+use App\Entity\Formation;
 
 /**
- * FormationManager Queries for Formation
+ * FormationRespository Queries for Formation
  */
-class FormationManager extends Database
+class FormationRespository extends Database
 {
     /**
      * Return Formation
@@ -37,7 +37,7 @@ class FormationManager extends Database
      */
     public function getFormation($formId)
     {
-        $form = 'SELECT * FROM formation WHERE id= :id';
+        $form = 'SELECT * FROM formation WHERE formation_id= :id';
         $parameters = [':id' => $formId];
         $result = $this->sql($form, $parameters);
         $data = $result->fetch(\PDO::FETCH_ASSOC);
@@ -76,7 +76,7 @@ class FormationManager extends Database
      */
     public function updateFormation($formId, $datas)
     {
-        $editedForm = 'UPDATE formation SET name=:name, school=:school, place=:place, description=:description, start_date=:start_date, end_date=:end_date WHERE id=:id';
+        $editedForm = 'UPDATE formation SET name=:name, school=:school, place=:place, description=:description, start_date=:start_date, end_date=:end_date WHERE formation_id=:id';
         $parameters = [
             ':id' => $formId,
             ':name' => $datas['name'],
@@ -99,7 +99,7 @@ class FormationManager extends Database
      */
     public function deleteFormation($formId)
     {
-        $form = 'DELETE FROM formation WHERE id= :id';
+        $form = 'DELETE FROM formation WHERE formation_id= :id';
         $parameters = [':id' => $formId];
 
         $this->sql($form, $parameters);

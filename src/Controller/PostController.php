@@ -12,12 +12,12 @@ use Symfony\Component\HttpFoundation\Request;
 class PostController extends AdminController
 {
     /**
-     * Render the Posts view from the post manager
+     * Render the Admin Posts view from the post manager
      */
     public function listPosts()
     {
         $list_posts = $this->postManager->getPosts();
-        $this->renderer->render('Admin/PostView/postView.html', ['posts' => $list_posts]);
+        $this->renderer->render('Admin/PostView/postView.html.twig', ['posts' => $list_posts]);
     }
 
     /**
@@ -26,7 +26,7 @@ class PostController extends AdminController
     public function addPostView()
     {
         $cat = $this->categoryManager->getCategorys();
-        $this->renderer->render('Admin/PostView/addPostView.html', ['categories' => $cat]);
+        $this->renderer->render('Admin/PostView/addPostView.html.twig', ['categories' => $cat]);
     }
 
     /**
@@ -71,19 +71,19 @@ class PostController extends AdminController
                         return;
                     }
                     $this->session->set('success', "Votre projet a bien été ajouté.");
-                    header('Location: /admin/post');
+                    $this->listPosts();
                     return;
                 }
                 $this->session->set('warning', "Merci d'inserer une image valide (Jpeg, Png ou Webp)");
-                header('Location: /admin/add');
+                $this->addPostView();
                 return;
             }
             $this->session->set('warning', "Merci de bien remplir le formulaire");
-            header('Location: /admin/add');
+            $this->addPostView();
             return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-        header('Location: /logout');
+        FrontController::deconnect();
     }
 
     /**
@@ -96,7 +96,7 @@ class PostController extends AdminController
         $cat = $this->categoryManager->getCategorys();
         $relation = $this->relationManager->getRelation($postId);
         $post = $this->postManager->getPost($postId);
-        $this->renderer->render('Admin/PostView/updatePostView.html', ['listpost' => $post, 'categories' => $cat, 'relations' => $relation]);
+        $this->renderer->render('Admin/PostView/updatePostView.html.twig', ['listpost' => $post, 'categories' => $cat, 'relations' => $relation]);
     }
 
     /**
@@ -124,7 +124,7 @@ class PostController extends AdminController
                         $file->move($repertory, $fileName);
                     }
                     $this->session->set('warning', "Merci d'inserer une image valide (Jpeg, Png ou Webp)");
-                    header('Location: /admin/post/' . $postId);
+                    $this->updatePostView($postId);
                     return;
                 }
                 $datas['title'] = FormValidator::purifyLow($request->get('title'));
@@ -152,15 +152,15 @@ class PostController extends AdminController
                     return;
                 }
                 $this->session->set('success', "Votre projet a bien été modifié.");
-                header('Location: /admin/post');
+                $this->listPosts();
                 return;
             }
             $this->session->set('warning', "Merci de bien remplir le formulaire");
-            header('Location: /admin/post/' . $postId);
+            $this->updatePostView($postId);
             return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-        header('Location: /logout');
+        FrontController::deconnect();
     }
 
     /**
@@ -180,10 +180,10 @@ class PostController extends AdminController
                 return;
             }
             $this->session->set('success', "Votre projet a bien été supprimé.");
-            header('Location: /admin/post');
+            $this->listPosts();
             return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-        header('Location: /logout');
+        FrontController::deconnect();
     }
 }

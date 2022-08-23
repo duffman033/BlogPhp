@@ -3,16 +3,18 @@
 namespace App\Controller;
 
 use App\Core\TwigRenderer;
-use App\Manager\CategoryManager;
-use App\Manager\CertificateManager;
-use App\Manager\FormationManager;
-use App\Manager\FormManager;
-use App\Manager\JobManager;
-use App\Manager\LoginManager;
-use App\Manager\PostManager;
-use App\Manager\CommentManager;
+use App\Respository\CategoryRespository;
+use App\Respository\CertificateRespository;
+use App\Respository\FormationRespository;
+use App\Respository\FormManager;
+use App\Respository\JobRespository;
+use App\Respository\LoginRespository;
+use App\Respository\PostRespository;
+use App\Respository\CommentRespository;
 use App\Core\FormValidator;
-use App\Manager\SkillManager;
+use App\Respository\RelationRespository;
+use App\Respository\SkillRespository;
+use App\Respository\UserRespository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session;
 
@@ -22,32 +24,35 @@ use Symfony\Component\HttpFoundation\Session;
  */
 Class FrontController
 {
-    private $postManager;
-    private $commentManager;
-    private $formManager;
-    private $loginManager;
-    private $categoryManager;
-    private $formationManager;
-    private $jobManager;
-    private $skillManager;
-    private $certificateManager;
-    private $request;
-    private $session;
-    private $renderer;
-
+    protected $postManager;
+    protected $commentManager;
+    protected $userManager;
+    protected $formationManager;
+    protected $jobManager;
+    protected $skillManager;
+    protected $certificateManager;
+    protected $categoryManager;
+    protected $relationManager;
+    protected $loginManager;
+    protected $formManager;
+    protected $request;
+    protected $session;
+    protected $renderer;
 
     public function __construct()
     {
         $this->renderer = new TwigRenderer();
-        $this->postManager = new PostManager();
-        $this->commentManager = New CommentManager();
-        $this->loginManager = new LoginManager();
-        $this->categoryManager = new CategoryManager();
-        $this->formationManager = new FormationManager();
-        $this->jobManager = new JobManager();
-        $this->skillManager = new SkillManager();
-        $this->certificateManager = new CertificateManager();
+        $this->postManager = new PostRespository();
+        $this->commentManager = New CommentRespository();
+        $this->loginManager = new LoginRespository();
+        $this->categoryManager = new CategoryRespository();
+        $this->formationManager = new FormationRespository();
+        $this->jobManager = new JobRespository();
+        $this->skillManager = new SkillRespository();
+        $this->certificateManager = new CertificateRespository();
         $this->formManager = new FormManager();
+        $this->userManager = New UserRespository();
+        $this->relationManager = new RelationRespository();
 
         if (session_status() == PHP_SESSION_NONE) {
             $this->session = new Session\Session;
@@ -69,20 +74,7 @@ Class FrontController
      */
     public function home()
     {
-        $this->renderer->render('User/homepage.html', ["current" => 1]);
-    }
-
-    /**
-     * Render About
-     */
-    public function about()
-    {
-        $formationManager = $this->formationManager->getFormations();
-        $jobManager = $this->jobManager->getJobs();
-        $certificateManager = $this->certificateManager->getCertificate();
-        $skillManager = $this->skillManager->getSkills();
-        $type = $this->skillManager->getSkillType();
-        $this->renderer->render('User/aboutView.html', ['formations'=>$formationManager ,'jobs'=>$jobManager ,'certificates'=>$certificateManager ,'skills'=>$skillManager ,'types'=>$type ,"current" => 3]);
+        $this->renderer->render('User/homepage.html.twig', ["current" => 1]);
     }
 
     /**
@@ -91,7 +83,7 @@ Class FrontController
     public function listPosts()
     {
         $list_posts = $this->postManager->getPosts();
-        $this->renderer->render('User/postsView.html', ['listposts' => $list_posts ,'current' => 2]);
+        $this->renderer->render('User/postsView.html.twig', ['listposts' => $list_posts ,'current' => 2]);
     }
 
     /**
@@ -104,7 +96,7 @@ Class FrontController
         $post = $this->postManager->getPost($postId);
         $list_comments = $this->commentManager->getValidComments($postId);
         $category = $this->categoryManager->getCategory($postId);
-        $this->renderer->render('User/postView.html', ['post' => $post, 'listcomments' => $list_comments, 'current' => 2, 'categories' => $category]);
+        $this->renderer->render('User/postView.html.twig', ['post' => $post, 'listcomments' => $list_comments, 'current' => 2, 'categories' => $category]);
     }
 
     /**
@@ -137,19 +129,67 @@ Class FrontController
     }
 
     /**
-     * Render the CGV View
+     * Render About
      */
-    public function mentions()
+    public function about()
     {
-        $this->renderer->render('User/mentionsView.html');
+        $formationManager = $this->formationManager->getFormations();
+        $jobManager = $this->jobManager->getJobs();
+        $certificateManager = $this->certificateManager->getCertificate();
+        $skillManager = $this->skillManager->getSkills();
+        $type = $this->skillManager->getSkillType();
+        $this->renderer->render('User/aboutView.html.twig', ['formations'=>$formationManager ,'jobs'=>$jobManager ,'certificates'=>$certificateManager ,'skills'=>$skillManager ,'types'=>$type ,"current" => 3]);
+    }
+
+
+    /**
+     * Render the Contact View
+     */
+    public function contactView()
+    {
+        $this->renderer->render('User/contactView.html.twig', ['current'=>4]);
     }
 
     /**
-     * Render the RGPD View
+     * Send an email from contact form using manager
      */
-    public function rgpd()
+    public function contactForm()
     {
-        $this->renderer->render('User/rgpdView.html');
+        $request = Request::createFromGlobals();
+        if (!empty($request->request->all()) && FormValidator::is_email($request->get('email'))) {
+            $name = FormValidator::purify($request->get('name'));
+            $forename = FormValidator::purify($request->get('forename'));
+            $message = FormValidator::purify($request->get('message'));
+            $email = FormValidator::purify($request->get('email'));
+
+            $this->formManager->formTraitment($name, $forename, $email, $message);
+            $this->session->set('success', "Votre formulaire a bien été envoyé.");
+            $this->contactView();
+            return;
+
+        }
+        $this->session->set('warning', "Tous les champs ne sont pas remplis ou corrects.");
+        $this->contactView();
+    }
+
+    /**
+     * Download the CV
+     */
+    public function cv()
+    {
+        $file = '../public/pdf/CV.pdf';
+        if (file_exists($file)) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="' . basename($file) . '"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($file));
+            readfile($file);
+            return;
+        }
+        echo "Le fichier n'existe pas ou le nom de fichier n'est pas défini.";
     }
 
     /**
@@ -157,15 +197,7 @@ Class FrontController
      */
     public function login()
     {
-        $this->renderer->render('User/loginView.html');
-    }
-
-    /**
-     * Render the Register View
-     */
-    public function registerView()
-    {
-        $this->renderer->render('User/registerView.html');
+        $this->renderer->render('User/loginView.html.twig');
     }
 
     /**
@@ -216,12 +248,11 @@ Class FrontController
     }
 
     /**
-     * Disconnect a User
+     * Render the Register View
      */
-    public function deconnect()
+    public function registerView()
     {
-        $this->session->clear();
-        $this->home();
+        $this->renderer->render('User/registerView.html.twig');
     }
 
     /**
@@ -289,106 +320,28 @@ Class FrontController
     }
 
     /**
-     * Render the Contact View
+     * Disconnect a User
      */
-    public function contactView()
+    public function deconnect()
     {
-        $this->renderer->render('User/contactView.html', ['current'=>4]);
+        $this->session->clear();
+        $this->home();
     }
 
     /**
-     * Send an email from contact form using manager
+     * Render the CGV View
      */
-    public function contactForm()
+    public function mentions()
     {
-        $request = Request::createFromGlobals();
-        if (!empty($request->request->all()) && !FormValidator::is_email($request->get('email'))) {
-            $name = FormValidator::purify($request->get('name'));
-            $forename = FormValidator::purify($request->get('forename'));
-            $message = FormValidator::purify($request->get('message'));
-            $email = FormValidator::purify($request->get('email'));
-
-            $this->formManager->formTraitment($name, $forename, $email, $message);
-            $this->session->set('success', "Votre formulaire a bien été envoyé.");
-            $this->home();
-            return;
-
-        }
-        $this->session->set('warning', "Tous les champs ne sont pas remplis ou corrects.");
-        $this->contactView();
+        $this->renderer->render('User/mentionsView.html.twig');
     }
 
     /**
-     * Download the CV
+     * Render the RGPD View
      */
-    public function cv()
+    public function rgpd()
     {
-        $file = '../public/pdf/CV.pdf';
-        if (file_exists($file)) {
-            header('Content-Description: File Transfer');
-            header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename="' . basename($file) . '"');
-            header('Expires: 0');
-            header('Cache-Control: must-revalidate');
-            header('Pragma: public');
-            header('Content-Length: ' . filesize($file));
-            readfile($file);
-            return;
-        }
-        echo "Le fichier n'existe pas ou le nom de fichier n'est pas défini.";
+        $this->renderer->render('User/rgpdView.html.twig');
     }
 
 }
-
-
-//
-//namespace App\Controller;
-//
-//use App\Core\TwigRenderer;
-//use App\Manager\PostManager;
-//
-//
-///**
-// * Class FrontController controller for Frontend
-// */
-//class FrontController
-//{
-//    private $postManager;
-//    private $renderer;
-//
-//
-//    public function __construct()
-//    {
-//        $this->renderer = new TwigRenderer();
-//        $this->postManager = new PostManager();
-//    }
-//
-//    /**
-//     * Render Home
-//     */
-//    public function home()
-//    {
-//        $this->renderer->render('User/homePage');
-//    }
-//
-//    /**
-//     * Render the Posts view from the post manager
-//     */
-//    public function listPosts()
-//    {
-//        $postManager = new PostManager();
-//        $list_posts = $postManager->getPosts();
-//        return ['User/postsView', ['listposts' => $list_posts]];
-//    }
-//
-//    /**
-//     * Render the Post view from the post manager
-//     *
-//     * @param $postId
-//     */
-//    public function post($postId)
-//    {
-//        $post = $this->postManager->getPost($postId);
-//        $this->renderer->render('User/postView', ['post' => $post]);
-//    }
-//}

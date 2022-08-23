@@ -25,7 +25,6 @@ class TwigRenderer
         );
 
         $this->twig->addGlobal('_server', $_SERVER);
-        $this->twig->addGlobal('url',  $_SERVER['DOCUMENT_ROOT']);
         $this->twig->addGlobal('_post', $_POST);
         $this->twig->addGlobal('_get', $_GET);
         $this->twig->addExtension(new DebugExtension());
@@ -33,7 +32,7 @@ class TwigRenderer
 
 
         try {
-            echo $this->twig->render($view . '.twig', $params);
+            print_r($this->twig->render($view, $params)) ;
         } catch (LoaderError $e) {
         } catch (RuntimeError $e) {
         } catch (SyntaxError $e) {

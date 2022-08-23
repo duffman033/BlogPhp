@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Model;
+namespace App\Entity;
 
 
 class Job
@@ -9,7 +9,7 @@ class Job
     /**
      * @var int $job_id id
      */
-    private $job_id;
+    private $jobId;
 
     /**
      * @var string $name name
@@ -66,15 +66,15 @@ class Job
      */
     public function getJobId()
     {
-        return $this->job_id;
+        return $this->jobId;
     }
 
     /**
-     * @param int $job_id
+     * @param int $jobId
      */
-    public function setJobId($job_id)
+    public function setJobId($jobId)
     {
-        $this->job_id = $job_id;
+        $this->jobId = $jobId;
     }
 
     /**

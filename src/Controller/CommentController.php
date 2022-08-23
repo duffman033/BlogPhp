@@ -16,7 +16,7 @@ class CommentController extends AdminController
     public function listComments()
     {
         $comments = $this->commentManager->getInvalidComments();
-        $this->renderer->render('Admin/commentView.html', ['listcomments' => $comments]);
+        $this->renderer->render('Admin/commentView.html.twig', ['listcomments' => $comments]);
     }
 
     /**
@@ -32,14 +32,15 @@ class CommentController extends AdminController
             $deleteRequest = $this->commentManager->deleteComment($commentId);
             if ($deleteRequest === false) {
                 $this->session->set('warning', "Impossible de supprimer le commentaire !");
+                $this->listComments();
                 return;
             }
             $this->session->set('success', "Le commentaire a bien été supprimé.");
-            header('Location: /admin/comments');
+            $this->listComments();
             return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-        header('Location: /logout');
+        FrontController::deconnect();
     }
 
     /**
@@ -52,10 +53,11 @@ class CommentController extends AdminController
         $request = $this->commentManager->validateComment($commentId);
         if ($request === false) {
             $this->session->set('warning', "Impossible de valider le commentaire !");
+            $this->listComments();
             return;
         }
         $this->session->set('success', "Le commentaire a bien été validé.");
-        header('Location: /admin/comments');
+        $this->listComments();
     }
 
 }

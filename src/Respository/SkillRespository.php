@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Manager;
+namespace App\Respository;
 
 use App\Core\Database;
-use App\Model\Skill;
+use App\Entity\Skill;
 
 /**
- * SkillManager Queries for Skill
+ * SkillRespository Queries for Skill
  */
-class SkillManager extends Database
+class SkillRespository extends Database
 {
     /**
      * Return Skill
@@ -74,7 +74,7 @@ class SkillManager extends Database
      */
     public function deleteSkill($skillId)
     {
-        $post = 'DELETE FROM skills WHERE id= :id';
+        $post = 'DELETE FROM skills WHERE skill_id= :id';
         $parameters = [':id' => $skillId];
 
         $this->sql($post, $parameters);
@@ -89,7 +89,7 @@ class SkillManager extends Database
      */
     public function updateSkill($skillId, $datas)
     {
-        $editedSkill = 'UPDATE skills SET name=:name, progress=:progress, type=:type WHERE id=:id';
+        $editedSkill = 'UPDATE skills SET name=:name, progress=:progress, type=:type WHERE skill_id=:id';
         $parameters = [
             ':id' => $skillId,
             ':name' => $datas['name'],

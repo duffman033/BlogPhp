@@ -1,15 +1,15 @@
 <?php
 
 
-namespace App\Model;
+namespace App\Entity;
 
 
 class Skill
 {
     /**
-     * @var int $id id
+     * @var int $skill_id id
      */
-    private $id;
+    private $skillId;
 
     /**
      * @var string $name name
@@ -50,17 +50,17 @@ class Skill
     /**
      * @return int
      */
-    public function getId()
+    public function getSkillId()
     {
-        return $this->id;
+        return $this->skillId;
     }
 
     /**
-     * @param int $id
+     * @param int $skillId
      */
-    public function setId($id)
+    public function setSkillId($skillId)
     {
-        $this->id = $id;
+        $this->skillId = $skillId;
     }
 
     /**

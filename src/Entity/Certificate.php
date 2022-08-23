@@ -1,15 +1,15 @@
 <?php
 
 
-namespace App\Model;
+namespace App\Entity;
 
 
 class Certificate
 {
     /**
-     * @var int $id id
+     * @var int $certificate_id id
      */
-    private $id;
+    private $certificateId;
 
     /**
      * @var string $name name
@@ -44,17 +44,17 @@ class Certificate
     /**
      * @return int
      */
-    public function getId()
+    public function getCertificateId()
     {
-        return $this->id;
+        return $this->certificateId;
     }
 
     /**
-     * @param int $id
+     * @param int $certificateId
      */
-    public function setId($id)
+    public function setCertificateId($certificateId)
     {
-        $this->id = $id;
+        $this->certificateId = $certificateId;
     }
 
     /**

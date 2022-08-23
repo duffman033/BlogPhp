@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Manager;
+namespace App\Respository;
 
 use App\Core\Database;
-use App\Model\Comment;
+use App\Entity\Comment;
 
 /**
- * CommentManager Queries for Comments
+ * CommentRespository Queries for Comments
  */
-class CommentManager extends Database
+class CommentRespository extends Database
 {
 
     /**

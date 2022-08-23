@@ -17,7 +17,7 @@ class JobController extends AdminController
     public function aboutJobView()
     {
         $jobManager = $this->jobManager->getJobs();
-        $this->renderer->render('Admin/JobView/aboutJobView.html', ['jobs' => $jobManager]);
+        $this->renderer->render('Admin/JobView/aboutJobView.html.twig', ['jobs' => $jobManager]);
     }
 
     /**
@@ -32,7 +32,7 @@ class JobController extends AdminController
             array_push($date_job, $i);
         }
         $jobManager = $this->jobManager->getJob($jobId);
-        $this->renderer->render('Admin/JobView/updateJobView.html', ['job' => $jobManager, 'dates' => $date_job]);
+        $this->renderer->render('Admin/JobView/updateJobView.html.twig', ['job' => $jobManager, 'dates' => $date_job]);
     }
 
     /**
@@ -44,7 +44,7 @@ class JobController extends AdminController
         for ($i = 2017; $i <= date('Y'); $i++) {
             array_push($date_job, $i);
         }
-        $this->renderer->render('Admin/JobView/addJobView.html', ['dates' => $date_job]);
+        $this->renderer->render('Admin/JobView/addJobView.html.twig', ['dates' => $date_job]);
     }
 
     /**
@@ -70,15 +70,15 @@ class JobController extends AdminController
                     return;
                 }
                 $this->session->set('success', "Votre métier a bien été ajoutée.");
-                header('Location: /admin/job');
+                $this->aboutJobView();
                 return;
             }
             $this->session->set('warning', "Merci de bien remplir le formulaire");
-            header('Location: /admin/job/add');
+            $this->addJobView();
             return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-        header('Location: /logout');
+        FrontController::deconnect();
     }
 
     /**
@@ -106,15 +106,15 @@ class JobController extends AdminController
                     return;
                 }
                 $this->session->set('success', "Votre métier a bien été modifié.");
-                header('Location: /admin/job');
+                $this->aboutJobView();
                 return;
             }
             $this->session->set('warning', "Merci de bien remplir le formulaire");
-            header('Location: /admin/job/update/' . $jobId);
+            $this->updateJobView($jobId);
             return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-        header('Location: /logout');
+        FrontController::deconnect();
     }
 
     /**
@@ -134,10 +134,10 @@ class JobController extends AdminController
                 return;
             }
             $this->session->set('success', "Votre métier a bien été supprimé.");
-            header('Location: /admin/job');
+            $this->aboutJobView();
             return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-        header('Location: /logout');
+        FrontController::deconnect();
     }
 }

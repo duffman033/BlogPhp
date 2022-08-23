@@ -16,7 +16,7 @@ class UserController extends AdminController
     public function listUser()
     {
         $list_user = $this->userManager->getUsers();
-        $this->renderer->render('Admin/userView.html', ['users' => $list_user]);
+        $this->renderer->render('Admin/userView.html.twig', ['users' => $list_user]);
     }
 
     /**
@@ -35,10 +35,10 @@ class UserController extends AdminController
                 return;
             }
             $this->session->set('success', "L'utilisateur a bien été supprimé.");
-            header('Location: /admin');
+            $this->listUser();
             return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-        header('Location: /logout');
+        FrontController::deconnect();
     }
 }
