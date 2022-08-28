@@ -3,6 +3,7 @@
 namespace App\Core;
 
 use \PDO;
+use \Dotenv;
 
 
 class Database
@@ -17,10 +18,11 @@ class Database
      */
     protected function dbConnect()
     {
+        $dotenv = Dotenv\Dotenv::createUnsafeImmutable(realpath(dirname(__FILE__) . '/../../'));
+        $dotenv->load();
         if ($this->database === null) {
-            $data = require __DIR__ . './../Config/config.php';
-            return new PDO('mysql:host=' . $data['db_host'] . ';dbname=' . $data['db_name'] . ';charset=utf8',
-                $data['db_user'], $data['db_password'],
+            return new PDO('mysql:host=' . getenv('MYSQL_HOST') . ';dbname=' . getenv('MYSQL_DB') . ';charset=utf8',
+                getenv('MYSQL_USER'), getenv('MYSQL_PASSWORD'),
                 array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
         }
         return $this->database;

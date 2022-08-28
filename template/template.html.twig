@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}{% endblock %}</title>
 
+    <link rel="icon" type="image/x-icon" href="../images/logo.ico">
+
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Abril+Fatface&display=swap" rel="stylesheet">
@@ -38,8 +40,8 @@
         <nav id="main-menu" role="navigation">
             <ul>
                 <li class="{% if current==1 %}active{% endif %}"><a href="/">Accueil</a></li>
-                <li class="{% if current==2 %}active{% endif %}"><a href="/posts">Blog Posts</a></li>
-                <li class="{% if current==3 %}active{% endif %}"><a href="/about">A propos</a></li>
+                <li class="{% if current==2 %}active{% endif %}"><a href="/posts">Projets</a></li>
+                <li class="{% if current==3 %}active{% endif %}"><a href="/about">&Agrave; propos</a></li>
                 <li class="{% if current==4 %}active{% endif %}"><a href="/contact">Contact</a></li>
                 {% if session._sf2_attributes.auth.userstatus == 1 %}
                     <li class="js-li"><a href="/admin">Dashboard</a></li>
@@ -56,8 +58,8 @@
         <div class="footer">
             <h1 id="logo" class="mb-4"><a href="/" style="background-image: url(../images/bg_1.jpg);">Bastien <span>Moreau</span></a></h1>
             <div class="mb-4">
-                <a href="https://github.com/duffman033" style="text-decoration: none;"><i class="fa-brands fa-github" style="font-size:36px" ></i> duffman033</a>
-                <a href="https://www.linkedin.com/in/m-bastien" style="text-decoration: none;"><i class="fa-brands fa-linkedin" style="font-size:36px"></i>m-bastien</a>
+                <a target="_blank" href="https://github.com/duffman033" style="text-decoration: none;"><i class="fa-brands fa-github" style="font-size:36px" ></i> duffman033</a>
+                <a target="_blank" href="https://www.linkedin.com/in/m-bastien" style="text-decoration: none;"><i class="fa-brands fa-linkedin" style="font-size:36px"></i>m-bastien</a>
             </div>
             <p class="pfooter">
                 Copyright &copy;<script>document.write(new Date().getFullYear());</script> Tous droits réservés <a href="/mentions" class="text-muted text-decoration-none"><small>Mentions légales</small></a></p>

@@ -18,6 +18,7 @@
         "symfony/mailer": "^5.4",
         "symfony/http-foundation": "^5.4",
         "swiftmailer/swiftmailer": "^6.3",
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "vlucas/phpdotenv": "^5.4"
     }
 }

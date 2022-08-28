@@ -55,6 +55,7 @@ class CategorieController extends AdminController
     public function updateCategory($catId)
     {
         $request = Request::createFromGlobals();
+
         if ($request->get('formtoken') == $this->session->get('token')) {
             if (!empty($request->request->all())) {
                 $datas['type'] = FormValidator::purify($request->get('type'));

@@ -1,0 +1,18 @@
+#########################################################################
+#                                                                       #
+# Ce fichier à pour but de définir toutes les variables d'environnement #
+# nécessaire au bon fonctionnement de l'application.                    #
+#                                                                       #
+#########################################################################
+
+###> Configuration Database ###
+MYSQL_USER=
+MYSQL_PASSWORD=
+MYSQL_DB=
+MYSQL_HOST=
+###< Configuration Database ###
+
+###> Configuration Mailer ###
+MAILER_DSN=
+MAILER_USER=
+###< Configuration Mailer ###
