@@ -5,6 +5,7 @@ namespace App\Respository;
 use App\Core\Database;
 use App\Entity\Post;
 use PDO;
+use PDOStatement;
 
 /**
  * PostRespository Queries for Posts
@@ -24,12 +25,11 @@ class PostRespository extends Database
         $result = $this->sql($posts);
         $custom_array = [];
 
-        while ($datas = $result->fetch(\PDO::FETCH_ASSOC)) {
-            array_push($custom_array, New Post($datas));
+        while ($datas = $result->fetch(PDO::FETCH_ASSOC)) {
+            array_push($custom_array, new Post($datas));
         }
 
         return $custom_array;
-
     }
 
     /**
@@ -41,10 +41,7 @@ class PostRespository extends Database
     {
         $posts = 'SELECT post_id FROM posts ORDER BY post_id DESC LIMIT 1';
         $result = $this->sql($posts);
-        $data = $result->fetch(\PDO::FETCH_ASSOC);
-
-        return $data;
-
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -59,18 +56,16 @@ class PostRespository extends Database
                 FROM posts INNER JOIN users ON posts.author_id = users.user_id WHERE post_id= :postId';
         $parameters = [':postId' => $postId];
         $result = $this->sql($post, $parameters);
-        $data = $result->fetch(\PDO::FETCH_ASSOC);
+        $data = $result->fetch(PDO::FETCH_ASSOC);
 
         return new Post($data);
-
-
     }
 
     /**
      * Add a Post
      *
      * @param $post
-     * @return bool|false|\PDOStatement
+     * @return bool|false|PDOStatement
      */
     public function addPost($post)
     {
@@ -83,29 +78,29 @@ class PostRespository extends Database
             ':img_url' => $post['img_url'],
         ];
 
-        $this->sql($newPost, $parameters);
+        return $this->sql($newPost, $parameters);
     }
 
     /**
      * Delete a Post
      *
      * @param $postId
-     * @return bool|false|\PDOStatement
+     * @return bool|false|PDOStatement
      */
     public function deletePost($postId)
     {
         $post = 'DELETE FROM posts WHERE post_id= :id';
         $parameters = [':id' => $postId];
 
-        $this->sql($post, $parameters);
-
+        return $this->sql($post, $parameters);
     }
 
     /**
      * Update a Post
      *
      * @param $postId
-     * @return bool|false|\PDOStatement
+     * @param $datas
+     * @return bool|false|PDOStatement
      */
     public function updatePost($postId, $datas)
     {
@@ -118,15 +113,14 @@ class PostRespository extends Database
             ':img_url' => $datas['img_url'],
 
         ];
-        $this->sql($editedPost, $parameters);
-
+        return $this->sql($editedPost, $parameters);
     }
 
     /**
      * Select by Id
      *
      * @param $postId
-     * @return bool|false|\PDOStatement
+     * @return bool|false|PDOStatement
      */
     public function selectImgPost($postId)
     {
@@ -135,7 +129,7 @@ class PostRespository extends Database
             ':id' => $postId,
         ];
         $result = $this->sql($selectPost, $parameters);
-        $data = $result->fetch(\PDO::FETCH_ASSOC);
+        $data = $result->fetch(PDO::FETCH_ASSOC);
 
         $datas = new Post($data);
         return $datas->getImgUrl();

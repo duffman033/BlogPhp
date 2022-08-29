@@ -3,6 +3,7 @@
 
 namespace App\Respository;
 
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mime\Email;
@@ -20,6 +21,7 @@ class FormManager
      * @param $forename
      * @param $email
      * @param $message
+     * @throws TransportExceptionInterface
      */
     public function formTraitment($name, $forename, $email, $message)
     {
@@ -48,6 +50,7 @@ class FormManager
      *
      * @param $email
      * @param $username
+     * @throws TransportExceptionInterface
      */
     public function registerTraitment($email, $username)
     {
@@ -290,6 +293,5 @@ class FormManager
             ');
 
         $mailer->send($email);
-
     }
 }

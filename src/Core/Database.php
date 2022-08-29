@@ -4,7 +4,7 @@ namespace App\Core;
 
 use \PDO;
 use \Dotenv;
-
+use PDOStatement;
 
 class Database
 {
@@ -21,9 +21,12 @@ class Database
         $dotenv = Dotenv\Dotenv::createUnsafeImmutable(realpath(dirname(__FILE__) . '/../../'));
         $dotenv->load();
         if ($this->database === null) {
-            return new PDO('mysql:host=' . getenv('MYSQL_HOST') . ';dbname=' . getenv('MYSQL_DB') . ';charset=utf8',
-                getenv('MYSQL_USER'), getenv('MYSQL_PASSWORD'),
-                array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+            return new PDO(
+                'mysql:host=' . getenv('MYSQL_HOST') . ';dbname=' . getenv('MYSQL_DB') . ';charset=utf8',
+                getenv('MYSQL_USER'),
+                getenv('MYSQL_PASSWORD'),
+                array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
+            );
         }
         return $this->database;
     }
@@ -31,12 +34,10 @@ class Database
     /**
      * @param $sql
      * @param null $parameters
-     * @param null $binds
-     * @return bool|false|\PDOStatement
+     * @return bool|false|PDOStatement
      */
     protected function sql($sql, $parameters = null)
     {
-
         if ($parameters) {
             $result = $this->dbConnect()->prepare($sql);
 

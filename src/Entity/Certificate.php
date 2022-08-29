@@ -3,23 +3,22 @@
 
 namespace App\Entity;
 
-
 class Certificate
 {
     /**
      * @var int $certificate_id id
      */
-    private $certificateId;
+    private int $certificateId;
 
     /**
      * @var string $name name
      */
-    private $name;
+    private string $name;
 
     /**
      * @var int $date date
      */
-    private $date;
+    private int $date;
 
     public function __construct($datas = [])
     {
@@ -30,7 +29,6 @@ class Certificate
 
     public function hydrate($datas)
     {
-
         foreach ($datas as $key => $value) {
             $key = lcfirst(str_replace('_', '', ucwords($key, '_')));
             $method = 'set' . ucfirst($key);
@@ -88,5 +86,4 @@ class Certificate
     {
         $this->date = $date;
     }
-
 }

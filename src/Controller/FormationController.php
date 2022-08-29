@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Core\FormValidator;
 use Symfony\Component\HttpFoundation\Request;
 
-
 /**
  * Class FormationController controller for Formation
  */
@@ -99,7 +98,7 @@ class FormationController extends AdminController
                 $datas['startDate'] = FormValidator::purify($request->get('startDate'));
                 $datas['endDate'] = FormValidator::purify($request->get('endDate'));
 
-                $result = $this->formationManager->updateFormation($formId,$datas);
+                $result = $this->formationManager->updateFormation($formId, $datas);
 
                 if ($result === false) {
                     $this->session->set('warning', "Impossible de modifier la formation !");
@@ -127,7 +126,6 @@ class FormationController extends AdminController
         $request = Request::createFromGlobals();
 
         if ($request->get('formtoken') == $this->session->get('token')) {
-
             $deleteRequest = $this->formationManager->deleteFormation($formId);
             if ($deleteRequest === false) {
                 $this->session->set('warning', "Impossible de supprimer la formation !");

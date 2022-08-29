@@ -4,6 +4,8 @@ namespace App\Respository;
 
 use App\Core\Database;
 use App\Entity\Skill;
+use PDO;
+use PDOStatement;
 
 /**
  * SkillRespository Queries for Skill
@@ -21,12 +23,11 @@ class SkillRespository extends Database
         $result = $this->sql($req);
         $custom_array = [];
 
-        while ($datas = $result->fetch(\PDO::FETCH_ASSOC)) {
-            array_push($custom_array, New Skill($datas));
+        while ($datas = $result->fetch(PDO::FETCH_ASSOC)) {
+            array_push($custom_array, new Skill($datas));
         }
 
         return $custom_array;
-
     }
 
     /**
@@ -40,18 +41,17 @@ class SkillRespository extends Database
         $result = $this->sql($req);
         $custom_array = [];
 
-        while ($datas = $result->fetch(\PDO::FETCH_ASSOC)) {
-            array_push($custom_array, New Skill($datas));
+        while ($datas = $result->fetch(PDO::FETCH_ASSOC)) {
+            array_push($custom_array, new Skill($datas));
         }
         return $custom_array;
-
     }
 
     /**
      * Add a Skill
      *
      * @param $skill
-     * @return bool|false|\PDOStatement
+     * @return bool|false|PDOStatement
      */
     public function addSkill($skill)
     {
@@ -62,30 +62,29 @@ class SkillRespository extends Database
             ':type' => $skill['type']
         ];
 
-        $this->sql($newPost, $parameters);
-
+        return $this->sql($newPost, $parameters);
     }
 
     /**
      * Delete a Skill
      *
      * @param $skillId
-     * @return bool|false|\PDOStatement
+     * @return bool|false|PDOStatement
      */
     public function deleteSkill($skillId)
     {
         $post = 'DELETE FROM skills WHERE skill_id= :id';
         $parameters = [':id' => $skillId];
 
-        $this->sql($post, $parameters);
-
+        return $this->sql($post, $parameters);
     }
 
     /**
      * Update a Skill
      *
      * @param $skillId
-     * @return bool|false|\PDOStatement
+     * @param $datas
+     * @return bool|false|PDOStatement
      */
     public function updateSkill($skillId, $datas)
     {
@@ -97,7 +96,6 @@ class SkillRespository extends Database
             ':type' => $datas['type']
 
         ];
-        $this->sql($editedSkill, $parameters);
+        return $this->sql($editedSkill, $parameters);
     }
-
 }

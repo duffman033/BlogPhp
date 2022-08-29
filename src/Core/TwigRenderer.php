@@ -10,29 +10,28 @@ use Twig\Error\SyntaxError;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
 
-
 class TwigRenderer
 {
-    private $twig;
 
     public function render($view, $params = [])
     {
         $loader = new FilesystemLoader('../template');
-        $this->twig = new Environment(
-            $loader, [
+        $twig = new Environment(
+            $loader,
+            [
             'cache' => false, // __DIR__ . /tmp',
             'debug' => true,]
         );
 
-        $this->twig->addGlobal('_server', $_SERVER);
-        $this->twig->addGlobal('_post', $_POST);
-        $this->twig->addGlobal('_get', $_GET);
-        $this->twig->addExtension(new DebugExtension());
-        $this->twig->addGlobal('session', $_SESSION);
+        $twig->addGlobal('_server', $_SERVER);
+        $twig->addGlobal('_post', $_POST);
+        $twig->addGlobal('_get', $_GET);
+        $twig->addExtension(new DebugExtension());
+        $twig->addGlobal('session', $_SESSION);
 
 
         try {
-            print_r($this->twig->render($view, $params)) ;
+            print_r($twig->render($view, $params)) ;
         } catch (LoaderError $e) {
         } catch (RuntimeError $e) {
         } catch (SyntaxError $e) {

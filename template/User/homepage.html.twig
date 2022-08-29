@@ -20,9 +20,9 @@
 {% endblock %}
 {% block addjavascripts %}
     <script type="text/javascript">
-        var test = document.querySelector("#log");
-        var change = ["WEB","WEB","WEB","WEB","WEB","WEB","WEB","WEB","WEB","WEB","WEB","WEB","WEB","WEB","WB","W","","","","J","JS","JS.","JS.","JS.","JS.","JS.","JS.","JS.","JS.","JS.","JS.","JS.","JS.","JS.","JS.","JS","J","","","","P","PH","PHP","PHP","PHP","PHP","PHP","PHP","PHP","PHP","PHP","PHP","PHP","PHP","PHP","PHP","PH","P","","","","W","WE",];
-        var i = 0;
+        const test = document.querySelector("#log");
+        const change = ["WEB", "WEB", "WEB", "WEB", "WEB", "WEB", "WEB", "WEB", "WEB", "WEB", "WEB", "WEB", "WEB", "WEB", "WB", "W", "", "", "", "J", "JS", "JS.", "JS.", "JS.", "JS.", "JS.", "JS.", "JS.", "JS.", "JS.", "JS.", "JS.", "JS.", "JS.", "JS.", "JS", "J", "", "", "", "P", "PH", "PHP", "PHP", "PHP", "PHP", "PHP", "PHP", "PHP", "PHP", "PHP", "PHP", "PHP", "PHP", "PHP", "PHP", "PH", "P", "", "", "", "W", "WE",];
+        let i = 0;
         $(document).ready(function () {
         setInterval(() => {
         test.textContent = change[i]

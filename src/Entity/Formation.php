@@ -9,37 +9,37 @@ class Formation
     /**
      * @var int $formation_id id
      */
-    private $formationId;
+    private int $formationId;
 
     /**
      * @var string $name name
      */
-    private $name;
+    private string $name;
 
     /**
      * @var string $school school
      */
-    private $school;
+    private string $school;
 
     /**
      * @var string $place place
      */
-    private $place;
+    private string $place;
 
     /**
      * @var string $description description
      */
-    private $description;
+    private string $description;
 
     /**
      * @var int $startDate start_date
      */
-    private $startDate;
+    private int $startDate;
 
     /**
      * @var int $endDate end_date
      */
-    private $endDate;
+    private int $endDate;
 
     public function __construct($datas = [])
     {

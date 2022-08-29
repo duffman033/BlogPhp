@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 
-
 /**
  * Class AdminController controller for Admin
  */

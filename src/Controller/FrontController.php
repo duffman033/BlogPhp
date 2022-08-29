@@ -15,35 +15,36 @@ use App\Core\FormValidator;
 use App\Respository\RelationRespository;
 use App\Respository\SkillRespository;
 use App\Respository\UserRespository;
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session;
-
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 /**
  * Class FrontController controller for Frontend
  */
-Class FrontController
+class FrontController
 {
-    protected $postManager;
-    protected $commentManager;
-    protected $userManager;
-    protected $formationManager;
-    protected $jobManager;
-    protected $skillManager;
-    protected $certificateManager;
-    protected $categoryManager;
-    protected $relationManager;
-    protected $loginManager;
-    protected $formManager;
-    protected $request;
-    protected $session;
-    protected $renderer;
+    protected PostRespository $postManager;
+    protected CommentRespository $commentManager;
+    protected UserRespository $userManager;
+    protected FormationRespository $formationManager;
+    protected JobRespository $jobManager;
+    protected SkillRespository $skillManager;
+    protected CertificateRespository $certificateManager;
+    protected CategoryRespository $categoryManager;
+    protected RelationRespository $relationManager;
+    protected LoginRespository $loginManager;
+    protected FormManager $formManager;
+    protected Request $request;
+    protected Session\Session $session;
+    protected TwigRenderer $renderer;
 
     public function __construct()
     {
         $this->renderer = new TwigRenderer();
         $this->postManager = new PostRespository();
-        $this->commentManager = New CommentRespository();
+        $this->commentManager = new CommentRespository();
         $this->loginManager = new LoginRespository();
         $this->categoryManager = new CategoryRespository();
         $this->formationManager = new FormationRespository();
@@ -51,7 +52,7 @@ Class FrontController
         $this->skillManager = new SkillRespository();
         $this->certificateManager = new CertificateRespository();
         $this->formManager = new FormManager();
-        $this->userManager = New UserRespository();
+        $this->userManager = new UserRespository();
         $this->relationManager = new RelationRespository();
 
         if (session_status() == PHP_SESSION_NONE) {
@@ -59,12 +60,10 @@ Class FrontController
             $this->session->setName('session');
             $this->session->start();
         }
-
     }
 
     public function __destruct()
     {
-        //$this->session->getFlashBag()->clear();
         $this->session->remove('warning');
         $this->session->remove('success');
     }
@@ -107,9 +106,7 @@ Class FrontController
         $request = Request::createFromGlobals();
 
         if ($request->get('formtoken') == $this->session->get('token')) {
-
             if (!empty($request->request->all())) {
-
                 $postId = FormValidator::purify($request->get('postid'));
                 $authorId = FormValidator::purify($request->get('authorid'));
                 $description = FormValidator::purifyContent($request->get('description'));
@@ -152,6 +149,7 @@ Class FrontController
 
     /**
      * Send an email from contact form using manager
+     * @throws TransportExceptionInterface
      */
     public function contactForm()
     {
@@ -166,7 +164,6 @@ Class FrontController
             $this->session->set('success', "Votre formulaire a bien été envoyé.");
             $this->contactView();
             return;
-
         }
         $this->session->set('warning', "Tous les champs ne sont pas remplis ou corrects.");
         $this->contactView();
@@ -203,7 +200,7 @@ Class FrontController
     /**
      * Connect a User using manager
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function connect()
     {
@@ -214,25 +211,21 @@ Class FrontController
         if (!FormValidator::is_alphanum($username)) {
             $this->session->set('warning', "Votre pseudo $username n'est pas valide");
             $this->login();
-
         } elseif (!FormValidator::is_alphanum($password)) {
             $this->session->set('warning', "Votre mot de passe n'est pas valide");
             $this->login();
-
         } else {
             $user = $this->loginManager->getLogin($username);
 
             if (!$user) {
                 $this->session->set('warning', "Cette identifiant n'existe pas");
                 $this->login();
-
             } else {
                 $isPasswordCorrect = password_verify($password, $user->getPassword());
 
                 if ($isPasswordCorrect == false) {
                     $this->session->set('warning', "Mot de passe incorrect");
                     $this->login();
-
                 } else {
                     $this->session->set('auth', $user);
                     $this->session->set('token', bin2hex(random_bytes(16)));
@@ -257,11 +250,12 @@ Class FrontController
 
     /**
      * Register a User using login manager
+     * @throws TransportExceptionInterface
      */
     public function register()
     {
         $request = Request::createFromGlobals();
-        if (!empty($request->request->all())){
+        if (!empty($request->request->all())) {
             $repertory = "uploads/images/";
             $fileName = "unknow.jpg";
             $file = $request->files->get('image');
@@ -287,12 +281,10 @@ Class FrontController
                 $this->session->set('warning', "Votre pseudo n'est pas valide");
                 $this->registerView();
                 return;
-
             } elseif (!FormValidator::is_alphanum($password) || !FormValidator::is_alphanum($passwordConfirm)) {
                 $this->session->set('warning', "Votre mot de passe n'est pas valide");
                 $this->registerView();
                 return;
-
             } elseif (!FormValidator::is_email($email)) {
                 $this->session->set('warning', "Votre email n'est pas valide");
                 $this->registerView();
@@ -300,7 +292,6 @@ Class FrontController
             }
             if ($this->loginManager->isMemberExists($username, $email)) {
                 if ($this->loginManager->checkPassword($password, $passwordConfirm)) {
-
                     $this->loginManager->registerUser($username, $password, $email, $img_url);
                     $this->formManager->registerTraitment($email, $username);
                     $this->session->set('success', "Votre inscription a bien été prise en compte");
@@ -343,5 +334,4 @@ Class FrontController
     {
         $this->renderer->render('User/rgpdView.html.twig');
     }
-
 }

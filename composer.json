@@ -19,6 +19,10 @@
         "symfony/http-foundation": "^5.4",
         "swiftmailer/swiftmailer": "^6.3",
         "ext-pdo": "*",
-        "vlucas/phpdotenv": "^5.4"
+        "vlucas/phpdotenv": "^5.4",
+        "friendsofphp/php-cs-fixer": "v2.16.3"
+    },
+    "scripts": {
+        "php-cs-fixer": "php-cs-fixer --rules=@PSR1"
     }
 }

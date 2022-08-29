@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Core\FormValidator;
 use Symfony\Component\HttpFoundation\Request;
 
-
 /**
  * Class AdminController controller for Admin
  */
@@ -24,10 +23,11 @@ class SkillController extends AdminController
     /**
      *  Add a Skill using skill manager
      */
-    public function addSkill(){
+    public function addSkill()
+    {
         $request = Request::createFromGlobals();
 
-        if ($request->get('formtoken') == $this->session->get('token')){
+        if ($request->get('formtoken') == $this->session->get('token')) {
             if (!empty($request->request->all())) {
                 $datas['name'] = FormValidator::purify($request->get('name'));
                 $datas['progress'] = FormValidator::purify($request->get('progress'));
@@ -56,10 +56,11 @@ class SkillController extends AdminController
      *
      * @param $skillId
      */
-    public function updateSkill($skillId){
+    public function updateSkill($skillId)
+    {
         $request = Request::createFromGlobals();
 
-        if ($request->get('formtoken') == $this->session->get('token')){
+        if ($request->get('formtoken') == $this->session->get('token')) {
             if (!empty($request->request->all())) {
                 $datas['name'] = FormValidator::purifyLow($request->get('name'));
                 $datas['progress'] = FormValidator::purifyLow($request->get('progress'));

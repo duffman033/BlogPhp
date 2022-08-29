@@ -4,6 +4,8 @@ namespace App\Respository;
 
 use App\Core\Database;
 use App\Entity\Category;
+use PDO;
+use PDOStatement;
 
 /**
  * PostRespository Queries for Posts
@@ -22,17 +24,17 @@ class CategoryRespository extends Database
         $result = $this->sql($req);
         $custom_array = [];
 
-        while ($datas = $result->fetch(\PDO::FETCH_ASSOC)) {
-            array_push($custom_array, New Category($datas));
+        while ($datas = $result->fetch(PDO::FETCH_ASSOC)) {
+            array_push($custom_array, new Category($datas));
         }
 
         return $custom_array;
-
     }
 
     /**
      * Return Category by postId
      *
+     * @param $postId
      * @return array
      */
     public function getCategory($postId)
@@ -42,7 +44,7 @@ class CategoryRespository extends Database
         $result = $this->sql($category, $parameters);
         $custom_array = [];
 
-        while ($datas = $result->fetch(\PDO::FETCH_ASSOC)) {
+        while ($datas = $result->fetch(PDO::FETCH_ASSOC)) {
             $custom_array[] = new Category($datas);
         }
 
@@ -53,7 +55,7 @@ class CategoryRespository extends Database
      * Add a Category
      *
      * @param $cat
-     * @return bool|false|\PDOStatement
+     * @return bool|false|PDOStatement
      */
     public function addCategory($cat)
     {
@@ -62,15 +64,15 @@ class CategoryRespository extends Database
             ':type' => $cat['type']
         ];
 
-        $this->sql($newCat, $parameters);
-
+        return $this->sql($newCat, $parameters);
     }
 
     /**
      * Update a Category
      *
      * @param $catId
-     * @return bool|false|\PDOStatement
+     * @param $datas
+     * @return bool|false|PDOStatement
      */
     public function updateCategory($catId, $datas)
     {
@@ -80,22 +82,20 @@ class CategoryRespository extends Database
             ':type' => $datas['type']
         ];
 
-        $this->sql($editedCat, $parameters);
-
+        return $this->sql($editedCat, $parameters);
     }
 
     /**
      * Delete Category
      *
      * @param $catId
-     * @return bool|false|\PDOStatement
+     * @return bool|false|PDOStatement
      */
     public function deleteCategory($catId)
     {
         $cat = 'DELETE FROM categories WHERE cat_id= :id';
         $parameters = [':id' => $catId];
 
-        $this->sql($cat, $parameters);
-
+        return $this->sql($cat, $parameters);
     }
 }

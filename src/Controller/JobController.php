@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Core\FormValidator;
 use Symfony\Component\HttpFoundation\Request;
 
-
 /**
  * Class JobController controller for Jobs
  */
@@ -99,7 +98,7 @@ class JobController extends AdminController
                 $datas['startDate'] = FormValidator::purifyLow($request->get('startDate'));
                 $datas['endDate'] = FormValidator::purifyLow($request->get('endDate'));
 
-                $result = $this->jobManager->updateJob($jobId,$datas);
+                $result = $this->jobManager->updateJob($jobId, $datas);
 
                 if ($result === false) {
                     $this->session->set('warning', "Impossible de modifier le métier !");
@@ -127,7 +126,6 @@ class JobController extends AdminController
         $request = Request::createFromGlobals();
 
         if ($request->get('formtoken') == $this->session->get('token')) {
-
             $deleteRequest = $this->jobManager->deleteJob($jobId);
             if ($deleteRequest === false) {
                 $this->session->set('warning', "Impossible de supprimer le métier !");

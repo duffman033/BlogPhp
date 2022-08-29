@@ -3,18 +3,17 @@
 
 namespace App\Entity;
 
-
 class Relation
 {
     /**
      * @var int $cat_id cat ID
      */
-    private $catId;
+    private int $catId;
 
     /**
      * @var int $postId post ID
      */
-    private $postId;
+    private int $postId;
 
     public function __construct($datas = [])
     {
@@ -25,7 +24,6 @@ class Relation
 
     public function hydrate($datas)
     {
-
         foreach ($datas as $key => $value) {
             $key = lcfirst(str_replace('_', '', ucwords($key, '_')));
             $method = 'set' . ucfirst($key);

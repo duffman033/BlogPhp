@@ -3,43 +3,42 @@
 
 namespace App\Entity;
 
-
 class Job
 {
     /**
      * @var int $job_id id
      */
-    private $jobId;
+    private int $jobId;
 
     /**
      * @var string $name name
      */
-    private $name;
+    private string $name;
 
     /**
      * @var string $company company
      */
-    private $company;
+    private string $company;
 
     /**
      * @var string $place place
      */
-    private $place;
+    private string $place;
 
     /**
      * @var string $description description
      */
-    private $description;
+    private string $description;
 
     /**
      * @var int $startDate start_date
      */
-    private $startDate;
+    private int $startDate;
 
     /**
      * @var string $endDate end_date
      */
-    private $endDate;
+    private string $endDate;
 
     public function __construct($datas = [])
     {
@@ -50,7 +49,6 @@ class Job
 
     public function hydrate($datas)
     {
-
         foreach ($datas as $key => $value) {
             $key = lcfirst(str_replace('_', '', ucwords($key, '_')));
             $method = 'set' . ucfirst($key);
@@ -172,5 +170,4 @@ class Job
     {
         $this->endDate = $endDate;
     }
-
 }

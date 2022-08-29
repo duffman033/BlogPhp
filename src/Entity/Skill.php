@@ -3,28 +3,27 @@
 
 namespace App\Entity;
 
-
 class Skill
 {
     /**
      * @var int $skill_id id
      */
-    private $skillId;
+    private int $skillId;
 
     /**
      * @var string $name name
      */
-    private $name;
+    private string $name;
 
     /**
      * @var int $progress progress
      */
-    private $progress;
+    private int $progress;
 
     /**
      * @var string $type type
      */
-    private $type;
+    private string $type;
 
 
     public function __construct($datas = [])
@@ -36,7 +35,6 @@ class Skill
 
     public function hydrate($datas)
     {
-
         foreach ($datas as $key => $value) {
             $key = lcfirst(str_replace('_', '', ucwords($key, '_')));
             $method = 'set' . ucfirst($key);

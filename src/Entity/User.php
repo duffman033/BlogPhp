@@ -3,38 +3,37 @@
 
 namespace App\Entity;
 
-
 class User
 {
     /**
      * @var int $user_id user ID
      */
-    private $userId;
+    private int $userId;
 
     /**
      * @var string $username user name
      */
-    private $username;
+    private string $username;
 
     /**
      * @var string $mail user email
      */
-    private $email;
+    private string $email;
 
     /**
      * @var string $password password
      */
-    private $password;
+    private string $password;
 
     /**
      * @var string $user_status user status
      */
-    private $userStatus;
+    private string $userStatus;
 
     /**
      * @var string $userImgUrl user img url
      */
-    private $userImgUrl;
+    private string $userImgUrl;
 
     public function __construct($datas = [])
     {
@@ -45,7 +44,6 @@ class User
 
     public function hydrate($datas)
     {
-
         foreach ($datas as $key => $value) {
             $key = lcfirst(str_replace('_', '', ucwords($key, '_')));
             $method = 'set' . ucfirst($key);

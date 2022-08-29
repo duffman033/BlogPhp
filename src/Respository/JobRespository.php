@@ -4,6 +4,8 @@ namespace App\Respository;
 
 use App\Core\Database;
 use App\Entity\Job;
+use PDO;
+use PDOStatement;
 
 /**
  * JobRespository Queries for JobView
@@ -21,12 +23,11 @@ class JobRespository extends Database
         $result = $this->sql($req);
         $custom_array = [];
 
-        while ($datas = $result->fetch(\PDO::FETCH_ASSOC)) {
-            array_push($custom_array, New Job($datas));
+        while ($datas = $result->fetch(PDO::FETCH_ASSOC)) {
+            array_push($custom_array, new Job($datas));
         }
 
         return $custom_array;
-
     }
 
     /**
@@ -40,17 +41,16 @@ class JobRespository extends Database
         $job = 'SELECT * FROM jobs WHERE job_id= :id';
         $parameters = [':id' => $jobId];
         $result = $this->sql($job, $parameters);
-        $data = $result->fetch(\PDO::FETCH_ASSOC);
+        $data = $result->fetch(PDO::FETCH_ASSOC);
 
         return new Job($data);
-
     }
 
     /**
      * Add a Job
      *
      * @param $job
-     * @return bool|false|\PDOStatement
+     * @return bool|false|PDOStatement
      */
     public function addJob($job)
     {
@@ -64,15 +64,15 @@ class JobRespository extends Database
             ':end_date' => $job['endDate']
         ];
 
-        $this->sql($newJob, $parameters);
-
+        return $this->sql($newJob, $parameters);
     }
 
     /**
      * Update a Job
      *
-     * @param $job
-     * @return bool|false|\PDOStatement
+     * @param $jobId
+     * @param $datas
+     * @return bool|false|PDOStatement
      */
     public function updateJob($jobId, $datas)
     {
@@ -87,22 +87,20 @@ class JobRespository extends Database
             ':end_date' => $datas['endDate']
         ];
 
-        $this->sql($editedJob, $parameters);
-
+        return $this->sql($editedJob, $parameters);
     }
 
     /**
      * Delete a JobView
      *
      * @param $jobId
-     * @return bool|false|\PDOStatement
+     * @return bool|false|PDOStatement
      */
     public function deleteJob($jobId)
     {
         $job = 'DELETE FROM jobs WHERE job_id= :id';
         $parameters = [':id' => $jobId];
 
-        $this->sql($job, $parameters);
-
+        return $this->sql($job, $parameters);
     }
 }

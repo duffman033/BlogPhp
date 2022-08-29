@@ -4,6 +4,8 @@ namespace App\Respository;
 
 use App\Core\Database;
 use App\Entity\Comment;
+use PDO;
+use PDOStatement;
 
 /**
  * CommentRespository Queries for Comments
@@ -23,59 +25,55 @@ class CommentRespository extends Database
         $result = $this->sql($req, $parameters);
         $custom_array = [];
 
-            while ($datas = $result->fetch(\PDO::FETCH_ASSOC)) {
-                array_push($custom_array, New Comment($datas));
-            }
+        while ($datas = $result->fetch(PDO::FETCH_ASSOC)) {
+            array_push($custom_array, new Comment($datas));
+        }
 
-            return $custom_array;
-
+        return $custom_array;
     }
 
     /**
      * Return Comment from ID
      *
      * @param $commentId
-     * @return bool|false|\PDOStatement
+     * @return bool|false|PDOStatement
      */
     public function getComment($commentId)
     {
         $req = 'SELECT comment_id, author_id, comment, is_valid, post_id, users.username, DATE_FORMAT(comment_date, \'%d/%m/%Y\') AS comment_date FROM comments INNER JOIN users on comments.author_id=users.user_id WHERE comments.id = :id';
         $parameters = [':id' => $commentId];
 
-        $this->sql($req, $parameters);
+        return $this->sql($req, $parameters);
     }
 
     /**
      * Add Comment from a user
      *
      * @param $postId
-     * @param $author_id
-     * @param $author
+     * @param $authorId
      * @param $comment
-     * @return bool|false|\PDOStatement
+     * @return bool|false|PDOStatement
      */
-    public function addComment($postId, $authorId , $comment)
+    public function addComment($postId, $authorId, $comment)
     {
         $newComments = 'INSERT INTO comments(post_id, author_id, comment, comment_date, is_valid) VALUES (:postId,:authorId,:comment, DATE(NOW()), :valid )';
         $parameters = [':postId' => $postId, ':authorId' => $authorId, ':comment' => $comment, ':valid' => 0];
 
-        $this->sql($newComments, $parameters);
-
+        return $this->sql($newComments, $parameters);
     }
 
     /**
      * Delete Comment from ID
      *
      * @param $commentId
-     * @return bool|false|\PDOStatement
+     * @return bool|false|PDOStatement
      */
     public function deleteComment($commentId)
     {
         $comment = 'DELETE FROM comments WHERE comment_id= :id';
         $parameters = [':id' => $commentId];
 
-        $this->sql($comment, $parameters);
-
+        return $this->sql($comment, $parameters);
     }
 
     /**
@@ -91,8 +89,8 @@ class CommentRespository extends Database
         $result = $this->sql($validComments, $parameters);
         $custom_array = [];
 
-        while ($datas = $result->fetch(\PDO::FETCH_ASSOC)) {
-            array_push($custom_array, New Comment($datas));
+        while ($datas = $result->fetch(PDO::FETCH_ASSOC)) {
+            array_push($custom_array, new Comment($datas));
         }
 
         return $custom_array;
@@ -110,8 +108,8 @@ class CommentRespository extends Database
         $result = $this->sql($invalidComments, $parameters);
         $custom_array = [];
 
-        while ($datas = $result->fetch(\PDO::FETCH_ASSOC)) {
-            array_push($custom_array, New Comment($datas));
+        while ($datas = $result->fetch(PDO::FETCH_ASSOC)) {
+            array_push($custom_array, new Comment($datas));
         }
         return $custom_array;
     }
@@ -120,15 +118,13 @@ class CommentRespository extends Database
      * Validate a Comment
      *
      * @param $commentId
-     * @return bool|false|\PDOStatement
+     * @return bool|false|PDOStatement
      */
     public function validateComment($commentId)
     {
         $validate = 'UPDATE comments SET is_valid = :valid WHERE comment_id = :id';
         $parameters = [':id' => $commentId, ':valid' => 1];
 
-        $this->sql($validate, $parameters);
-
+        return $this->sql($validate, $parameters);
     }
-
 }

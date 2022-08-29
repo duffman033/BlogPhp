@@ -3,18 +3,17 @@
 
 namespace App\Entity;
 
-
 class Category
 {
     /**
      * @var int $cat_id cat ID
      */
-    private $catId;
+    private int $catId;
 
     /**
      * @var string $type type
      */
-    private $type;
+    private string $type;
 
     public function __construct($datas = [])
     {
@@ -25,7 +24,6 @@ class Category
 
     public function hydrate($datas)
     {
-
         foreach ($datas as $key => $value) {
             $key = lcfirst(str_replace('_', '', ucwords($key, '_')));
             $method = 'set' . ucfirst($key);
@@ -67,6 +65,4 @@ class Category
     {
         $this->type = $type;
     }
-
-
 }

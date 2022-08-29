@@ -4,6 +4,8 @@ namespace App\Respository;
 
 use App\Core\Database;
 use App\Entity\Formation;
+use PDO;
+use PDOStatement;
 
 /**
  * FormationRespository Queries for Formation
@@ -21,12 +23,11 @@ class FormationRespository extends Database
         $result = $this->sql($req);
         $custom_array = [];
 
-        while ($datas = $result->fetch(\PDO::FETCH_ASSOC)) {
-            array_push($custom_array, New Formation($datas));
+        while ($datas = $result->fetch(PDO::FETCH_ASSOC)) {
+            array_push($custom_array, new Formation($datas));
         }
 
         return $custom_array;
-
     }
 
     /**
@@ -40,17 +41,16 @@ class FormationRespository extends Database
         $form = 'SELECT * FROM formation WHERE formation_id= :id';
         $parameters = [':id' => $formId];
         $result = $this->sql($form, $parameters);
-        $data = $result->fetch(\PDO::FETCH_ASSOC);
+        $data = $result->fetch(PDO::FETCH_ASSOC);
 
         return new Formation($data);
-
     }
 
     /**
      * Add a Formation
      *
      * @param $form
-     * @return bool|false|\PDOStatement
+     * @return bool|false|PDOStatement
      */
     public function addFormation($form)
     {
@@ -64,15 +64,15 @@ class FormationRespository extends Database
             ':end_date' => $form['endDate']
         ];
 
-        $this->sql($newForm, $parameters);
-
+        return $this->sql($newForm, $parameters);
     }
 
     /**
      * Update a Formation
      *
-     * @param $form
-     * @return bool|false|\PDOStatement
+     * @param $formId
+     * @param $datas
+     * @return bool|false|PDOStatement
      */
     public function updateFormation($formId, $datas)
     {
@@ -87,22 +87,20 @@ class FormationRespository extends Database
             ':end_date' => $datas['endDate']
         ];
 
-        $this->sql($editedForm, $parameters);
-
+        return $this->sql($editedForm, $parameters);
     }
 
     /**
      * Delete a Formation
      *
      * @param $formId
-     * @return bool|false|\PDOStatement
+     * @return bool|false|PDOStatement
      */
     public function deleteFormation($formId)
     {
         $form = 'DELETE FROM formation WHERE formation_id= :id';
         $parameters = [':id' => $formId];
 
-        $this->sql($form, $parameters);
-
+        return $this->sql($form, $parameters);
     }
 }

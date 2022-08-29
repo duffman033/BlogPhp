@@ -37,9 +37,10 @@
         $(document).ready(function () {
             $("a.submit-form").click(function (eventObject) {
                 eventObject.preventDefault();
-                var answer = confirm("Etes-vous sûr de vouloir supprimer cette formation?");
+                const answer = confirm("Etes-vous sûr de vouloir supprimer cette formation?");
+                let form;
                 if (answer) {
-                    var id = $(this).attr("data-id");
+                    const id = $(this).attr("data-id");
                     form = $("#delete_form");
                     form.attr("action", "/admin/formation/delete/" + id);
                     form.submit();

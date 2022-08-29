@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Core\FormValidator;
 use Symfony\Component\HttpFoundation\Request;
 
-
 /**
  * Class AdminController controller for Admin
  */
@@ -39,8 +38,8 @@ class PostController extends AdminController
         if ($request->get('formtoken') == $this->session->get('token')) {
             $file = $request->files->get('image');
             $accept = ["image/jpeg","image/png","image/webp"];
-            if (!empty($request->request->all())){
-                if (in_array($file->getClientMimeType() , $accept)) {
+            if (!empty($request->request->all())) {
+                if (in_array($file->getClientMimeType(), $accept)) {
                     $fileName = md5(uniqid()).'.'.$file->guessExtension();
                     $repertory = "uploads/images/";
                     $file->move($repertory, $fileName);
@@ -55,9 +54,9 @@ class PostController extends AdminController
                     $result = $this->postManager->addPost($datas);
 
                     $lastPost = $this->postManager->getlastPosts();
-                    foreach ($cat as $catId){
+                    foreach ($cat as $catId) {
                         $value = $request->get($catId->getType());
-                        if ($value == 1){
+                        if ($value == 1) {
                             $relation['catId'] = $catId->getCatId();
                             $relation['postId'] = $lastPost["post_id"];
 
@@ -108,7 +107,7 @@ class PostController extends AdminController
     {
         $request = Request::createFromGlobals();
 
-        if ($request->get('formtoken') == $this->session->get('token')){
+        if ($request->get('formtoken') == $this->session->get('token')) {
             $fileName = $this->postManager->selectImgPost($postId);
             $file = $request->files->get('image');
             $accept = ["image/jpeg","image/png","image/webp"];
@@ -137,9 +136,9 @@ class PostController extends AdminController
 
                 $cat = $this->categoryManager->getCategorys();
 
-                foreach ($cat as $catId){
+                foreach ($cat as $catId) {
                     $value = $request->get($catId->getType());
-                    if ($value == 1){
+                    if ($value == 1) {
                         $relation['catId'] = $catId->getCatId();
                         $relation['postId'] = $postId;
 
@@ -173,7 +172,6 @@ class PostController extends AdminController
         $request = Request::createFromGlobals();
 
         if ($request->get('formtoken') == $this->session->get('token')) {
-
             $deleteRequest = $this->postManager->deletePost($postId);
             if ($deleteRequest === false) {
                 $this->session->set('warning', "Impossible de supprimer le projet !");

@@ -57,9 +57,10 @@
         $(document).ready(function () {
             $("a.submit-form").click(function (eventObject) {
                 eventObject.preventDefault();
-                var answer = confirm("Etes-vous sûr de vouloir supprimer ce commentaire?");
+                const answer = confirm("Etes-vous sûr de vouloir supprimer ce commentaire?");
+                let form;
                 if (answer) {
-                    var id = $(this).attr("data-id");
+                    const id = $(this).attr("data-id");
                     form = $("#delete_form");
                     form.attr("action", "/admin/comment/delete/" + id);
                     form.submit();
@@ -72,9 +73,10 @@
         $(document).ready(function () {
             $("a.validate-form").click(function (eventObject) {
                 eventObject.preventDefault();
-                var answer = confirm("Etes-vous sûr de vouloir valider ce commentaire?");
+                const answer = confirm("Etes-vous sûr de vouloir valider ce commentaire?");
+                let form;
                 if (answer) {
-                    var id = $(this).attr("data-id");
+                    const id = $(this).attr("data-id");
                     form = $("#validate_form");
                     form.attr("action", "/admin/comment/validate/" + id);
                     form.submit();

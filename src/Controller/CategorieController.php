@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Core\FormValidator;
 use Symfony\Component\HttpFoundation\Request;
 
-
 /**
  * Class CategorieController controller for Categorie
  */
@@ -36,7 +35,8 @@ class CategorieController extends AdminController
                     return;
                 }
                 $this->session->set('success', "Votre catégorie a bien été ajoutée.");
-                $this->categoriesView();;
+                $this->categoriesView();
+
                 return;
             }
             $this->session->set('warning', "Merci de bien remplir le formulaire");
@@ -59,7 +59,7 @@ class CategorieController extends AdminController
         if ($request->get('formtoken') == $this->session->get('token')) {
             if (!empty($request->request->all())) {
                 $datas['type'] = FormValidator::purify($request->get('type'));
-                $result = $this->categoryManager->updateCategory($catId,$datas);
+                $result = $this->categoryManager->updateCategory($catId, $datas);
                 if ($result === false) {
                     $this->session->set('warning', "Impossible de modifier le catégorie !");
                     $this->categoriesView();

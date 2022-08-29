@@ -26,7 +26,6 @@ class LoginRespository extends Database
         $result = $this->sql($req, $parameters);
         $data = $result->fetch(PDO::FETCH_ASSOC);
         return new User($data);
-
     }
 
     /**
@@ -42,7 +41,6 @@ class LoginRespository extends Database
         $result = $this->sql($req, $parameters);
         $data = $result->fetch(PDO::FETCH_ASSOC);
         return new User($data);
-
     }
 
     /**
@@ -66,6 +64,8 @@ class LoginRespository extends Database
     /**
      * Return if password and password confirmation are the same
      *
+     * @param $password
+     * @param $passwordConfirm
      * @return bool
      */
     public function checkPassword($password, $passwordConfirm)
@@ -78,7 +78,10 @@ class LoginRespository extends Database
 
     /**
      * Register user
-     *
+     * @param $username
+     * @param $password
+     * @param $email
+     * @param $img_url
      */
     public function registerUser($username, $password, $email, $img_url)
     {
@@ -86,6 +89,5 @@ class LoginRespository extends Database
         $sql = 'INSERT INTO users SET username = :username, password = :password, email = :email, user_status = 2, user_img_url = :img_url';
         $parameters = [':username' =>$username , ':password' => $hashedpassword, ':email' => $email, ':img_url' => $img_url];
         $this->sql($sql, $parameters);
-
     }
 }

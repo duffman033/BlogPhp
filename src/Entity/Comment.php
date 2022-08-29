@@ -3,42 +3,41 @@
 
 namespace App\Entity;
 
-
 class Comment
 {
 
     /**
      * @var int $comment_id comment id
      */
-    private $commentId;
+    private int $commentId;
     /**
      * @var int $authorId author id
      */
-    private $authorId;
+    private int $authorId;
     /**
      * @var string $comment comment content
      */
-    private $comment;
+    private string $comment;
     /**
      * @var int $post_id post id
      */
-    private $postId;
+    private int $postId;
     /**
      * @var string $comment_date comment date update
      */
-    private $commentDate;
+    private string $commentDate;
     /**
      * @var bool $is_valid comment status
      */
-    private $isValid;
+    private bool $isValid;
     /**
      * @var string $username comment username
      */
-    private $username;
+    private string $username;
     /**
      * @var string $userImgUrl comment user img_url
      */
-    private $userImgUrl;
+    private string $userImgUrl;
 
     public function __construct($datas = [])
     {
@@ -114,7 +113,7 @@ class Comment
     }
 
     /**
-     * @return string
+     * @return int
      */
     public function getPostId(): int
     {
@@ -122,7 +121,7 @@ class Comment
     }
 
     /**
-     * @param string $postId
+     * @param int $postId
      * @return Comment
      */
     public function setPostId(int $postId)
@@ -200,7 +199,6 @@ class Comment
     public function setUserImgUrl($userImgUrl)
     {
         $this->userImgUrl = $userImgUrl;
+        return $this;
     }
-
 }
-

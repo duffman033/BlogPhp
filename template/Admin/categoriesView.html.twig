@@ -63,9 +63,10 @@
         $(document).ready(function () {
             $("a.submit-form").click(function (eventObject) {
                 eventObject.preventDefault();
-                var answer = confirm("Etes-vous sûr de vouloir supprimer ce projet?");
+                const answer = confirm("Etes-vous sûr de vouloir supprimer ce projet?");
+                let form;
                 if (answer) {
-                    var id = $(this).attr("data-id");
+                    const id = $(this).attr("data-id");
                     form = $("#delete_form");
                     form.attr("action", "/admin/categorie/delete/" + id);
                     form.submit();

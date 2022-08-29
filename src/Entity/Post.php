@@ -3,58 +3,58 @@
 
 namespace App\Entity;
 
-use DateTime;
+use Exception;
 
 class Post
 {
     /**
      * @var int $post_id post id
      */
-    private $postId;
+    private int $postId;
     /**
      * @var string $title title post
      */
-    private $title;
+    private string $title;
 
     /**
      * @var string $chapo chapo post
      */
-    private $chapo;
+    private string $chapo;
 
     /**
      * @var string $description description post
      */
-    private $description;
+    private string $description;
 
     /**
      * @var int $authorid author post
      */
-    private $authorId;
+    private int $authorId;
 
     /**
      * @var string $date_creation post date creation
      */
-    private $dateCreation;
+    private string $dateCreation;
 
     /**
      * @var string $date_update post date update
      */
-    private $dateUpdate;
+    private string $dateUpdate;
 
     /**
      * @var string $username post username
      */
-    private $username;
+    private string $username;
 
     /**
      * @var string $imgUrl img url
      */
-    private $imgUrl;
+    private string $imgUrl;
 
     /**
      * @var string $userImgUrl post user img_url
      */
-    private $userImgUrl;
+    private string $userImgUrl;
 
     public function __construct($datas = [])
     {
@@ -157,7 +157,7 @@ class Post
     }
 
     /**
-     * @param string $author
+     * @param $authorid
      * @return Post
      */
     public function setAuthorId($authorid)
@@ -168,7 +168,7 @@ class Post
 
     /**
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
     public function getdateCreation()
     {
@@ -179,7 +179,7 @@ class Post
      * @param string $dateCreation
      * @return Post
      */
-    public function setdateCreation($dateCreation = null)
+    public function setdateCreation($dateCreation)
     {
         $this->dateCreation = $dateCreation;
         return $this;
@@ -197,7 +197,7 @@ class Post
      * @param string $dateUpdate
      * @return Post
      */
-    public function setdateUpdate($dateUpdate = null)
+    public function setdateUpdate($dateUpdate)
     {
         $this->dateUpdate = $dateUpdate;
         return $this;
@@ -231,10 +231,12 @@ class Post
 
     /**
      * @param string $imgUrl
+     * @return Post
      */
     public function setImgUrl($imgUrl)
     {
         $this->imgUrl = $imgUrl;
+        return $this;
     }
 
     /**
@@ -252,6 +254,7 @@ class Post
     public function setUserImgUrl($userImgUrl)
     {
         $this->userImgUrl = $userImgUrl;
+        return $this;
     }
 
 
