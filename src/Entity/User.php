@@ -5,34 +5,16 @@ namespace App\Entity;
 
 class User
 {
-    /**
-     * @var int $user_id user ID
-     */
-    private int $userId;
+    private ?int $userId = null;
 
-    /**
-     * @var string $username user name
-     */
     private string $username;
 
-    /**
-     * @var string $mail user email
-     */
     private string $email;
 
-    /**
-     * @var string $password password
-     */
     private string $password;
 
-    /**
-     * @var string $user_status user status
-     */
     private string $userStatus;
 
-    /**
-     * @var string $userImgUrl user img url
-     */
     private string $userImgUrl;
 
     public function __construct($datas = [])
@@ -54,109 +36,69 @@ class User
         }
     }
 
-    /**
-     * @return mixed
-     */
-    public function getUserId()
+    public function getUserId(): ?int
     {
         return $this->userId;
     }
 
-    /**
-     * @param mixed $userid
-     * @return User
-     */
-    public function setUserId($userid)
+    public function setUserId($userid): self
     {
         $this->userId = $userid;
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getUsername()
+    public function getUsername(): ?string
     {
         return $this->username;
     }
 
-    /**
-     * @param mixed $username
-     * @return User
-     */
-    public function setUsername($username)
+    public function setUsername($username): self
     {
         $this->username = $username;
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getEmail()
+    public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    /**
-     * @param mixed $email
-     * @return User
-     */
-    public function setEmail($email)
+    public function setEmail($email): self
     {
         $this->email = $email;
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    /**
-     * @param mixed $password
-     * @return User
-     */
-    public function setPassword($password)
+    public function setPassword($password): self
     {
         $this->password = $password;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getUserStatus()
+    public function getUserStatus(): ?string
     {
         return $this->userStatus;
     }
 
-    /**
-     * @param string $status
-     * @return User
-     */
-    public function setUserStatus($status)
+    public function setUserStatus($status): self
     {
         $this->userStatus = $status;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getUserImgUrl()
+    public function getUserImgUrl(): ?string
     {
         return $this->userImgUrl;
     }
 
-    /**
-     * @param string $userImgUrl
-     */
-    public function setUserImgUrl($userImgUrl)
+    public function setUserImgUrl($userImgUrl): self
     {
         $this->userImgUrl = $userImgUrl;
+        return $this;
     }
 }

@@ -6,39 +6,18 @@ namespace App\Entity;
 
 class Formation
 {
-    /**
-     * @var int $formation_id id
-     */
-    private int $formationId;
+    private ?int $formationId = null;
 
-    /**
-     * @var string $name name
-     */
     private string $name;
 
-    /**
-     * @var string $school school
-     */
     private string $school;
 
-    /**
-     * @var string $place place
-     */
     private string $place;
 
-    /**
-     * @var string $description description
-     */
     private string $description;
 
-    /**
-     * @var int $startDate start_date
-     */
     private int $startDate;
 
-    /**
-     * @var int $endDate end_date
-     */
     private int $endDate;
 
     public function __construct($datas = [])
@@ -61,116 +40,80 @@ class Formation
         }
     }
 
-    /**
-     * @return int
-     */
-    public function getFormationId()
+    public function getFormationId(): ?int
     {
         return $this->formationId;
     }
 
-    /**
-     * @param int $formationId
-     */
-    public function setFormationId($formationId)
+    public function setFormationId(int $formationId): self
     {
         $this->formationId = $formationId;
+        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
+        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getSchool()
+    public function getSchool(): ?string
     {
         return $this->school;
     }
 
-    /**
-     * @param string $school
-     */
-    public function setSchool($school)
+    public function setSchool(string $school): self
     {
         $this->school = $school;
+        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getPlace()
+    public function getPlace(): ?string
     {
         return $this->place;
     }
 
-    /**
-     * @param string $place
-     */
-    public function setPlace($place)
+    public function setPlace(string $place): self
     {
         $this->place = $place;
+        return $this;
     }
 
-
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     */
-    public function setDescription($description)
+    public function setDescription(string $description): self
     {
         $this->description = $description;
+        return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getStartDate()
+    public function getStartDate(): ?int
     {
         return $this->startDate;
     }
 
-    /**
-     * @param int $startDate
-     */
-    public function setStartDate($startDate)
+    public function setStartDate(int $startDate): self
     {
         $this->startDate = $startDate;
+        return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getEndDate()
+    public function getEndDate(): ?int
     {
         return $this->endDate;
     }
 
-    /**
-     * @param int $endDate
-     */
-    public function setEndDate($endDate)
+    public function setEndDate(int $endDate): self
     {
         $this->endDate = $endDate;
+        return $this;
     }
 }

@@ -82,7 +82,7 @@ class PostController extends AdminController
             return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-        FrontController::deconnect();
+        $this->deconnect();
     }
 
     /**
@@ -159,7 +159,7 @@ class PostController extends AdminController
             return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-        FrontController::deconnect();
+        $this->deconnect();
     }
 
     /**
@@ -182,6 +182,6 @@ class PostController extends AdminController
             return;
         }
         $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
-        FrontController::deconnect();
+        $this->deconnect();
     }
 }

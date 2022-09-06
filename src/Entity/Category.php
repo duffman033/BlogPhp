@@ -5,14 +5,8 @@ namespace App\Entity;
 
 class Category
 {
-    /**
-     * @var int $cat_id cat ID
-     */
     private int $catId;
 
-    /**
-     * @var string $type type
-     */
     private string $type;
 
     public function __construct($datas = [])
@@ -34,35 +28,25 @@ class Category
         }
     }
 
-    /**
-     * @return int
-     */
-    public function getCatId()
+    public function getCatId(): ?int
     {
         return $this->catId;
     }
 
-    /**
-     * @param int $catId
-     */
-    public function setCatId($catId)
+    public function setCatId(int $catId)
     {
         $this->catId = $catId;
+        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }
 
-    /**
-     * @param string $type
-     */
-    public function setType($type)
+    public function setType(string $type)
     {
         $this->type = $type;
+        return $this;
     }
 }

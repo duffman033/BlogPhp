@@ -13,24 +13,18 @@ class AdminController extends FrontController
     {
         parent::__construct();
 
-        if (!$this->session->get('auth')) {
-            $this->session->set('warning', "Connectez-vous pour accéder à cette page");
+        if (!self::$session->get('auth')) {
+            self::$session->set('warning', "Connectez-vous pour accéder à cette page");
             try {
                 FrontController::connect();
             } catch (Exception $e) {
             }
         }
 
-        if ($this->session->get('auth')) {
-            if ($this->session->get('auth')->getUserstatus() != 1) {
+        if (self::$session->get('auth')) {
+            if (self::$session->get('auth')->getUserstatus() != 1) {
                 FrontController::home();
             }
         }
-    }
-
-    public function __destruct()
-    {
-        $this->session->remove('warning');
-        $this->session->remove('success');
     }
 }

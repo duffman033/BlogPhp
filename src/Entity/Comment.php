@@ -5,38 +5,20 @@ namespace App\Entity;
 
 class Comment
 {
+    private ?int $commentId = null;
 
-    /**
-     * @var int $comment_id comment id
-     */
-    private int $commentId;
-    /**
-     * @var int $authorId author id
-     */
     private int $authorId;
-    /**
-     * @var string $comment comment content
-     */
+
     private string $comment;
-    /**
-     * @var int $post_id post id
-     */
+
     private int $postId;
-    /**
-     * @var string $comment_date comment date update
-     */
+
     private string $commentDate;
-    /**
-     * @var bool $is_valid comment status
-     */
+
     private bool $isValid;
-    /**
-     * @var string $username comment username
-     */
+
     private string $username;
-    /**
-     * @var string $userImgUrl comment user img_url
-     */
+
     private string $userImgUrl;
 
     public function __construct($datas = [])
@@ -58,147 +40,97 @@ class Comment
         }
     }
 
-    /**
-     * @param int $commentId
-     * @return Comment
-     */
-    public function setCommentId(int $commentId)
+    public function setCommentId(int $commentId): self
     {
         $this->commentId = $commentId;
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getCommentId(): int
+    public function getCommentId(): ?int
     {
         return $this->commentId;
     }
 
-    /**
-     * @return int
-     */
-    public function getAuthorId(): int
+    public function getAuthorId(): ?int
     {
         return $this->authorId;
     }
 
-    /**
-     * @param int $author
-     * @return Comment
-     */
-    public function setAuthorId(int $author)
+    public function setAuthorId(int $author): self
     {
         $this->authorId = $author;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getComment(): string
+    public function getComment(): ?string
     {
         return $this->comment;
     }
 
-    /**
-     * @param string $comment
-     * @return Comment
-     */
-    public function setComment(string $comment)
+    public function setComment(string $comment): self
     {
         $this->comment = $comment;
+
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getPostId(): int
+    public function getPostId(): ?int
     {
         return $this->postId;
     }
 
-    /**
-     * @param int $postId
-     * @return Comment
-     */
-    public function setPostId(int $postId)
+    public function setPostId(int $postId): self
     {
         $this->postId = $postId;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getCommentDate()
+    public function getCommentDate(): ?string
     {
         return $this->commentDate;
     }
 
-    /**
-     * @param string $commentDate
-     * @return Comment
-     */
-    public function setCommentDate(string $commentDate)
+    public function setCommentDate(string $commentDate): self
     {
         $this->commentDate = $commentDate;
+
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getIsValid()
+    public function getIsValid(): ?bool
     {
         return $this->isValid;
     }
 
-    /**
-     * @param mixed $isValid
-     * @return Comment
-     */
-    public function setIsValid($isValid)
+    public function setIsValid(bool $isValid): self
     {
         $this->isValid = $isValid;
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getUsername()
+    public function getUsername(): ?string
     {
         return $this->username;
     }
 
-    /**
-     * @param mixed $username
-     * @return Comment
-     */
-    public function setUsername($username)
+    public function setUsername(string $username): self
     {
         $this->username = $username;
+
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getUserImgUrl()
+    public function getUserImgUrl(): ?string
     {
         return $this->userImgUrl;
     }
 
-    /**
-     * @param mixed $userImgUrl
-     * @return Comment
-     */
-    public function setUserImgUrl($userImgUrl)
+    public function setUserImgUrl(string $userImgUrl): self
     {
         $this->userImgUrl = $userImgUrl;
+
         return $this;
     }
 }

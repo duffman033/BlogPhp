@@ -5,39 +5,18 @@ namespace App\Entity;
 
 class Job
 {
-    /**
-     * @var int $job_id id
-     */
-    private int $jobId;
+    private ?int $jobId = null;
 
-    /**
-     * @var string $name name
-     */
     private string $name;
 
-    /**
-     * @var string $company company
-     */
     private string $company;
 
-    /**
-     * @var string $place place
-     */
     private string $place;
 
-    /**
-     * @var string $description description
-     */
     private string $description;
 
-    /**
-     * @var int $startDate start_date
-     */
     private int $startDate;
 
-    /**
-     * @var string $endDate end_date
-     */
     private string $endDate;
 
     public function __construct($datas = [])
@@ -59,115 +38,80 @@ class Job
         }
     }
 
-    /**
-     * @return int
-     */
-    public function getJobId()
+    public function getJobId(): ?int
     {
         return $this->jobId;
     }
 
-    /**
-     * @param int $jobId
-     */
-    public function setJobId($jobId)
+    public function setJobId($jobId): self
     {
         $this->jobId = $jobId;
+        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
-    public function setName($name)
+    public function setName($name): self
     {
         $this->name = $name;
+        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getCompany()
+    public function getCompany(): ?string
     {
         return $this->company;
     }
 
-    /**
-     * @param string $company
-     */
-    public function setCompany($company)
+    public function setCompany($company): self
     {
         $this->company = $company;
+        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getPlace()
+    public function getPlace(): ?string
     {
         return $this->place;
     }
 
-    /**
-     * @param string $place
-     */
-    public function setPlace($place)
+    public function setPlace($place): self
     {
         $this->place = $place;
+        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     */
-    public function setDescription($description)
+    public function setDescription($description): self
     {
         $this->description = $description;
+        return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getStartDate()
+    public function getStartDate(): ?int
     {
         return $this->startDate;
     }
 
-    /**
-     * @param int $startDate
-     */
-    public function setStartDate($startDate)
+    public function setStartDate($startDate): self
     {
         $this->startDate = $startDate;
+        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getEndDate()
+    public function getEndDate(): ?string
     {
         return $this->endDate;
     }
 
-    /**
-     * @param string $endDate
-     */
-    public function setEndDate($endDate)
+    public function setEndDate($endDate): self
     {
         $this->endDate = $endDate;
+        return $this;
     }
 }

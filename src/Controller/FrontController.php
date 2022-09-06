@@ -37,7 +37,7 @@ class FrontController
     protected LoginRespository $loginManager;
     protected FormManager $formManager;
     protected Request $request;
-    protected Session\Session $session;
+    protected static ?Session\Session $session = null;
     protected TwigRenderer $renderer;
 
     public function __construct()
@@ -55,17 +55,19 @@ class FrontController
         $this->userManager = new UserRespository();
         $this->relationManager = new RelationRespository();
 
-        if (session_status() == PHP_SESSION_NONE) {
-            $this->session = new Session\Session;
-            $this->session->setName('session');
-            $this->session->start();
+        if (self::$session == null) {
+            self::$session = new Session\Session;
+            self::$session->setName('session');
+            self::$session->start();
         }
     }
 
     public function __destruct()
     {
-        $this->session->remove('warning');
-        $this->session->remove('success');
+        if (self::$session != null) {
+            self::$session->remove('warning');
+            self::$session->remove('success');
+        }
     }
 
     /**
@@ -105,7 +107,7 @@ class FrontController
     {
         $request = Request::createFromGlobals();
 
-        if ($request->get('formtoken') == $this->session->get('token')) {
+        if ($request->get('formtoken') == self::$session->get('token')) {
             if (!empty($request->request->all())) {
                 $postId = FormValidator::purify($request->get('postid'));
                 $authorId = FormValidator::purify($request->get('authorid'));
@@ -114,14 +116,14 @@ class FrontController
                 $request = $this->commentManager->addComment($postId, $authorId, $description);
 
                 if ($request === false) {
-                    $this->session->set('warning', "Impossible d'ajouter le commentaire");
+                    self::$session->set('warning', "Impossible d'ajouter le commentaire");
                 }
-                $this->session->set('success', "Votre commentaire va être soumis à validation.");
+                self::$session->set('success', "Votre commentaire va être soumis à validation.");
                 $this->post($postId);
                 return;
             }
         }
-        $this->session->set('warning', "Veuillez pour reconnecter");
+        self::$session->set('warning', "Veuillez pour reconnecter");
         $this->login();
     }
 
@@ -161,11 +163,11 @@ class FrontController
             $email = FormValidator::purify($request->get('email'));
 
             $this->formManager->formTraitment($name, $forename, $email, $message);
-            $this->session->set('success', "Votre formulaire a bien été envoyé.");
+            self::$session->set('success', "Votre formulaire a bien été envoyé.");
             $this->contactView();
             return;
         }
-        $this->session->set('warning', "Tous les champs ne sont pas remplis ou corrects.");
+        self::$session->set('warning', "Tous les champs ne sont pas remplis ou corrects.");
         $this->contactView();
     }
 
@@ -186,7 +188,7 @@ class FrontController
             readfile($file);
             return;
         }
-        echo "Le fichier n'existe pas ou le nom de fichier n'est pas défini.";
+        self::$session->set('warning', "Le fichier n'existe pas ou le nom de fichier n'est pas défini.");
     }
 
     /**
@@ -209,29 +211,29 @@ class FrontController
         $password = FormValidator::purify($request->get('password'));
 
         if (!FormValidator::is_alphanum($username)) {
-            $this->session->set('warning', "Votre pseudo $username n'est pas valide");
+            self::$session->set('warning', "Votre pseudo $username n'est pas valide");
             $this->login();
         } elseif (!FormValidator::is_alphanum($password)) {
-            $this->session->set('warning', "Votre mot de passe n'est pas valide");
+            self::$session->set('warning', "Votre mot de passe n'est pas valide");
             $this->login();
         } else {
             $user = $this->loginManager->getLogin($username);
 
             if (!$user) {
-                $this->session->set('warning', "Cette identifiant n'existe pas");
+                self::$session->set('warning', "Cette identifiant n'existe pas");
                 $this->login();
             } else {
                 $isPasswordCorrect = password_verify($password, $user->getPassword());
 
                 if ($isPasswordCorrect == false) {
-                    $this->session->set('warning', "Mot de passe incorrect");
+                    self::$session->set('warning', "Mot de passe incorrect");
                     $this->login();
                 } else {
-                    $this->session->set('auth', $user);
-                    $this->session->set('token', bin2hex(random_bytes(16)));
+                    self::$session->set('auth', $user);
+                    self::$session->set('token', bin2hex(random_bytes(16)));
 
-                    if ($this->session->get('auth')->getUserStatus() == '1') {
-                        header('location: /admin');
+                    if (self::$session->get('auth')->getUserStatus() == '1') {
+                        (new UserController)->listUser();
                     } else {
                         $this->home();
                     }
@@ -266,7 +268,7 @@ class FrontController
                         $fileName = md5(uniqid()) . '.' . $file->guessExtension();
                         $file->move($repertory, $fileName);
                     }
-                    $this->session->set('warning', "Merci d'inserer une image valide (Jpeg, Png ou Webp)");
+                    self::$session->set('warning', "Merci d'inserer une image valide (Jpeg, Png ou Webp)");
                     $this->registerView();
                     return;
                 }
@@ -278,15 +280,15 @@ class FrontController
             $passwordConfirm = FormValidator::purify($request->get('password_confirm'));
             $img_url = $repertory . $fileName;
             if (!FormValidator::is_alphanum($username)) {
-                $this->session->set('warning', "Votre pseudo n'est pas valide");
+                self::$session->set('warning', "Votre pseudo n'est pas valide");
                 $this->registerView();
                 return;
             } elseif (!FormValidator::is_alphanum($password) || !FormValidator::is_alphanum($passwordConfirm)) {
-                $this->session->set('warning', "Votre mot de passe n'est pas valide");
+                self::$session->set('warning', "Votre mot de passe n'est pas valide");
                 $this->registerView();
                 return;
             } elseif (!FormValidator::is_email($email)) {
-                $this->session->set('warning', "Votre email n'est pas valide");
+                self::$session->set('warning', "Votre email n'est pas valide");
                 $this->registerView();
                 return;
             }
@@ -294,19 +296,19 @@ class FrontController
                 if ($this->loginManager->checkPassword($password, $passwordConfirm)) {
                     $this->loginManager->registerUser($username, $password, $email, $img_url);
                     $this->formManager->registerTraitment($email, $username);
-                    $this->session->set('success', "Votre inscription a bien été prise en compte");
+                    self::$session->set('success', "Votre inscription a bien été prise en compte");
                     $this->login();
                     return;
                 }
-                $this->session->set('warning', "Les mots de passe ne sont pas identiques");
+                self::$session->set('warning', "Les mots de passe ne sont pas identiques");
                 $this->registerView();
                 return;
             }
-            $this->session->set('warning', "Cet utilisateur existe déjà");
+            self::$session->set('warning', "Cet utilisateur existe déjà");
             $this->registerView();
             return;
         }
-        $this->session->set('warning', "Merci de bien remplir le formulaire");
+        self::$session->set('warning', "Merci de bien remplir le formulaire");
         $this->registerView();
     }
 
@@ -315,7 +317,7 @@ class FrontController
      */
     public function deconnect()
     {
-        $this->session->clear();
+        self::$session->clear();
         $this->home();
     }
 

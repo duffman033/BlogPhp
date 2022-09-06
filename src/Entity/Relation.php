@@ -5,14 +5,9 @@ namespace App\Entity;
 
 class Relation
 {
-    /**
-     * @var int $cat_id cat ID
-     */
-    private int $catId;
 
-    /**
-     * @var int $postId post ID
-     */
+    private ?int $catId = null;
+
     private int $postId;
 
     public function __construct($datas = [])
@@ -34,35 +29,25 @@ class Relation
         }
     }
 
-    /**
-     * @return int
-     */
-    public function getCatId()
+    public function getCatId(): ?int
     {
         return $this->catId;
     }
 
-    /**
-     * @param int $catId
-     */
-    public function setCatId($catId)
+    public function setCatId($catId): self
     {
         $this->catId = $catId;
+        return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getPostId()
+    public function getPostId(): ?int
     {
         return $this->postId;
     }
 
-    /**
-     * @param int $postId
-     */
-    public function setPostId($postId)
+    public function setPostId($postId): self
     {
         $this->postId = $postId;
+        return $this;
     }
 }

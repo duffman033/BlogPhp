@@ -5,19 +5,10 @@ namespace App\Entity;
 
 class Certificate
 {
-    /**
-     * @var int $certificate_id id
-     */
-    private int $certificateId;
+    private ?int $certificateId = null;
 
-    /**
-     * @var string $name name
-     */
     private string $name;
 
-    /**
-     * @var int $date date
-     */
     private int $date;
 
     public function __construct($datas = [])
@@ -39,51 +30,36 @@ class Certificate
         }
     }
 
-    /**
-     * @return int
-     */
-    public function getCertificateId()
+    public function getCertificateId(): ?int
     {
         return $this->certificateId;
     }
 
-    /**
-     * @param int $certificateId
-     */
-    public function setCertificateId($certificateId)
+    public function setCertificateId(int $certificateId): self
     {
         $this->certificateId = $certificateId;
+        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
+        return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getDate()
+    public function getDate(): ?int
     {
         return $this->date;
     }
 
-    /**
-     * @param int $date
-     */
-    public function setDate($date)
+    public function setDate(int $date): self
     {
         $this->date = $date;
+        return $this;
     }
 }

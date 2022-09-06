@@ -5,24 +5,12 @@ namespace App\Entity;
 
 class Skill
 {
-    /**
-     * @var int $skill_id id
-     */
-    private int $skillId;
+    private ?int $skillId = null;
 
-    /**
-     * @var string $name name
-     */
     private string $name;
 
-    /**
-     * @var int $progress progress
-     */
     private int $progress;
 
-    /**
-     * @var string $type type
-     */
     private string $type;
 
 
@@ -45,67 +33,47 @@ class Skill
         }
     }
 
-    /**
-     * @return int
-     */
-    public function getSkillId()
+    public function getSkillId(): ?int
     {
         return $this->skillId;
     }
 
-    /**
-     * @param int $skillId
-     */
-    public function setSkillId($skillId)
+    public function setSkillId($skillId): self
     {
         $this->skillId = $skillId;
+        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
-    public function setName($name)
+    public function setName($name): self
     {
         $this->name = $name;
+        return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getProgress()
+    public function getProgress(): ?int
     {
         return $this->progress;
     }
 
-    /**
-     * @param int $progress
-     */
-    public function setProgress($progress)
+    public function setProgress($progress): self
     {
         $this->progress = $progress;
+        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }
 
-    /**
-     * @param string $type
-     */
-    public function setType($type)
+    public function setType($type): self
     {
         $this->type = $type;
+        return $this;
     }
 }

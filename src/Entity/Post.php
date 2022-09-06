@@ -7,53 +7,24 @@ use Exception;
 
 class Post
 {
-    /**
-     * @var int $post_id post id
-     */
-    private int $postId;
-    /**
-     * @var string $title title post
-     */
+    private ?int $postId = null;
+
     private string $title;
 
-    /**
-     * @var string $chapo chapo post
-     */
     private string $chapo;
 
-    /**
-     * @var string $description description post
-     */
     private string $description;
 
-    /**
-     * @var int $authorid author post
-     */
     private int $authorId;
 
-    /**
-     * @var string $date_creation post date creation
-     */
     private string $dateCreation;
 
-    /**
-     * @var string $date_update post date update
-     */
     private string $dateUpdate;
 
-    /**
-     * @var string $username post username
-     */
     private string $username;
 
-    /**
-     * @var string $imgUrl img url
-     */
     private string $imgUrl;
 
-    /**
-     * @var string $userImgUrl post user img_url
-     */
     private string $userImgUrl;
 
     public function __construct($datas = [])
@@ -76,182 +47,111 @@ class Post
         }
     }
 
-    /**
-     * @return int
-     */
-    public function getPostId()
+    public function getPostId(): ?int
     {
         return $this->postId;
     }
 
-    /**
-     * @param int $postId
-     * @return Post
-     */
-    public function setPostId($postId)
+    public function setPostId($postId): self
     {
         $this->postId = $postId;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * @param string $title
-     * @return Post
-     */
-    public function setTitle($title)
+    public function setTitle($title): self
     {
         $this->title = $title;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getChapo()
+    public function getChapo(): ?string
     {
         return $this->chapo;
     }
 
-    /**
-     * @param string $chapo
-     * @return Post
-     */
-    public function setChapo($chapo)
+    public function setChapo($chapo): self
     {
         $this->chapo = $chapo;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     * @return Post
-     */
-    public function setDescription($description)
+    public function setDescription($description): self
     {
         $this->description = $description;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getAuthorId()
+    public function getAuthorId(): ?string
     {
         return $this->authorId;
     }
 
-    /**
-     * @param $authorid
-     * @return Post
-     */
-    public function setAuthorId($authorid)
+    public function setAuthorId($authorid): self
     {
         $this->authorId = $authorid;
         return $this;
     }
 
-    /**
-     * @return string
-     * @throws Exception
-     */
-    public function getdateCreation()
+    public function getdateCreation(): ?string
     {
         return $this->dateCreation;
     }
 
-    /**
-     * @param string $dateCreation
-     * @return Post
-     */
-    public function setdateCreation($dateCreation)
+    public function setdateCreation($dateCreation): self
     {
         $this->dateCreation = $dateCreation;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getdateUpdate()
+    public function getdateUpdate(): ?string
     {
         return $this->dateUpdate;
     }
 
-    /**
-     * @param string $dateUpdate
-     * @return Post
-     */
-    public function setdateUpdate($dateUpdate)
+    public function setdateUpdate($dateUpdate): self
     {
         $this->dateUpdate = $dateUpdate;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getUsername()
+    public function getUsername(): ?string
     {
         return $this->username;
     }
 
-    /**
-     * @param string $username
-     * @return Post
-     */
-    public function setUsername($username)
+    public function setUsername($username): self
     {
         $this->username = $username;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getImgUrl()
+    public function getImgUrl(): ?string
     {
         return $this->imgUrl;
     }
 
-    /**
-     * @param string $imgUrl
-     * @return Post
-     */
-    public function setImgUrl($imgUrl)
+    public function setImgUrl($imgUrl): self
     {
         $this->imgUrl = $imgUrl;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getUserImgUrl()
+    public function getUserImgUrl(): ?string
     {
         return $this->userImgUrl;
     }
 
-    /**
-     * @param string $userImgUrl
-     * @return Post
-     */
-    public function setUserImgUrl($userImgUrl)
+    public function setUserImgUrl($userImgUrl): self
     {
         $this->userImgUrl = $userImgUrl;
         return $this;

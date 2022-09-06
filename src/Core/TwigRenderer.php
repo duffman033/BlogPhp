@@ -31,7 +31,7 @@ class TwigRenderer
 
 
         try {
-            print_r($twig->render($view, $params)) ;
+            echo $twig->render($view, $params);
         } catch (LoaderError $e) {
         } catch (RuntimeError $e) {
         } catch (SyntaxError $e) {
