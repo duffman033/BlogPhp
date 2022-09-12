@@ -15,7 +15,7 @@ class CategorieController extends AdminController
      */
     public function categoriesView()
     {
-        $catManager = $this->categoryManager->getCategorys();
+        $catManager = $this->app->get('App\Respository\CategoryRespository')->getCategorys();
         $this->renderer->render('Admin/categoriesView.html.twig', ['categories' => $catManager]);
     }
 
@@ -28,7 +28,7 @@ class CategorieController extends AdminController
         if ($request->get('formtoken') == $this->session->get('token')) {
             if (!empty($request->request->all())) {
                 $datas['type'] = FormValidator::purify($request->get('type'));
-                $result = $this->categoryManager->addCategory($datas);
+                $result = $this->app->get('App\Respository\CategoryRespository')->addCategory($datas);
                 if ($result === false) {
                     $this->session->set('warning', "Impossible d'ajouer le catégorie !");
                     $this->categoriesView();
@@ -58,8 +58,8 @@ class CategorieController extends AdminController
 
         if ($request->get('formtoken') == $this->session->get('token')) {
             if (!empty($request->request->all())) {
-                $datas['type'] = FormValidator::purify($request->get('type'));
-                $result = $this->categoryManager->updateCategory($catId, $datas);
+                $datas['type'] = $this->app->get('App\Core\FormValidator')->purify($request->get('type'));
+                $result = $this->app->get('App\Respository\CategoryRespository')->updateCategory($catId, $datas);
                 if ($result === false) {
                     $this->session->set('warning', "Impossible de modifier le catégorie !");
                     $this->categoriesView();
@@ -86,7 +86,7 @@ class CategorieController extends AdminController
     {
         $request = Request::createFromGlobals();
         if ($request->get('formtoken') == $this->session->get('token')) {
-            $deleteRequest = $this->categoryManager->deleteCategory($catId);
+            $deleteRequest = $this->app->get('App\Respository\CategoryRespository')->deleteCategory($catId);
             if ($deleteRequest === false) {
                 $this->session->set('warning', "Impossible de supprimer la catégorie !");
                 $this->categoriesView();

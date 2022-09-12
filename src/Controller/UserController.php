@@ -14,7 +14,7 @@ class UserController extends AdminController
      */
     public function listUser()
     {
-        $list_user = $this->userManager->getUsers();
+        $list_user = $this->app->get('App\Respository\UserRespository')->getUsers();
         $this->renderer->render('Admin/userView.html.twig', ['users' => $list_user]);
     }
 
@@ -28,7 +28,7 @@ class UserController extends AdminController
         $request = Request::createFromGlobals();
 
         if ($request->get('formtoken') == $this->session->get('token')) {
-            $deleteRequest = $this->userManager->deleteUser($userId);
+            $deleteRequest = $this->app->get('App\Respository\UserRespository')->deleteUser($userId);
             if ($deleteRequest === false) {
                 $this->session->set('warning', "Impossible de supprimer l'utilisateur !");
                 return;

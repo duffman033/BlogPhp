@@ -15,7 +15,7 @@ class CommentController extends AdminController
      */
     public function listComments()
     {
-        $comments = $this->commentManager->getInvalidComments();
+        $comments = $this->app->get('App\Respository\CommentRespository')->getInvalidComments();
         $this->renderer->render('Admin/commentView.html.twig', ['listcomments' => $comments]);
     }
 
@@ -29,7 +29,7 @@ class CommentController extends AdminController
         $request = Request::createFromGlobals();
 
         if ($request->get('formtoken') == $this->session->get('token')) {
-            $deleteRequest = $this->commentManager->deleteComment($commentId);
+            $deleteRequest = $this->app->get('App\Respository\CommentRespository')->deleteComment($commentId);
             if ($deleteRequest === false) {
                 $this->session->set('warning', "Impossible de supprimer le commentaire !");
                 $this->listComments();
@@ -50,7 +50,7 @@ class CommentController extends AdminController
      */
     public function validateComment($commentId)
     {
-        $request = $this->commentManager->validateComment($commentId);
+        $request = $this->app->get('App\Respository\CommentRespository')->validateComment($commentId);
         if ($request === false) {
             $this->session->set('warning', "Impossible de valider le commentaire !");
             $this->listComments();

@@ -15,7 +15,7 @@ class FormationController extends AdminController
      */
     public function aboutFormView()
     {
-        $formManager = $this->formationManager->getFormations();
+        $formManager = $this->app->get('App\Respository\FormationRespository')->getFormations();
         $this->renderer->render('Admin/FormationView/formationView.html.twig', ['formations' => $formManager]);
     }
 
@@ -30,7 +30,7 @@ class FormationController extends AdminController
         for ($i = 2017; $i <= date('Y')+4; $i++) {
             array_push($date_form, $i);
         }
-        $formManager = $this->formationManager->getFormation($formId);
+        $formManager = $this->app->get('App\Respository\FormationRespository')->getFormation($formId);
         $this->renderer->render('Admin/FormationView/updateFormationView.html.twig', ['formation' => $formManager, 'dates' => $date_form]);
     }
 
@@ -55,14 +55,14 @@ class FormationController extends AdminController
 
         if ($request->get('formtoken') == $this->session->get('token')) {
             if (!empty($request->request->all())) {
-                $datas['name'] = FormValidator::purifyLow($request->get('name'));
-                $datas['school'] = FormValidator::purifyLow($request->get('school'));
-                $datas['place'] = FormValidator::purifyLow($request->get('place'));
-                $datas['description'] = FormValidator::purifyContent($request->get('description'));
-                $datas['startDate'] = FormValidator::purifyLow($request->get('startDate'));
-                $datas['endDate'] = FormValidator::purifyLow($request->get('endDate'));
+                $datas['name'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('name'));
+                $datas['school'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('school'));
+                $datas['place'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('place'));
+                $datas['description'] = $this->app->get('App\Core\FormValidator')->purifyContent($request->get('description'));
+                $datas['startDate'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('startDate'));
+                $datas['endDate'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('endDate'));
 
-                $result = $this->formationManager->addFormation($datas);
+                $result = $this->app->get('App\Respository\FormationRespository')->addFormation($datas);
 
                 if ($result === false) {
                     $this->session->set('warning', "Impossible d'ajouer la formation !");
@@ -91,14 +91,14 @@ class FormationController extends AdminController
 
         if ($request->get('formtoken') == $this->session->get('token')) {
             if (!empty($request->request->all())) {
-                $datas['name'] = FormValidator::purify($request->get('name'));
-                $datas['school'] = FormValidator::purify($request->get('school'));
-                $datas['place'] = FormValidator::purify($request->get('place'));
-                $datas['description'] = FormValidator::purifyContent($request->get('description'));
-                $datas['startDate'] = FormValidator::purify($request->get('startDate'));
-                $datas['endDate'] = FormValidator::purify($request->get('endDate'));
+                $datas['name'] = $this->app->get('App\Core\FormValidator')->purify($request->get('name'));
+                $datas['school'] = $this->app->get('App\Core\FormValidator')->purify($request->get('school'));
+                $datas['place'] = $this->app->get('App\Core\FormValidator')->purify($request->get('place'));
+                $datas['description'] = $this->app->get('App\Core\FormValidator')->purifyContent($request->get('description'));
+                $datas['startDate'] = $this->app->get('App\Core\FormValidator')->purify($request->get('startDate'));
+                $datas['endDate'] = $this->app->get('App\Core\FormValidator')->purify($request->get('endDate'));
 
-                $result = $this->formationManager->updateFormation($formId, $datas);
+                $result = $this->app->get('App\Respository\FormationRespository')->updateFormation($formId, $datas);
 
                 if ($result === false) {
                     $this->session->set('warning', "Impossible de modifier la formation !");
@@ -126,7 +126,7 @@ class FormationController extends AdminController
         $request = Request::createFromGlobals();
 
         if ($request->get('formtoken') == $this->session->get('token')) {
-            $deleteRequest = $this->formationManager->deleteFormation($formId);
+            $deleteRequest = $this->app->get('App\Respository\FormationRespository')->deleteFormation($formId);
             if ($deleteRequest === false) {
                 $this->session->set('warning', "Impossible de supprimer la formation !");
                 return;

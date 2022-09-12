@@ -15,8 +15,8 @@ class SkillController extends AdminController
      */
     public function skillView()
     {
-        $skillManager = $this->skillManager->getSkills();
-        $type = $this->skillManager->getSkillType();
+        $skillManager = $this->app->get('App\Respository\SkillRespository')->getSkills();
+        $type = $this->app->get('App\Respository\SkillRespository')->getSkillType();
         $this->renderer->render('Admin/aboutView.html.twig', ['skills'=>$skillManager ,'types'=>$type]);
     }
 
@@ -29,11 +29,11 @@ class SkillController extends AdminController
 
         if ($request->get('formtoken') == $this->session->get('token')) {
             if (!empty($request->request->all())) {
-                $datas['name'] = FormValidator::purify($request->get('name'));
-                $datas['progress'] = FormValidator::purify($request->get('progress'));
-                $datas['type'] = FormValidator::purify($request->get('type'));
+                $datas['name'] = $this->app->get('App\Core\FormValidator')->purify($request->get('name'));
+                $datas['progress'] = $this->app->get('App\Core\FormValidator')->purify($request->get('progress'));
+                $datas['type'] = $this->app->get('App\Core\FormValidator')->purify($request->get('type'));
 
-                $result = $this->skillManager->addSkill($datas);
+                $result = $this->app->get('App\Respository\SkillRespository')->addSkill($datas);
 
                 if ($result === false) {
                     $this->session->set('warning', "Impossible d'ajouer la compétence !");
@@ -62,11 +62,11 @@ class SkillController extends AdminController
 
         if ($request->get('formtoken') == $this->session->get('token')) {
             if (!empty($request->request->all())) {
-                $datas['name'] = FormValidator::purifyLow($request->get('name'));
-                $datas['progress'] = FormValidator::purifyLow($request->get('progress'));
-                $datas['type'] = FormValidator::purifyLow($request->get('type'));
+                $datas['name'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('name'));
+                $datas['progress'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('progress'));
+                $datas['type'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('type'));
 
-                $result = $this->skillManager->updateSkill($skillId, $datas);
+                $result = $this->app->get('App\Respository\SkillRespository')->updateSkill($skillId, $datas);
 
                 if ($result === false) {
                     $this->session->set('warning', "Impossible de modifier la compétence !");
@@ -94,7 +94,7 @@ class SkillController extends AdminController
         $request = Request::createFromGlobals();
 
         if ($request->get('formtoken') == $this->session->get('token')) {
-            $deleteRequest = $this->skillManager->deleteSkill($skillId);
+            $deleteRequest = $this->app->get('App\Respository\SkillRespository')->deleteSkill($skillId);
             if ($deleteRequest === false) {
                 $this->session->set('warning', "Impossible de supprimer la compétence !");
                 return;

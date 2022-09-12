@@ -15,7 +15,7 @@ class JobController extends AdminController
      */
     public function aboutJobView()
     {
-        $jobManager = $this->jobManager->getJobs();
+        $jobManager = $this->app->get('App\Respository\JobRespository')->getJobs();
         $this->renderer->render('Admin/JobView/aboutJobView.html.twig', ['jobs' => $jobManager]);
     }
 
@@ -30,7 +30,7 @@ class JobController extends AdminController
         for ($i = 2017; $i <= date('Y'); $i++) {
             array_push($date_job, $i);
         }
-        $jobManager = $this->jobManager->getJob($jobId);
+        $jobManager = $this->app->get('App\Respository\JobRespository')->getJob($jobId);
         $this->renderer->render('Admin/JobView/updateJobView.html.twig', ['job' => $jobManager, 'dates' => $date_job]);
     }
 
@@ -55,14 +55,14 @@ class JobController extends AdminController
 
         if ($request->get('formtoken') == $this->session->get('token')) {
             if (!empty($request->request->all())) {
-                $datas['name'] = FormValidator::purifyLow($request->get('name'));
-                $datas['company'] = FormValidator::purifyLow($request->get('company'));
-                $datas['place'] = FormValidator::purifyLow($request->get('place'));
-                $datas['description'] = FormValidator::purifyContent($request->get('description'));
-                $datas['startDate'] = FormValidator::purifyLow($request->get('startDate'));
-                $datas['endDate'] = FormValidator::purifyLow($request->get('endDate'));
+                $datas['name'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('name'));
+                $datas['company'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('company'));
+                $datas['place'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('place'));
+                $datas['description'] = $this->app->get('App\Core\FormValidator')->purifyContent($request->get('description'));
+                $datas['startDate'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('startDate'));
+                $datas['endDate'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('endDate'));
 
-                $result = $this->jobManager->addJob($datas);
+                $result = $this->app->get('App\Respository\JobRespository')->addJob($datas);
 
                 if ($result === false) {
                     $this->session->set('warning', "Impossible d'ajouer le métier !");
@@ -91,14 +91,14 @@ class JobController extends AdminController
 
         if ($request->get('formtoken') == $this->session->get('token')) {
             if (!empty($request->request->all())) {
-                $datas['name'] = FormValidator::purifyLow($request->get('name'));
-                $datas['company'] = FormValidator::purifyLow($request->get('company'));
-                $datas['place'] = FormValidator::purifyLow($request->get('place'));
-                $datas['description'] = FormValidator::purifyContent($request->get('description'));
-                $datas['startDate'] = FormValidator::purifyLow($request->get('startDate'));
-                $datas['endDate'] = FormValidator::purifyLow($request->get('endDate'));
+                $datas['name'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('name'));
+                $datas['company'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('company'));
+                $datas['place'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('place'));
+                $datas['description'] = $this->app->get('App\Core\FormValidator')->purifyContent($request->get('description'));
+                $datas['startDate'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('startDate'));
+                $datas['endDate'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('endDate'));
 
-                $result = $this->jobManager->updateJob($jobId, $datas);
+                $result = $this->app->get('App\Respository\JobRespository')->updateJob($jobId, $datas);
 
                 if ($result === false) {
                     $this->session->set('warning', "Impossible de modifier le métier !");
@@ -126,7 +126,7 @@ class JobController extends AdminController
         $request = Request::createFromGlobals();
 
         if ($request->get('formtoken') == $this->session->get('token')) {
-            $deleteRequest = $this->jobManager->deleteJob($jobId);
+            $deleteRequest = $this->app->get('App\Respository\JobRespository')->deleteJob($jobId);
             if ($deleteRequest === false) {
                 $this->session->set('warning', "Impossible de supprimer le métier !");
                 return;
