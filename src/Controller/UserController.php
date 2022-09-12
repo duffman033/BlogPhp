@@ -27,17 +27,17 @@ class UserController extends AdminController
     {
         $request = Request::createFromGlobals();
 
-        if ($request->get('formtoken') == $this->session->get('token')) {
+        if ($request->get('formtoken') == self::$session->get('token')) {
             $deleteRequest = $this->app->get('App\Respository\UserRespository')->deleteUser($userId);
             if ($deleteRequest === false) {
-                $this->session->set('warning', "Impossible de supprimer l'utilisateur !");
+                self::$session->set('warning', "Impossible de supprimer l'utilisateur !");
                 return;
             }
-            $this->session->set('success', "L'utilisateur a bien été supprimé.");
+            self::$session->set('success', "L'utilisateur a bien été supprimé.");
             $this->listUser();
             return;
         }
-        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        self::$session->set('warning', "Problème de token, veuillez vous reconnecter");
         $this->deconnect();
     }
 }

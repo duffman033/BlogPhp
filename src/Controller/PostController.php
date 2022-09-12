@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Core\FormValidator;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -24,7 +23,7 @@ class PostController extends AdminController
      */
     public function addPostView()
     {
-        $cat = $this->categoryManager->getCategorys();
+        $cat = $this->app->get('App\Respository\CategoryRespository')->getCategorys();
         $this->renderer->render('Admin/PostView/addPostView.html.twig', ['categories' => $cat]);
     }
 
@@ -34,13 +33,13 @@ class PostController extends AdminController
     public function addPost()
     {
         $request = Request::createFromGlobals();
-        $cat = $this->categoryManager->getCategorys();
-        if ($request->get('formtoken') == $this->session->get('token')) {
+        $cat = $this->app->get('App\Respository\CategoryRespository')->getCategorys();
+        if ($request->get('formtoken') == self::$session->get('token')) {
             $file = $request->files->get('image');
-            $accept = ["image/jpeg","image/png","image/webp"];
+            $accept = ["image/jpeg", "image/png", "image/webp"];
             if (!empty($request->request->all())) {
                 if (in_array($file->getClientMimeType(), $accept)) {
-                    $fileName = md5(uniqid()).'.'.$file->guessExtension();
+                    $fileName = md5(uniqid()) . '.' . $file->guessExtension();
                     $repertory = "uploads/images/";
                     $file->move($repertory, $fileName);
 
@@ -49,7 +48,7 @@ class PostController extends AdminController
                     $datas['title'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('title'));
                     $datas['chapo'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('chapo'));
                     $datas['description'] = $this->app->get('App\Core\FormValidator')->purifyContent($request->get('description'));
-                    $datas['img_url'] = $repertory.$fileName;
+                    $datas['img_url'] = $repertory . $fileName;
 
                     $result = $this->app->get('App\Respository\PostRespository')->addPost($datas);
 
@@ -66,22 +65,22 @@ class PostController extends AdminController
 
 
                     if ($result === false) {
-                        $this->session->set('warning', "Impossible d'ajouter le projet !");
+                        self::$session->set('warning', "Impossible d'ajouter le projet !");
                         return;
                     }
-                    $this->session->set('success', "Votre projet a bien été ajouté.");
+                    self::$session->set('success', "Votre projet a bien été ajouté.");
                     $this->listPosts();
                     return;
                 }
-                $this->session->set('warning', "Merci d'inserer une image valide (Jpeg, Png ou Webp)");
+                self::$session->set('warning', "Merci d'inserer une image valide (Jpeg, Png ou Webp)");
                 $this->addPostView();
                 return;
             }
-            $this->session->set('warning', "Merci de bien remplir le formulaire");
+            self::$session->set('warning', "Merci de bien remplir le formulaire");
             $this->addPostView();
             return;
         }
-        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        self::$session->set('warning', "Problème de token, veuillez vous reconnecter");
         $this->deconnect();
     }
 
@@ -92,7 +91,7 @@ class PostController extends AdminController
      */
     public function updatePostView($postId)
     {
-        $cat = $this->categoryManager->getCategorys();
+        $cat = $this->app->get('App\Respository\CategoryRespository')->getCategorys();
         $relation = $this->app->get('App\Respository\RelationRespository')->getRelation($postId);
         $post = $this->app->get('App\Respository\PostRespository')->getPost($postId);
         $this->renderer->render('Admin/PostView/updatePostView.html.twig', ['listpost' => $post, 'categories' => $cat, 'relations' => $relation]);
@@ -107,34 +106,34 @@ class PostController extends AdminController
     {
         $request = Request::createFromGlobals();
 
-        if ($request->get('formtoken') == $this->session->get('token')) {
+        if ($request->get('formtoken') == self::$session->get('token')) {
             $fileName = $this->app->get('App\Respository\PostRespository')->selectImgPost($postId);
             $file = $request->files->get('image');
-            $accept = ["image/jpeg","image/png","image/webp"];
-            $repertory='';
+            $accept = ["image/jpeg", "image/png", "image/webp"];
+            $repertory = '';
             if (!empty($request->request->all())) {
                 if (!empty($file)) {
                     if (in_array($file->getClientMimeType(), $accept)) {
                         if (!empty($fileName)) {
                             unlink($fileName);
                         }
-                        $fileName = md5(uniqid()).'.'.$file->guessExtension();
+                        $fileName = md5(uniqid()) . '.' . $file->guessExtension();
                         $repertory = "uploads/images/";
                         $file->move($repertory, $fileName);
                     }
-                    $this->session->set('warning', "Merci d'inserer une image valide (Jpeg, Png ou Webp)");
+                    self::$session->set('warning', "Merci d'inserer une image valide (Jpeg, Png ou Webp)");
                     $this->updatePostView($postId);
                     return;
                 }
                 $datas['title'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('title'));
                 $datas['chapo'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('chapo'));
                 $datas['description'] = $this->app->get('App\Core\FormValidator')->purifyContent($request->get('description'));
-                $datas['img_url'] = $repertory.$fileName;
+                $datas['img_url'] = $repertory . $fileName;
 
                 $result = $this->app->get('App\Respository\PostRespository')->updatePost($postId, $datas);
                 $this->app->get('App\Respository\RelationRespository')->deleteRelation($postId);
 
-                $cat = $this->categoryManager->getCategorys();
+                $cat = $this->app->get('App\Respository\CategoryRespository')->getCategorys();
 
                 foreach ($cat as $catId) {
                     $value = $request->get($catId->getType());
@@ -147,18 +146,18 @@ class PostController extends AdminController
                 }
 
                 if ($result === false) {
-                    $this->session->set('warning', "Impossible de modifier le projet !");
+                    self::$session->set('warning', "Impossible de modifier le projet !");
                     return;
                 }
-                $this->session->set('success', "Votre projet a bien été modifié.");
+                self::$session->set('success', "Votre projet a bien été modifié.");
                 $this->listPosts();
                 return;
             }
-            $this->session->set('warning', "Merci de bien remplir le formulaire");
+            self::$session->set('warning', "Merci de bien remplir le formulaire");
             $this->updatePostView($postId);
             return;
         }
-        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        self::$session->set('warning', "Problème de token, veuillez vous reconnecter");
         $this->deconnect();
     }
 
@@ -171,17 +170,17 @@ class PostController extends AdminController
     {
         $request = Request::createFromGlobals();
 
-        if ($request->get('formtoken') == $this->session->get('token')) {
+        if ($request->get('formtoken') == self::$session->get('token')) {
             $deleteRequest = $this->app->get('App\Respository\PostRespository')->deletePost($postId);
             if ($deleteRequest === false) {
-                $this->session->set('warning', "Impossible de supprimer le projet !");
+                self::$session->set('warning', "Impossible de supprimer le projet !");
                 return;
             }
-            $this->session->set('success', "Votre projet a bien été supprimé.");
+            self::$session->set('success', "Votre projet a bien été supprimé.");
             $this->listPosts();
             return;
         }
-        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        self::$session->set('warning', "Problème de token, veuillez vous reconnecter");
         $this->deconnect();
     }
 }

@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 
-
 /**
  * Class CommentController controller for Comments
  */
@@ -28,18 +27,18 @@ class CommentController extends AdminController
     {
         $request = Request::createFromGlobals();
 
-        if ($request->get('formtoken') == $this->session->get('token')) {
+        if ($request->get('formtoken') == self::$session->get('token')) {
             $deleteRequest = $this->app->get('App\Respository\CommentRespository')->deleteComment($commentId);
             if ($deleteRequest === false) {
-                $this->session->set('warning', "Impossible de supprimer le commentaire !");
+                self::$session->set('warning', "Impossible de supprimer le commentaire !");
                 $this->listComments();
                 return;
             }
-            $this->session->set('success', "Le commentaire a bien été supprimé.");
+            self::$session->set('success', "Le commentaire a bien été supprimé.");
             $this->listComments();
             return;
         }
-        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        self::$session->set('warning', "Problème de token, veuillez vous reconnecter");
         $this->deconnect();
     }
 
@@ -52,11 +51,11 @@ class CommentController extends AdminController
     {
         $request = $this->app->get('App\Respository\CommentRespository')->validateComment($commentId);
         if ($request === false) {
-            $this->session->set('warning', "Impossible de valider le commentaire !");
+            self::$session->set('warning', "Impossible de valider le commentaire !");
             $this->listComments();
             return;
         }
-        $this->session->set('success', "Le commentaire a bien été validé.");
+        self::$session->set('success', "Le commentaire a bien été validé.");
         $this->listComments();
     }
 

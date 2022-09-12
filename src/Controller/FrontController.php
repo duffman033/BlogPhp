@@ -3,18 +3,7 @@
 namespace App\Controller;
 
 use App\Core\TwigRenderer;
-use App\Respository\CategoryRespository;
-use App\Respository\CertificateRespository;
-use App\Respository\FormationRespository;
-use App\Respository\FormManager;
-use App\Respository\JobRespository;
-use App\Respository\LoginRespository;
-use App\Respository\PostRespository;
-use App\Respository\CommentRespository;
 use App\Core\FormValidator;
-use App\Respository\RelationRespository;
-use App\Respository\SkillRespository;
-use App\Respository\UserRespository;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session;
@@ -26,17 +15,6 @@ use App\Core\DIC;
  */
 class FrontController
 {
-    protected PostRespository $postManager;
-    protected CommentRespository $commentManager;
-    protected UserRespository $userManager;
-    protected FormationRespository $formationManager;
-    protected JobRespository $jobManager;
-    protected SkillRespository $skillManager;
-    protected CertificateRespository $certificateManager;
-    protected CategoryRespository $categoryManager;
-    protected RelationRespository $relationManager;
-    protected LoginRespository $loginManager;
-    protected FormManager $formManager;
     protected Request $request;
     protected static ?Session\Session $session = null;
     protected TwigRenderer $renderer;
@@ -76,7 +54,7 @@ class FrontController
     public function listPosts()
     {
         $list_posts = $this->app->get('App\Respository\PostRespository')->getPosts();
-        $this->renderer->render('User/postsView.html.twig', ['listposts' => $list_posts ,'current' => 2]);
+        $this->renderer->render('User/postsView.html.twig', ['listposts' => $list_posts, 'current' => 2]);
     }
 
     /**
@@ -125,11 +103,11 @@ class FrontController
     public function about()
     {
         $formationManager = $this->app->get('App\Respository\FormationRespository')->getFormations();
-        $jobManager =$this->app->get('App\Respository\JobRespository')->getJobs();
+        $jobManager = $this->app->get('App\Respository\JobRespository')->getJobs();
         $certificateManager = $this->app->get('App\Respository\CertificateRespository')->getCertificate();
         $skillManager = $this->app->get('App\Respository\SkillRespository')->getSkills();
         $type = $this->app->get('App\Respository\SkillRespository')->getSkillType();
-        $this->renderer->render('User/aboutView.html.twig', ['formations'=>$formationManager ,'jobs'=>$jobManager ,'certificates'=>$certificateManager ,'skills'=>$skillManager ,'types'=>$type ,"current" => 3]);
+        $this->renderer->render('User/aboutView.html.twig', ['formations' => $formationManager, 'jobs' => $jobManager, 'certificates' => $certificateManager, 'skills' => $skillManager, 'types' => $type, "current" => 3]);
     }
 
 
@@ -138,7 +116,7 @@ class FrontController
      */
     public function contactView()
     {
-        $this->renderer->render('User/contactView.html.twig', ['current'=>4]);
+        $this->renderer->render('User/contactView.html.twig', ['current' => 4]);
     }
 
     /**

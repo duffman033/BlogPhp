@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Core\FormValidator;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -27,7 +26,7 @@ class FormationController extends AdminController
     public function updateFormView($formId)
     {
         $date_form = [];
-        for ($i = 2017; $i <= date('Y')+4; $i++) {
+        for ($i = 2017; $i <= date('Y') + 4; $i++) {
             array_push($date_form, $i);
         }
         $formManager = $this->app->get('App\Respository\FormationRespository')->getFormation($formId);
@@ -40,7 +39,7 @@ class FormationController extends AdminController
     public function addFormView()
     {
         $date_form = [];
-        for ($i = 2017; $i <= date('Y')+4; $i++) {
+        for ($i = 2017; $i <= date('Y') + 4; $i++) {
             array_push($date_form, $i);
         }
         $this->renderer->render('Admin/FormationView/addFormationView.html.twig', ['dates' => $date_form]);
@@ -53,7 +52,7 @@ class FormationController extends AdminController
     {
         $request = Request::createFromGlobals();
 
-        if ($request->get('formtoken') == $this->session->get('token')) {
+        if ($request->get('formtoken') == self::$session->get('token')) {
             if (!empty($request->request->all())) {
                 $datas['name'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('name'));
                 $datas['school'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('school'));
@@ -65,18 +64,18 @@ class FormationController extends AdminController
                 $result = $this->app->get('App\Respository\FormationRespository')->addFormation($datas);
 
                 if ($result === false) {
-                    $this->session->set('warning', "Impossible d'ajouer la formation !");
+                    self::$session->set('warning', "Impossible d'ajouer la formation !");
                     return;
                 }
-                $this->session->set('success', "Votre formation a bien été ajoutée.");
+                self::$session->set('success', "Votre formation a bien été ajoutée.");
                 $this->aboutFormView();
                 return;
             }
-            $this->session->set('warning', "Merci de bien remplir le formulaire");
+            self::$session->set('warning', "Merci de bien remplir le formulaire");
             $this->addFormView();
             return;
         }
-        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        self::$session->set('warning', "Problème de token, veuillez vous reconnecter");
         $this->deconnect();
     }
 
@@ -89,7 +88,7 @@ class FormationController extends AdminController
     {
         $request = Request::createFromGlobals();
 
-        if ($request->get('formtoken') == $this->session->get('token')) {
+        if ($request->get('formtoken') == self::$session->get('token')) {
             if (!empty($request->request->all())) {
                 $datas['name'] = $this->app->get('App\Core\FormValidator')->purify($request->get('name'));
                 $datas['school'] = $this->app->get('App\Core\FormValidator')->purify($request->get('school'));
@@ -101,18 +100,18 @@ class FormationController extends AdminController
                 $result = $this->app->get('App\Respository\FormationRespository')->updateFormation($formId, $datas);
 
                 if ($result === false) {
-                    $this->session->set('warning', "Impossible de modifier la formation !");
+                    self::$session->set('warning', "Impossible de modifier la formation !");
                     return;
                 }
-                $this->session->set('success', "Votre formation a bien été modifié.");
+                self::$session->set('success', "Votre formation a bien été modifié.");
                 $this->aboutFormView();
                 return;
             }
-            $this->session->set('warning', "Merci de bien remplir le formulaire");
+            self::$session->set('warning', "Merci de bien remplir le formulaire");
             $this->updateFormView($formId);
             return;
         }
-        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        self::$session->set('warning', "Problème de token, veuillez vous reconnecter");
         $this->deconnect();
     }
 
@@ -125,17 +124,17 @@ class FormationController extends AdminController
     {
         $request = Request::createFromGlobals();
 
-        if ($request->get('formtoken') == $this->session->get('token')) {
+        if ($request->get('formtoken') == self::$session->get('token')) {
             $deleteRequest = $this->app->get('App\Respository\FormationRespository')->deleteFormation($formId);
             if ($deleteRequest === false) {
-                $this->session->set('warning', "Impossible de supprimer la formation !");
+                self::$session->set('warning', "Impossible de supprimer la formation !");
                 return;
             }
-            $this->session->set('success', "Votre formation a bien été supprimé.");
+            self::$session->set('success', "Votre formation a bien été supprimé.");
             $this->aboutFormView();
             return;
         }
-        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        self::$session->set('warning', "Problème de token, veuillez vous reconnecter");
         $this->deconnect();
     }
 }
