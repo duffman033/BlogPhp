@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use App\Respository\UserRespository;
 
 /**
  * Class AdminController controller for Admin
@@ -14,7 +15,7 @@ class UserController extends AdminController
      */
     public function listUser()
     {
-        $list_user = $this->app->get('App\Respository\UserRespository')->getUsers();
+        $list_user = $this->app->get(UserRespository::class)->getUsers();
         $this->renderer->render('Admin/userView.html.twig', ['users' => $list_user]);
     }
 
@@ -28,7 +29,7 @@ class UserController extends AdminController
         $request = Request::createFromGlobals();
 
         if ($request->get('formtoken') == self::$session->get('token')) {
-            $deleteRequest = $this->app->get('App\Respository\UserRespository')->deleteUser($userId);
+            $deleteRequest = $this->app->get(UserRespository::class)->deleteUser($userId);
             if ($deleteRequest === false) {
                 self::$session->set('warning', "Impossible de supprimer l'utilisateur !");
                 return;

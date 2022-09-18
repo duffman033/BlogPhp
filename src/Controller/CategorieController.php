@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Core\FormValidator;
+use App\Respository\CategoryRespository;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -14,7 +16,7 @@ class CategorieController extends AdminController
      */
     public function categoriesView()
     {
-        $catManager = $this->app->get('App\Respository\CategoryRespository')->getCategorys();
+        $catManager = $this->app->get(CategoryRespository::class)->getCategorys();
         $this->renderer->render('Admin/categoriesView.html.twig', ['categories' => $catManager]);
     }
 
@@ -26,8 +28,10 @@ class CategorieController extends AdminController
         $request = Request::createFromGlobals();
         if ($request->get('formtoken') == self::$session->get('token')) {
             if (!empty($request->request->all())) {
-                $datas['type'] = $this->app->get('App\Core\FormValidator')->purify($request->get('type'));
-                $result = $this->app->get('App\Respository\CategoryRespository')->addCategory($datas);
+
+                $datas['type'] = $this->app->get(FormValidator::class)->purify($request->get('type'));
+                $result = $this->app->get(CategoryRespository::class)->addCategory($datas);
+
                 if ($result === false) {
                     self::$session->set('warning', "Impossible d'ajouer le catégorie !");
                     $this->categoriesView();
@@ -57,8 +61,8 @@ class CategorieController extends AdminController
 
         if ($request->get('formtoken') == self::$session->get('token')) {
             if (!empty($request->request->all())) {
-                $datas['type'] = $this->app->get('App\Core\FormValidator')->purify($request->get('type'));
-                $result = $this->app->get('App\Respository\CategoryRespository')->updateCategory($catId, $datas);
+                $datas['type'] = $this->app->get(FormValidator::class)->purify($request->get('type'));
+                $result = $this->app->get(CategoryRespository::class)->updateCategory($catId, $datas);
                 if ($result === false) {
                     self::$session->set('warning', "Impossible de modifier le catégorie !");
                     $this->categoriesView();
@@ -85,7 +89,7 @@ class CategorieController extends AdminController
     {
         $request = Request::createFromGlobals();
         if ($request->get('formtoken') == self::$session->get('token')) {
-            $deleteRequest = $this->app->get('App\Respository\CategoryRespository')->deleteCategory($catId);
+            $deleteRequest = $this->app->get(CategoryRespository::class)->deleteCategory($catId);
             if ($deleteRequest === false) {
                 self::$session->set('warning', "Impossible de supprimer la catégorie !");
                 $this->categoriesView();

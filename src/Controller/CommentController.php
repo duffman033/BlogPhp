@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Respository\CommentRespository;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -14,7 +15,7 @@ class CommentController extends AdminController
      */
     public function listComments()
     {
-        $comments = $this->app->get('App\Respository\CommentRespository')->getInvalidComments();
+        $comments = $this->app->get(CommentRespository::class)->getInvalidComments();
         $this->renderer->render('Admin/commentView.html.twig', ['listcomments' => $comments]);
     }
 
@@ -28,7 +29,8 @@ class CommentController extends AdminController
         $request = Request::createFromGlobals();
 
         if ($request->get('formtoken') == self::$session->get('token')) {
-            $deleteRequest = $this->app->get('App\Respository\CommentRespository')->deleteComment($commentId);
+            $deleteRequest = $this->app->get(CommentRespository::class)->deleteComment($commentId);
+
             if ($deleteRequest === false) {
                 self::$session->set('warning', "Impossible de supprimer le commentaire !");
                 $this->listComments();
@@ -49,7 +51,7 @@ class CommentController extends AdminController
      */
     public function validateComment($commentId)
     {
-        $request = $this->app->get('App\Respository\CommentRespository')->validateComment($commentId);
+        $request = $this->app->get(CommentRespository::class)->validateComment($commentId);
         if ($request === false) {
             self::$session->set('warning', "Impossible de valider le commentaire !");
             $this->listComments();
