@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Core\FormValidator;
+use App\Respository\CategoryRespository;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -15,7 +16,7 @@ class CategorieController extends AdminController
      */
     public function categoriesView()
     {
-        $catManager = $this->app->get('App\Respository\CategoryRespository')->getCategorys();
+        $catManager = $this->app->get(CategoryRespository::class)->getCategorys();
         $this->renderer->render('Admin/categoriesView.html.twig', ['categories' => $catManager]);
     }
 
@@ -25,25 +26,25 @@ class CategorieController extends AdminController
     public function addCategory()
     {
         $request = Request::createFromGlobals();
-        if ($request->get('formtoken') == $this->session->get('token')) {
+        if ($request->get('formtoken') == self::$session->get('token')) {
             if (!empty($request->request->all())) {
                 $datas['type'] = FormValidator::purify($request->get('type'));
-                $result = $this->app->get('App\Respository\CategoryRespository')->addCategory($datas);
+                $result = $this->app->get(CategoryRespository::class)->addCategory($datas);
                 if ($result === false) {
-                    $this->session->set('warning', "Impossible d'ajouer le catégorie !");
+                    self::$session->set('warning', "Impossible d'ajouer le catégorie !");
                     $this->categoriesView();
                     return;
                 }
-                $this->session->set('success', "Votre catégorie a bien été ajoutée.");
+                self::$session->set('success', "Votre catégorie a bien été ajoutée.");
                 $this->categoriesView();
 
                 return;
             }
-            $this->session->set('warning', "Merci de bien remplir le formulaire");
+            self::$session->set('warning', "Merci de bien remplir le formulaire");
             $this->categoriesView();
             return;
         }
-        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        self::$session->set('warning', "Problème de token, veuillez vous reconnecter");
         $this->deconnect();
     }
 
@@ -56,24 +57,24 @@ class CategorieController extends AdminController
     {
         $request = Request::createFromGlobals();
 
-        if ($request->get('formtoken') == $this->session->get('token')) {
+        if ($request->get('formtoken') == self::$session->get('token')) {
             if (!empty($request->request->all())) {
-                $datas['type'] = $this->app->get('App\Core\FormValidator')->purify($request->get('type'));
-                $result = $this->app->get('App\Respository\CategoryRespository')->updateCategory($catId, $datas);
+                $datas['type'] = $this->app->get(FormValidator::class)->purify($request->get('type'));
+                $result = $this->app->get(CategoryRespository::class)->updateCategory($catId, $datas);
                 if ($result === false) {
-                    $this->session->set('warning', "Impossible de modifier le catégorie !");
+                    self::$session->set('warning', "Impossible de modifier le catégorie !");
                     $this->categoriesView();
                     return;
                 }
-                $this->session->set('success', "Votre catégorie a bien été modifiée.");
+                self::$session->set('success', "Votre catégorie a bien été modifiée.");
                 $this->categoriesView();
                 return;
             }
-            $this->session->set('warning', "Merci de bien remplir le formulaire");
+            self::$session->set('warning', "Merci de bien remplir le formulaire");
             $this->categoriesView();
             return;
         }
-        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        self::$session->set('warning', "Problème de token, veuillez vous reconnecter");
         $this->deconnect();
     }
 
@@ -85,18 +86,18 @@ class CategorieController extends AdminController
     public function deleteCategorie($catId)
     {
         $request = Request::createFromGlobals();
-        if ($request->get('formtoken') == $this->session->get('token')) {
-            $deleteRequest = $this->app->get('App\Respository\CategoryRespository')->deleteCategory($catId);
+        if ($request->get('formtoken') == self::$session->get('token')) {
+            $deleteRequest = $this->app->get(CategoryRespository::class)->deleteCategory($catId);
             if ($deleteRequest === false) {
-                $this->session->set('warning', "Impossible de supprimer la catégorie !");
+                self::$session->set('warning', "Impossible de supprimer la catégorie !");
                 $this->categoriesView();
                 return;
             }
-            $this->session->set('success', "Votre catégorie a bien été supprimée.");
+            self::$session->set('success', "Votre catégorie a bien été supprimée.");
             $this->categoriesView();
             return;
         }
-        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        self::$session->set('warning', "Problème de token, veuillez vous reconnecter");
         $this->deconnect();
     }
 }

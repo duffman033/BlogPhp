@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Core\FormValidator;
+use App\Respository\SkillRespository;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -15,8 +16,8 @@ class SkillController extends AdminController
      */
     public function skillView()
     {
-        $skillManager = $this->app->get('App\Respository\SkillRespository')->getSkills();
-        $type = $this->app->get('App\Respository\SkillRespository')->getSkillType();
+        $skillManager = $this->app->get(SkillRespository::class)->getSkills();
+        $type = $this->app->get(SkillRespository::class)->getSkillType();
         $this->renderer->render('Admin/aboutView.html.twig', ['skills'=>$skillManager ,'types'=>$type]);
     }
 
@@ -27,27 +28,27 @@ class SkillController extends AdminController
     {
         $request = Request::createFromGlobals();
 
-        if ($request->get('formtoken') == $this->session->get('token')) {
+        if ($request->get('formtoken') == self::$session->get('token')) {
             if (!empty($request->request->all())) {
-                $datas['name'] = $this->app->get('App\Core\FormValidator')->purify($request->get('name'));
-                $datas['progress'] = $this->app->get('App\Core\FormValidator')->purify($request->get('progress'));
-                $datas['type'] = $this->app->get('App\Core\FormValidator')->purify($request->get('type'));
+                $datas['name'] = $this->app->get(FormValidator::class)->purify($request->get('name'));
+                $datas['progress'] = $this->app->get(FormValidator::class)->purify($request->get('progress'));
+                $datas['type'] = $this->app->get(FormValidator::class)->purify($request->get('type'));
 
-                $result = $this->app->get('App\Respository\SkillRespository')->addSkill($datas);
+                $result = $this->app->get(SkillRespository::class)->addSkill($datas);
 
                 if ($result === false) {
-                    $this->session->set('warning', "Impossible d'ajouer la compétence !");
+                    self::$session->set('warning', "Impossible d'ajouer la compétence !");
                     return;
                 }
-                $this->session->set('success', "Votre compétence ".$datas['name']." a bien été ajoutée.");
+                self::$session->set('success', "Votre compétence ".$datas['name']." a bien été ajoutée.");
                 $this->skillView();
                 return;
             }
-            $this->session->set('warning', "Merci de bien remplir le formulaire");
+            self::$session->set('warning', "Merci de bien remplir le formulaire");
             $this->skillView();
             return;
         }
-        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        self::$session->set('warning', "Problème de token, veuillez vous reconnecter");
         $this->deconnect();
     }
 
@@ -60,27 +61,27 @@ class SkillController extends AdminController
     {
         $request = Request::createFromGlobals();
 
-        if ($request->get('formtoken') == $this->session->get('token')) {
+        if ($request->get('formtoken') == self::$session->get('token')) {
             if (!empty($request->request->all())) {
-                $datas['name'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('name'));
-                $datas['progress'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('progress'));
-                $datas['type'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('type'));
+                $datas['name'] = $this->app->get(FormValidator::class)->purifyLow($request->get('name'));
+                $datas['progress'] = $this->app->get(FormValidator::class)->purifyLow($request->get('progress'));
+                $datas['type'] = $this->app->get(FormValidator::class)->purifyLow($request->get('type'));
 
-                $result = $this->app->get('App\Respository\SkillRespository')->updateSkill($skillId, $datas);
+                $result = $this->app->get(SkillRespository::class)->updateSkill($skillId, $datas);
 
                 if ($result === false) {
-                    $this->session->set('warning', "Impossible de modifier la compétence !");
+                    self::$session->set('warning', "Impossible de modifier la compétence !");
                     return;
                 }
-                $this->session->set('success', "Votre compétence ".$datas['name']." a bien été modifiée.");
+                self::$session->set('success', "Votre compétence ".$datas['name']." a bien été modifiée.");
                 $this->skillView();
                 return;
             }
-            $this->session->set('warning', "Merci de bien remplir le formulaire");
+            self::$session->set('warning', "Merci de bien remplir le formulaire");
             $this->skillView();
             return;
         }
-        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        self::$session->set('warning', "Problème de token, veuillez vous reconnecter");
         $this->deconnect();
     }
 
@@ -93,17 +94,17 @@ class SkillController extends AdminController
     {
         $request = Request::createFromGlobals();
 
-        if ($request->get('formtoken') == $this->session->get('token')) {
-            $deleteRequest = $this->app->get('App\Respository\SkillRespository')->deleteSkill($skillId);
+        if ($request->get('formtoken') == self::$session->get('token')) {
+            $deleteRequest = $this->app->get(SkillRespository::class)->deleteSkill($skillId);
             if ($deleteRequest === false) {
-                $this->session->set('warning', "Impossible de supprimer la compétence !");
+                self::$session->set('warning', "Impossible de supprimer la compétence !");
                 return;
             }
-            $this->session->set('success', "La compétence a bien été supprimée.");
+            self::$session->set('success', "La compétence a bien été supprimée.");
             $this->skillView();
             return;
         }
-        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        self::$session->set('warning', "Problème de token, veuillez vous reconnecter");
         $this->deconnect();
     }
 }

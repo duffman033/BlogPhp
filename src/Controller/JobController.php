@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Core\FormValidator;
+use App\Respository\JobRespository;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -15,7 +16,7 @@ class JobController extends AdminController
      */
     public function aboutJobView()
     {
-        $jobManager = $this->app->get('App\Respository\JobRespository')->getJobs();
+        $jobManager = $this->app->get(JobRespository::class)->getJobs();
         $this->renderer->render('Admin/JobView/aboutJobView.html.twig', ['jobs' => $jobManager]);
     }
 
@@ -30,7 +31,7 @@ class JobController extends AdminController
         for ($i = 2017; $i <= date('Y'); $i++) {
             array_push($date_job, $i);
         }
-        $jobManager = $this->app->get('App\Respository\JobRespository')->getJob($jobId);
+        $jobManager = $this->app->get(JobRespository::class)->getJob($jobId);
         $this->renderer->render('Admin/JobView/updateJobView.html.twig', ['job' => $jobManager, 'dates' => $date_job]);
     }
 
@@ -53,30 +54,30 @@ class JobController extends AdminController
     {
         $request = Request::createFromGlobals();
 
-        if ($request->get('formtoken') == $this->session->get('token')) {
+        if ($request->get('formtoken') == self::$session->get('token')) {
             if (!empty($request->request->all())) {
-                $datas['name'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('name'));
-                $datas['company'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('company'));
-                $datas['place'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('place'));
-                $datas['description'] = $this->app->get('App\Core\FormValidator')->purifyContent($request->get('description'));
-                $datas['startDate'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('startDate'));
-                $datas['endDate'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('endDate'));
+                $datas['name'] = $this->app->get(FormValidator::class)->purifyLow($request->get('name'));
+                $datas['company'] = $this->app->get(FormValidator::class)->purifyLow($request->get('company'));
+                $datas['place'] = $this->app->get(FormValidator::class)->purifyLow($request->get('place'));
+                $datas['description'] = $this->app->get(FormValidator::class)->purifyContent($request->get('description'));
+                $datas['startDate'] = $this->app->get(FormValidator::class)->purifyLow($request->get('startDate'));
+                $datas['endDate'] = $this->app->get(FormValidator::class)->purifyLow($request->get('endDate'));
 
-                $result = $this->app->get('App\Respository\JobRespository')->addJob($datas);
+                $result = $this->app->get(JobRespository::class)->addJob($datas);
 
                 if ($result === false) {
-                    $this->session->set('warning', "Impossible d'ajouer le métier !");
+                    self::$session->set('warning', "Impossible d'ajouer le métier !");
                     return;
                 }
-                $this->session->set('success', "Votre métier a bien été ajoutée.");
+                self::$session->set('success', "Votre métier a bien été ajoutée.");
                 $this->aboutJobView();
                 return;
             }
-            $this->session->set('warning', "Merci de bien remplir le formulaire");
+            self::$session->set('warning', "Merci de bien remplir le formulaire");
             $this->addJobView();
             return;
         }
-        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        self::$session->set('warning', "Problème de token, veuillez vous reconnecter");
         $this->deconnect();
     }
 
@@ -89,30 +90,30 @@ class JobController extends AdminController
     {
         $request = Request::createFromGlobals();
 
-        if ($request->get('formtoken') == $this->session->get('token')) {
+        if ($request->get('formtoken') == self::$session->get('token')) {
             if (!empty($request->request->all())) {
-                $datas['name'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('name'));
-                $datas['company'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('company'));
-                $datas['place'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('place'));
-                $datas['description'] = $this->app->get('App\Core\FormValidator')->purifyContent($request->get('description'));
-                $datas['startDate'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('startDate'));
-                $datas['endDate'] = $this->app->get('App\Core\FormValidator')->purifyLow($request->get('endDate'));
+                $datas['name'] = $this->app->get(FormValidator::class)->purifyLow($request->get('name'));
+                $datas['company'] = $this->app->get(FormValidator::class)->purifyLow($request->get('company'));
+                $datas['place'] = $this->app->get(FormValidator::class)->purifyLow($request->get('place'));
+                $datas['description'] = $this->app->get(FormValidator::class)->purifyContent($request->get('description'));
+                $datas['startDate'] = $this->app->get(FormValidator::class)->purifyLow($request->get('startDate'));
+                $datas['endDate'] = $this->app->get(FormValidator::class)->purifyLow($request->get('endDate'));
 
-                $result = $this->app->get('App\Respository\JobRespository')->updateJob($jobId, $datas);
+                $result = $this->app->get(JobRespository::class)->updateJob($jobId, $datas);
 
                 if ($result === false) {
-                    $this->session->set('warning', "Impossible de modifier le métier !");
+                    self::$session->set('warning', "Impossible de modifier le métier !");
                     return;
                 }
-                $this->session->set('success', "Votre métier a bien été modifié.");
+                self::$session->set('success', "Votre métier a bien été modifié.");
                 $this->aboutJobView();
                 return;
             }
-            $this->session->set('warning', "Merci de bien remplir le formulaire");
+            self::$session->set('warning', "Merci de bien remplir le formulaire");
             $this->updateJobView($jobId);
             return;
         }
-        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        self::$session->set('warning', "Problème de token, veuillez vous reconnecter");
         $this->deconnect();
     }
 
@@ -125,17 +126,17 @@ class JobController extends AdminController
     {
         $request = Request::createFromGlobals();
 
-        if ($request->get('formtoken') == $this->session->get('token')) {
-            $deleteRequest = $this->app->get('App\Respository\JobRespository')->deleteJob($jobId);
+        if ($request->get('formtoken') == self::$session->get('token')) {
+            $deleteRequest = $this->app->get(JobRespository::class)->deleteJob($jobId);
             if ($deleteRequest === false) {
-                $this->session->set('warning', "Impossible de supprimer le métier !");
+                self::$session->set('warning', "Impossible de supprimer le métier !");
                 return;
             }
-            $this->session->set('success', "Votre métier a bien été supprimé.");
+            self::$session->set('success', "Votre métier a bien été supprimé.");
             $this->aboutJobView();
             return;
         }
-        $this->session->set('warning', "Problème de token, veuillez vous reconnecter");
+        self::$session->set('warning', "Problème de token, veuillez vous reconnecter");
         $this->deconnect();
     }
 }
