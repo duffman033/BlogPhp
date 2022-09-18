@@ -16,14 +16,14 @@ class AdminController extends FrontController
         if (!self::$session->get('auth')) {
             self::$session->set('warning', "Connectez-vous pour accéder à cette page");
             try {
-                FrontController::connect();
+                $this->app->get('App\Controller\FrontController')->login();
             } catch (Exception $e) {
             }
         }
 
         if (self::$session->get('auth')) {
             if (self::$session->get('auth')->getUserstatus() != 1) {
-                FrontController::home();
+                $this->app->get('App\Controller\FrontController')->home();
             }
         }
     }

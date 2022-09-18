@@ -19,8 +19,8 @@ class TwigRenderer
         $twig = new Environment(
             $loader,
             [
-            'cache' => false, // __DIR__ . /tmp',
-            'debug' => true,]
+                'cache' => false, // __DIR__ . /tmp',
+                'debug' => true,]
         );
 
         $twig->addGlobal('_server', $_SERVER);
@@ -31,7 +31,7 @@ class TwigRenderer
 
 
         try {
-            echo $twig->render($view, $params);
+            print_r($twig->render($view, $params));
         } catch (LoaderError $e) {
         } catch (RuntimeError $e) {
         } catch (SyntaxError $e) {
