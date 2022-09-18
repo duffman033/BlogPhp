@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+
 use App\Core\FormValidator;
 use App\Respository\FormationRespository;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +29,7 @@ class FormationController extends AdminController
     public function updateFormView($formId)
     {
         $date_form = [];
-        for ($i = 2017; $i <= date('Y')+4; $i++) {
+        for ($i = 2017; $i <= date('Y') + 4; $i++) {
             array_push($date_form, $i);
         }
         $formManager = $this->app->get(FormationRespository::class)->getFormation($formId);
@@ -41,7 +42,7 @@ class FormationController extends AdminController
     public function addFormView()
     {
         $date_form = [];
-        for ($i = 2017; $i <= date('Y')+4; $i++) {
+        for ($i = 2017; $i <= date('Y') + 4; $i++) {
             array_push($date_form, $i);
         }
         $this->renderer->render('Admin/FormationView/addFormationView.html.twig', ['dates' => $date_form]);
@@ -128,6 +129,7 @@ class FormationController extends AdminController
 
         if ($request->get('formtoken') == self::$session->get('token')) {
             $deleteRequest = $this->app->get(FormationRespository::class)->deleteFormation($formId);
+
             if ($deleteRequest === false) {
                 self::$session->set('warning', "Impossible de supprimer la formation !");
                 return;

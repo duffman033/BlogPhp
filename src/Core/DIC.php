@@ -2,56 +2,56 @@
 
 namespace App\Core;
 
-class DIC{
+class DIC
+{
 
     private array $registry = [];
     private array $factories = [];
     private array $instances = [];
 
-    public function set($key, Callable $resolver){
+    public function set($key, callable $resolver)
+    {
         $this->registry[$key] = $resolver;
     }
 
-    public function setFactory($key, Callable $resolver){
+    public function setFactory($key, callable $resolver)
+    {
         $this->factories[$key] = $resolver;
     }
 
-    public function setInstance($instance){
+    public function setInstance($instance)
+    {
         $reflection = new \ReflectionClass($instance);
         $this->instances[$reflection->getName()] = $instance;
     }
 
-    public function get($key){
-        if(isset($this->instances[$key])) {
-            return($this->instances[$key]);
-        }
-        else {
-            if(isset($this->registry[$key])) {
+    public function get($key)
+    {
+        if (isset($this->instances[$key])) {
+            return ($this->instances[$key]);
+        } else {
+            if (isset($this->registry[$key])) {
                 $this->factories[$key] = $this->registry[$key]();
-            }
-            else {
+            } else {
                 $reflected_class = new \ReflectionClass($key);
-                if($reflected_class->isInstantiable()) {
+                if ($reflected_class->isInstantiable()) {
                     $constructor = $reflected_class->getConstructor();
-                    if($constructor) {
+                    if ($constructor) {
                         $parameters = $constructor->getParameters();
                         $constructor_parameters = [];
-                        foreach($parameters as $parameter) {
-                            if($parameter->getType()) {
+                        foreach ($parameters as $parameter) {
+                            if ($parameter->getType()) {
                                 $constructor_parameters[] = $this->getFactory($parameter->getType()->getName());
-                            }
-                            else {
+                            } else {
                                 $constructor_parameters[] = $parameter->getDefaultValue();
                             }
                         }
                         $this->factories[$key] = $reflected_class->newInstanceArgs($constructor_parameters);
-                    }
-                    else {
+                    } else {
                         $this->factories[$key] = $reflected_class->newInstance();
                     }
-                }
-                else {
-                    throw new Exception('"'.$key.'" is not an instantiable class');
+                } else {
+                    throw new Exception('"' . $key . '" is not an instantiable class');
                 }
             }
         }

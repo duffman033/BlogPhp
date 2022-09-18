@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Respository\CommentRespository;
 use Symfony\Component\HttpFoundation\Request;
 
-
 /**
  * Class CommentController controller for Comments
  */
@@ -31,6 +30,7 @@ class CommentController extends AdminController
 
         if ($request->get('formtoken') == self::$session->get('token')) {
             $deleteRequest = $this->app->get(CommentRespository::class)->deleteComment($commentId);
+
             if ($deleteRequest === false) {
                 self::$session->set('warning', "Impossible de supprimer le commentaire !");
                 $this->listComments();

@@ -10,19 +10,21 @@
 
             <div class="row skills-content">
                 {% for type in types %}
-                        <div class="col-lg-6">
-                            <h3 class="resume-title">{{ type.type }}</h3>
-                            {% for skill in skills %}
-                                {% if skill.type == type.type %}
-                                    <div class="progress">
-                                        <span class="skill">{{ skill.name }} <i class="val">{{ skill.progress }}%</i></span>
-                                        <div class="progress-bar-wrap">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="{{ skill.progress }}" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
+                    <div class="col-lg-6">
+                        <h3 class="resume-title">{{ type.type }}</h3>
+                        {% for skill in skills %}
+                            {% if skill.type == type.type %}
+                                <div class="progress">
+                                    <span class="skill">{{ skill.name }} <i class="val">{{ skill.progress }}%</i></span>
+                                    <div class="progress-bar-wrap">
+                                        <div class="progress-bar" role="progressbar"
+                                             aria-valuenow="{{ skill.progress }}" aria-valuemin="0"
+                                             aria-valuemax="100"></div>
                                     </div>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 {% endfor %}
             </div>
         </div>
@@ -48,30 +50,31 @@
                 <div class="col-lg-6">
                     <h3 class="resume-title">Expériences professionnelles</h3>
                     {% for job in jobs %}
-                    <div class="resume-item">
-                        <h4>{{ job.name }}</h4>
-                        <h5>{{ job.startDate }} - {{ job.endDate }}</h5>
-                        <p><em>{{ job.company }} - {{ job.place }}</em></p>
-                        <ul>
-                            {% set descs = job.description|split('/') %}
-                            {% for desc in descs %}
-                                <li>{{ desc }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
+                        <div class="resume-item">
+                            <h4>{{ job.name }}</h4>
+                            <h5>{{ job.startDate }} - {{ job.endDate }}</h5>
+                            <p><em>{{ job.company }} - {{ job.place }}</em></p>
+                            <ul>
+                                {% set descs = job.description|split('/') %}
+                                {% for desc in descs %}
+                                    <li>{{ desc }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
                     {% endfor %}
                 </div>
 
                 <div class="row">
                     <h3 class="resume-title mx-auto my-2">Certifications</h3>
-                    <div class="row align-items-center" >
+                    <div class="row align-items-center">
                         <div class="col-lg-6">
                             <img src="../images/oc.png" alt="" style="width: 50%">
                         </div>
                         <div class="col-lg-6">
                             {% for certificate in certificates %}
                                 <div class="resume-item">
-                                    <p>{{ certificate.name }} - <span style="color: #065a7f">{{ certificate.date }}</span></p>
+                                    <p>{{ certificate.name }} - <span
+                                                style="color: #065a7f">{{ certificate.date }}</span></p>
                                 </div>
                             {% endfor %}
                         </div>
@@ -88,7 +91,7 @@
             new Waypoint({
                 element: skilsContent,
                 offset: '80%',
-                handler: function() {
+                handler: function () {
                     let progress = select('.progress .progress-bar', true);
                     progress.forEach((el) => {
                         el.style.width = el.getAttribute('aria-valuenow') + '%'

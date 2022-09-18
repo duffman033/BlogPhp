@@ -1,27 +1,29 @@
 {% extends 'template.html.twig' %}
 {% block title %}Projets - Bastien Moreau{% endblock %}
 {% block content %}
-        <section class="ftco-section">
-            <div class="container">
-                {% for listpost in listposts %}
-                    <div class="row pt-md-4">
-                        <div class="col-md-12">
-                            <div class="blog-entry ftco-animate d-md-flex">
-                                <a href="post/{{ listpost.postId }}" class="img img-2" style="background-image: url('../{{ listpost.imgUrl }}');"></a>
-                                <div class="text text-2 pl-md-4">
-                                    <h3 class="mb-2"><a href="/public/index.php">{{ listpost.title }}</a></h3>
-                                    <div class="meta-wrap">
-                                        <p class="meta">
-                                            <span><i class="icon-calendar mr-2"></i>{% if listpost.dateUpdate is not null %} {{ listpost.dateUpdate }} {% else %} {{ listpost.dateCreation }} {% endif %} par {{ listpost.username }}</span>
-                                        </p>
-                                    </div>
-                                    <p class="mb-4">{{ listpost.chapo }}</p>
-                                    <p><a href="post/{{ listpost.postId }}" class="btn-custom">Voir plus<span class="ion-ios-arrow-forward"></span></a></p>
+    <section class="ftco-section">
+        <div class="container">
+            {% for listpost in listposts %}
+                <div class="row pt-md-4">
+                    <div class="col-md-12">
+                        <div class="blog-entry d-md-flex" data-aos="fade-up">
+                            <a href="post/{{ listpost.postId }}" class="img img-2"
+                               style="background-image: url('../{{ listpost.imgUrl }}');"></a>
+                            <div class="text text-2 pl-md-4">
+                                <h3 class="mb-2"><a href="/public/index.php">{{ listpost.title }}</a></h3>
+                                <div class="meta-wrap">
+                                    <p class="meta">
+                                        <span><i class="fa-solid fa-calendar-days mr-2"></i>{% if listpost.dateUpdate is not null %} {{ listpost.dateUpdate }} {% else %} {{ listpost.dateCreation }} {% endif %} par {{ listpost.username }}</span>
+                                    </p>
                                 </div>
+                                <p class="mb-4">{{ listpost.chapo }}</p>
+                                <p><a href="post/{{ listpost.postId }}" class="btn-custom">Voir plus<span
+                                                class="ion-ios-arrow-forward"></span></a></p>
                             </div>
                         </div>
                     </div>
-                {% endfor %}
-            </div>
-        </section>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
 {% endblock %}

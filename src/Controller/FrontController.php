@@ -125,7 +125,7 @@ class FrontController
      */
     public function contactView()
     {
-        $this->renderer->render('User/contactView.html.twig', ['current'=>4]);
+        $this->renderer->render('User/contactView.html.twig', ['current' => 4]);
     }
 
     /**

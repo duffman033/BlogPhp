@@ -28,8 +28,10 @@ class CategorieController extends AdminController
         $request = Request::createFromGlobals();
         if ($request->get('formtoken') == self::$session->get('token')) {
             if (!empty($request->request->all())) {
-                $datas['type'] = FormValidator::purify($request->get('type'));
+
+                $datas['type'] = $this->app->get(FormValidator::class)->purify($request->get('type'));
                 $result = $this->app->get(CategoryRespository::class)->addCategory($datas);
+
                 if ($result === false) {
                     self::$session->set('warning', "Impossible d'ajouer le catégorie !");
                     $this->categoriesView();

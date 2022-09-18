@@ -40,10 +40,10 @@ class PostController extends AdminController
         $cat = $this->app->get(CategoryRespository::class)->getCategorys();
         if ($request->get('formtoken') == self::$session->get('token')) {
             $file = $request->files->get('image');
-            $accept = ["image/jpeg","image/png","image/webp"];
+            $accept = ["image/jpeg", "image/png", "image/webp"];
             if (!empty($request->request->all())) {
                 if (in_array($file->getClientMimeType(), $accept)) {
-                    $fileName = md5(uniqid()).'.'.$file->guessExtension();
+                    $fileName = md5(uniqid()) . '.' . $file->guessExtension();
                     $repertory = "uploads/images/";
                     $file->move($repertory, $fileName);
 
@@ -113,15 +113,15 @@ class PostController extends AdminController
         if ($request->get('formtoken') == self::$session->get('token')) {
             $fileName = $this->app->get(PostRespository::class)->selectImgPost($postId);
             $file = $request->files->get('image');
-            $accept = ["image/jpeg","image/png","image/webp"];
-            $repertory='';
+            $accept = ["image/jpeg", "image/png", "image/webp"];
+            $repertory = '';
             if (!empty($request->request->all())) {
                 if (!empty($file)) {
                     if (in_array($file->getClientMimeType(), $accept)) {
                         if (!empty($fileName)) {
                             unlink($fileName);
                         }
-                        $fileName = md5(uniqid()).'.'.$file->guessExtension();
+                        $fileName = md5(uniqid()) . '.' . $file->guessExtension();
                         $repertory = "uploads/images/";
                         $file->move($repertory, $fileName);
                     }
@@ -175,7 +175,9 @@ class PostController extends AdminController
         $request = Request::createFromGlobals();
 
         if ($request->get('formtoken') == self::$session->get('token')) {
+
             $deleteRequest = $this->app->get(PostRespository::class)->deletePost($postId);
+
             if ($deleteRequest === false) {
                 self::$session->set('warning', "Impossible de supprimer le projet !");
                 return;
