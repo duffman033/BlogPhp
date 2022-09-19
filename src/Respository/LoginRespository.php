@@ -81,13 +81,13 @@ class LoginRespository extends Database
      * @param $username
      * @param $password
      * @param $email
-     * @param $img_url
+     * @param $imgUrl
      */
-    public function registerUser($username, $password, $email, $img_url)
+    public function registerUser($username, $password, $email, $imgUrl)
     {
         $hashedpassword = password_hash($password, PASSWORD_DEFAULT);
         $sql = 'INSERT INTO users SET username = :username, password = :password, email = :email, user_status = 2, user_img_url = :img_url';
-        $parameters = [':username' =>$username , ':password' => $hashedpassword, ':email' => $email, ':img_url' => $img_url];
+        $parameters = [':username' =>$username , ':password' => $hashedpassword, ':email' => $email, ':img_url' => $imgUrl];
         $this->sql($sql, $parameters);
     }
 }

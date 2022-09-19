@@ -21,13 +21,13 @@ class JobRespository extends Database
     {
         $req = 'SELECT * FROM jobs ORDER BY start_date DESC';
         $result = $this->sql($req);
-        $custom_array = [];
+        $customArray = [];
 
         while ($datas = $result->fetch(PDO::FETCH_ASSOC)) {
-            array_push($custom_array, new Job($datas));
+            array_push($customArray, new Job($datas));
         }
 
-        return $custom_array;
+        return $customArray;
     }
 
     /**

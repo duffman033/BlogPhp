@@ -28,12 +28,12 @@ class FormationController extends AdminController
      */
     public function updateFormView($formId)
     {
-        $date_form = [];
+        $dateForm = [];
         for ($i = 2017; $i <= date('Y') + 4; $i++) {
-            array_push($date_form, $i);
+            array_push($dateForm, $i);
         }
         $formManager = $this->app->get(FormationRespository::class)->getFormation($formId);
-        $this->renderer->render('Admin/FormationView/updateFormationView.html.twig', ['formation' => $formManager, 'dates' => $date_form]);
+        $this->renderer->render('Admin/FormationView/updateFormationView.html.twig', ['formation' => $formManager, 'dates' => $dateForm]);
     }
 
     /**
@@ -41,11 +41,11 @@ class FormationController extends AdminController
      */
     public function addFormView()
     {
-        $date_form = [];
+        $dateForm = [];
         for ($i = 2017; $i <= date('Y') + 4; $i++) {
-            array_push($date_form, $i);
+            array_push($dateForm, $i);
         }
-        $this->renderer->render('Admin/FormationView/addFormationView.html.twig', ['dates' => $date_form]);
+        $this->renderer->render('Admin/FormationView/addFormationView.html.twig', ['dates' => $dateForm]);
     }
 
     /**

@@ -24,13 +24,13 @@ class RelationRespository extends Database
         $relation = 'SELECT * FROM relation WHERE post_id = :postId';
         $parameters = [':postId' => $postId];
         $result = $this->sql($relation, $parameters);
-        $custom_array = [];
+        $customArray = [];
 
         while ($datas = $result->fetch(PDO::FETCH_ASSOC)) {
-            array_push($custom_array, new Relation($datas));
+            array_push($customArray, new Relation($datas));
         }
 
-        return $custom_array;
+        return $customArray;
     }
 
     /**

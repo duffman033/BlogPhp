@@ -33,22 +33,22 @@ class DIC
             if (isset($this->registry[$key])) {
                 $this->factories[$key] = $this->registry[$key]();
             } else {
-                $reflected_class = new \ReflectionClass($key);
-                if ($reflected_class->isInstantiable()) {
-                    $constructor = $reflected_class->getConstructor();
+                $reflectedClass = new \ReflectionClass($key);
+                if ($reflectedClass->isInstantiable()) {
+                    $constructor = $reflectedClass->getConstructor();
                     if ($constructor) {
                         $parameters = $constructor->getParameters();
                         $constructor_parameters = [];
                         foreach ($parameters as $parameter) {
                             if ($parameter->getType()) {
-                                $constructor_parameters[] = $this->getFactory($parameter->getType()->getName());
+                                $constructor_parameters[] = $this->get($parameter->getType()->getName());
                             } else {
                                 $constructor_parameters[] = $parameter->getDefaultValue();
                             }
                         }
-                        $this->factories[$key] = $reflected_class->newInstanceArgs($constructor_parameters);
+                        $this->factories[$key] = $reflectedClass->newInstanceArgs($constructor_parameters);
                     } else {
-                        $this->factories[$key] = $reflected_class->newInstance();
+                        $this->factories[$key] = $reflectedClass->newInstance();
                     }
                 } else {
                     throw new Exception('"' . $key . '" is not an instantiable class');

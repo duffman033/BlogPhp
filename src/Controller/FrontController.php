@@ -62,8 +62,8 @@ class FrontController
      */
     public function listPosts()
     {
-        $list_posts = $this->app->get(PostRespository::class)->getPosts();
-        $this->renderer->render('User/postsView.html.twig', ['listposts' => $list_posts ,'current' => 2]);
+        $listPosts = $this->app->get(PostRespository::class)->getPosts();
+        $this->renderer->render('User/postsView.html.twig', ['listposts' => $listPosts ,'current' => 2]);
     }
 
     /**
@@ -74,9 +74,9 @@ class FrontController
     public function post($postId)
     {
         $post = $this->app->get(PostRespository::class)->getPost($postId);
-        $list_comments = $this->app->get(CommentRespository::class)->getValidComments($postId);
+        $listComments = $this->app->get(CommentRespository::class)->getValidComments($postId);
         $category = $this->app->get(CategoryRespository::class)->getCategory($postId);
-        $this->renderer->render('User/postView.html.twig', ['post' => $post, 'listcomments' => $list_comments, 'current' => 2, 'categories' => $category]);
+        $this->renderer->render('User/postView.html.twig', ['post' => $post, 'listcomments' => $listComments, 'current' => 2, 'categories' => $category]);
     }
 
     /**
@@ -135,7 +135,7 @@ class FrontController
     public function contactForm()
     {
         $request = Request::createFromGlobals();
-        if (!empty($request->request->all()) && FormValidator::is_email($request->get('email'))) {
+        if (!empty($request->request->all()) && FormValidator::isEmail($request->get('email'))) {
             $name = $this->app->get(FormValidator::class)->purify($request->get('name'));
             $forename = $this->app->get(FormValidator::class)->purify($request->get('forename'));
             $message = $this->app->get(FormValidator::class)->purify($request->get('message'));
@@ -189,10 +189,10 @@ class FrontController
         $username = $this->app->get(FormValidator::class)->purify($request->get('username'));
         $password = $this->app->get(FormValidator::class)->purify($request->get('password'));
 
-        if (!FormValidator::is_alphanum($username)) {
+        if (!FormValidator::isAlphanum($username)) {
             self::$session->set('warning', "Votre pseudo $username n'est pas valide");
             $this->login();
-        } elseif (!FormValidator::is_alphanum($password)) {
+        } elseif (!FormValidator::isAlphanum($password)) {
             self::$session->set('warning', "Votre mot de passe n'est pas valide");
             $this->login();
         } else {
@@ -257,8 +257,8 @@ class FrontController
             $username = $this->app->get(FormValidator::class)->purify($request->get('username'));
             $password = $this->app->get(FormValidator::class)->purify($request->get('password'));
             $passwordConfirm = $this->app->get(FormValidator::class)->purify($request->get('password_confirm'));
-            $img_url = $repertory . $fileName;
-            if (!FormValidator::is_alphanum($username)) {
+            $imgUrl = $repertory . $fileName;
+            if (!FormValidator::isAlphanum($username)) {
                 self::$session->set('warning', "Votre pseudo n'est pas valide");
                 $this->registerView();
                 return;
@@ -273,7 +273,7 @@ class FrontController
             }
             if ($this->app->get(LoginRespository::class)->isMemberExists($username, $email)) {
                 if ($this->app->get(LoginRespository::class)->checkPassword($password, $passwordConfirm)) {
-                    $this->app->get(LoginRespository::class)->registerUser($username, $password, $email, $img_url);
+                    $this->app->get(LoginRespository::class)->registerUser($username, $password, $email, $imgUrl);
                     $this->app->get(FormManager::class)->registerTraitment($email, $username);
                     self::$session->set('success', "Votre inscription a bien été prise en compte");
                     $this->login();
@@ -314,5 +314,13 @@ class FrontController
     public function rgpd()
     {
         $this->renderer->render('User/rgpdView.html.twig');
+    }
+
+    /**
+     * Render the Erreur View
+     */
+    public function errorView()
+    {
+        $this->renderer->render('User/errorView.html.twig');
     }
 }

@@ -12,7 +12,7 @@ class Router extends AltoRouter
 {
     public function routerRequest($target, $params)
     {
-        if (stripos($target, '#') !== false) {
+        if (stripos($target, '#') != false) {
             list($controller, $method) = explode('#', $target, 2);
             $cname = "\App\Controller\\" . $controller;
             $controllerName = new $cname;
@@ -21,6 +21,9 @@ class Router extends AltoRouter
             }
             return call_user_func(array($controllerName, $method));
         }
-        print_r("404");
+    }
+
+    public function errorView(){
+        return call_user_func(array(new FrontController(), 'errorView'));
     }
 }

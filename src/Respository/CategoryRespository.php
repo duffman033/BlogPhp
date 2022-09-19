@@ -22,13 +22,13 @@ class CategoryRespository extends Database
     {
         $req = 'SELECT * FROM categories ORDER BY type ASC';
         $result = $this->sql($req);
-        $custom_array = [];
+        $customArray = [];
 
         while ($datas = $result->fetch(PDO::FETCH_ASSOC)) {
-            array_push($custom_array, new Category($datas));
+            array_push($customArray, new Category($datas));
         }
 
-        return $custom_array;
+        return $customArray;
     }
 
     /**
@@ -42,13 +42,13 @@ class CategoryRespository extends Database
         $category = 'SELECT * FROM categories INNER JOIN relation on categories.cat_id=relation.cat_id WHERE relation.post_id = :postid';
         $parameters = [':postid' => $postId];
         $result = $this->sql($category, $parameters);
-        $custom_array = [];
+        $customArray = [];
 
         while ($datas = $result->fetch(PDO::FETCH_ASSOC)) {
-            $custom_array[] = new Category($datas);
+            $customArray[] = new Category($datas);
         }
 
-        return $custom_array;
+        return $customArray;
     }
 
     /**

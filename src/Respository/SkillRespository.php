@@ -21,13 +21,13 @@ class SkillRespository extends Database
     {
         $req = 'SELECT * FROM skills ORDER BY type DESC';
         $result = $this->sql($req);
-        $custom_array = [];
+        $customArray = [];
 
         while ($datas = $result->fetch(PDO::FETCH_ASSOC)) {
-            array_push($custom_array, new Skill($datas));
+            array_push($customArray, new Skill($datas));
         }
 
-        return $custom_array;
+        return $customArray;
     }
 
     /**
@@ -39,12 +39,12 @@ class SkillRespository extends Database
     {
         $req = 'SELECT type FROM skills GROUP BY type';
         $result = $this->sql($req);
-        $custom_array = [];
+        $customArray = [];
 
         while ($datas = $result->fetch(PDO::FETCH_ASSOC)) {
-            array_push($custom_array, new Skill($datas));
+            array_push($customArray, new Skill($datas));
         }
-        return $custom_array;
+        return $customArray;
     }
 
     /**

@@ -75,4 +75,8 @@ $router = new Router();
     $router->map('GET', '/logout', 'FrontController#deconnect');
     $match = $router->match();
 
+    if ($match == false){
+        return $router->errorView();
+    }
+
     $router->routerRequest($match['target'], $match['params']);
