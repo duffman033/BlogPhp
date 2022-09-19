@@ -15,8 +15,8 @@ class UserController extends AdminController
      */
     public function listUser()
     {
-        $list_user = $this->app->get(UserRespository::class)->getUsers();
-        $this->renderer->render('Admin/userView.html.twig', ['users' => $list_user]);
+        $listUser = $this->app->get(UserRespository::class)->getUsers();
+        $this->renderer->render('Admin/userView.html.twig', ['users' => $listUser]);
     }
 
     /**

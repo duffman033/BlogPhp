@@ -27,12 +27,12 @@ class JobController extends AdminController
      */
     public function updateJobView($jobId)
     {
-        $date_job = [];
+        $dateJob = [];
         for ($i = 2017; $i <= date('Y'); $i++) {
-            array_push($date_job, $i);
+            array_push($dateJob, $i);
         }
         $jobManager = $this->app->get(JobRespository::class)->getJob($jobId);
-        $this->renderer->render('Admin/JobView/updateJobView.html.twig', ['job' => $jobManager, 'dates' => $date_job]);
+        $this->renderer->render('Admin/JobView/updateJobView.html.twig', ['job' => $jobManager, 'dates' => $dateJob]);
     }
 
     /**
@@ -40,11 +40,11 @@ class JobController extends AdminController
      */
     public function addJobView()
     {
-        $date_job = [];
+        $dateJob = [];
         for ($i = 2017; $i <= date('Y'); $i++) {
-            array_push($date_job, $i);
+            array_push($dateJob, $i);
         }
-        $this->renderer->render('Admin/JobView/addJobView.html.twig', ['dates' => $date_job]);
+        $this->renderer->render('Admin/JobView/addJobView.html.twig', ['dates' => $dateJob]);
     }
 
     /**

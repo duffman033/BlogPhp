@@ -238,59 +238,57 @@ class FrontController
     public function register()
     {
         $request = Request::createFromGlobals();
-        if (!empty($request->request->all())) {
-            $repertory = "uploads/images/";
-            $fileName = "unknow.jpg";
-            $file = $request->files->get('image');
-            $accept = ["image/jpeg", "image/png", "image/webp"];
-            if (!empty($file)) {
-                if (in_array($file->getClientMimeType(), $accept)) {
-                    if (!empty($file)) {
-                        $fileName = md5(uniqid()) . '.' . $file->guessExtension();
-                        $file->move($repertory, $fileName);
-                    }
-                    self::$session->set('warning', "Merci d'inserer une image valide (Jpeg, Png ou Webp)");
-                    $this->registerView();
-                    return;
-                }
-            }
-
-            $email = $this->app->get(FormValidator::class)->purify($request->get('email'));
-            $username = $this->app->get(FormValidator::class)->purify($request->get('username'));
-            $password = $this->app->get(FormValidator::class)->purify($request->get('password'));
-            $passwordConfirm = $this->app->get(FormValidator::class)->purify($request->get('password_confirm'));
-            $imgUrl = $repertory . $fileName;
-            if (!FormValidator::isAlphanum($username)) {
-                self::$session->set('warning', "Votre pseudo n'est pas valide");
-                $this->registerView();
-                return;
-            } elseif (!$this->app->get(FormValidator::class)->is_alphanum($password) || !$this->app->get(FormValidator::class)->is_alphanum($passwordConfirm)) {
-                self::$session->set('warning', "Votre mot de passe n'est pas valide");
-                $this->registerView();
-                return;
-            } elseif (!$this->app->get(FormValidator::class)->is_email($email)) {
-                self::$session->set('warning', "Votre email n'est pas valide");
-                $this->registerView();
-                return;
-            }
-            if ($this->app->get(LoginRespository::class)->isMemberExists($username, $email)) {
-                if ($this->app->get(LoginRespository::class)->checkPassword($password, $passwordConfirm)) {
-                    $this->app->get(LoginRespository::class)->registerUser($username, $password, $email, $imgUrl);
-                    $this->app->get(FormManager::class)->registerTraitment($email, $username);
-                    self::$session->set('success', "Votre inscription a bien été prise en compte");
-                    $this->login();
-                    return;
-                }
-                self::$session->set('warning', "Les mots de passe ne sont pas identiques");
-                $this->registerView();
-                return;
-            }
-            self::$session->set('warning', "Cet utilisateur existe déjà");
+        if (empty($request->request->all())) {
+            self::$session->set('warning', "Merci de bien remplir le formulaire");
             $this->registerView();
             return;
         }
-        self::$session->set('warning', "Merci de bien remplir le formulaire");
+        $repertory = "uploads/images/";
+        $fileName = "unknow.jpg";
+        $file = $request->files->get('image');
+        $accept = ["image/jpeg", "image/png", "image/webp"];
+        if (!empty($file)) {
+            if (in_array($file->getClientMimeType(), $accept)) {
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                $file->move($repertory, $fileName);
+            }
+            self::$session->set('warning', "Merci d'inserer une image valide (Jpeg, Png ou Webp)");
+            $this->registerView();
+            return;
+        }
+        $email = $this->app->get(FormValidator::class)->purify($request->get('email'));
+        $username = $this->app->get(FormValidator::class)->purify($request->get('username'));
+        $password = $this->app->get(FormValidator::class)->purify($request->get('password'));
+        $passwordConfirm = $this->app->get(FormValidator::class)->purify($request->get('password_confirm'));
+        $imgUrl = $repertory . $fileName;
+        if (!FormValidator::isAlphanum($username)) {
+            self::$session->set('warning', "Votre pseudo n'est pas valide");
+            $this->registerView();
+            return;
+        } elseif (!$this->app->get(FormValidator::class)->isAlphanum($password) || !$this->app->get(FormValidator::class)->isAlphanum($passwordConfirm)) {
+            self::$session->set('warning', "Votre mot de passe n'est pas valide");
+            $this->registerView();
+            return;
+        } elseif (!$this->app->get(FormValidator::class)->isEmail($email)) {
+            self::$session->set('warning', "Votre email n'est pas valide");
+            $this->registerView();
+            return;
+        }
+        if ($this->app->get(LoginRespository::class)->isMemberExists($username, $email)) {
+            if ($this->app->get(LoginRespository::class)->checkPassword($password, $passwordConfirm)) {
+                $this->app->get(LoginRespository::class)->registerUser($username, $password, $email, $imgUrl);
+                $this->app->get(FormManager::class)->registerTraitment($email, $username);
+                self::$session->set('success', "Votre inscription a bien été prise en compte");
+                $this->login();
+                return;
+            }
+            self::$session->set('warning', "Les mots de passe ne sont pas identiques");
+            $this->registerView();
+            return;
+        }
+        self::$session->set('warning', "Cet utilisateur existe déjà");
         $this->registerView();
+        return;
     }
 
     /**

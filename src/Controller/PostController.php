@@ -18,8 +18,8 @@ class PostController extends AdminController
      */
     public function listPosts()
     {
-        $list_posts = $this->app->get(PostRespository::class)->getPosts();
-        $this->renderer->render('Admin/PostView/postView.html.twig', ['posts' => $list_posts]);
+        $listPosts = $this->app->get(PostRespository::class)->getPosts();
+        $this->renderer->render('Admin/PostView/postView.html.twig', ['posts' => $listPosts]);
     }
 
     /**
