@@ -21,13 +21,13 @@ class UserRespository extends Database
     {
         $users = 'SELECT * FROM users';
         $result = $this->sql($users);
-        $custom_array = [];
+        $customArray = [];
 
         while ($datas = $result->fetch(PDO::FETCH_ASSOC)) {
-            array_push($custom_array, new User($datas));
+            array_push($customArray, new User($datas));
         }
 
-        return $custom_array;
+        return $customArray;
     }
 
     /**

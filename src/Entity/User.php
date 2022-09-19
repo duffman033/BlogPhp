@@ -7,11 +7,11 @@ class User
 {
     private ?int $userId = null;
 
-    private string $username;
+    private ?string $username = null;
 
     private string $email;
 
-    private string $password;
+    private ?string $password = null;
 
     private string $userStatus;
 

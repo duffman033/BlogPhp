@@ -18,7 +18,7 @@ $router = new Router();
     $router->map('POST', '/comment/add', 'FrontController#addComment');
     $router->map('GET', '/contact', 'FrontController#contactView');
     $router->map('POST', '/contactForm', 'FrontController#contactForm');
-    $router->map('GET', '/cv', 'FrontController#cv');
+    $router->map('GET', '/cv', 'FrontController#cvDownload');
     $router->map('GET', '/mentions', 'FrontController#mentions');
     $router->map('GET', '/RGPD', 'FrontController#rgpd');
 
@@ -74,5 +74,9 @@ $router = new Router();
     $router->map('POST', '/connect', 'FrontController#connect');
     $router->map('GET', '/logout', 'FrontController#deconnect');
     $match = $router->match();
+
+    if ($match == false){
+        return $router->errorView();
+    }
 
     $router->routerRequest($match['target'], $match['params']);

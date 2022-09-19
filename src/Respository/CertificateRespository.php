@@ -20,12 +20,12 @@ class CertificateRespository extends Database
     {
         $req = 'SELECT * FROM certificate ORDER BY date DESC';
         $result = $this->sql($req);
-        $custom_array = [];
+        $customArray = [];
 
         while ($datas = $result->fetch(PDO::FETCH_ASSOC)) {
-            array_push($custom_array, new Certificate($datas));
+            array_push($customArray, new Certificate($datas));
         }
 
-        return $custom_array;
+        return $customArray;
     }
 }

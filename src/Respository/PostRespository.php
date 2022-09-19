@@ -23,13 +23,13 @@ class PostRespository extends Database
         $posts = 'SELECT post_id, title, chapo, description, author_id, users.username, DATE_FORMAT(date_creation, \'%d/%m/%Y\') AS date_creation, DATE_FORMAT(date_update, \'%d/%m/%Y\') AS date_update , posts.img_url
         FROM posts INNER JOIN users ON posts.author_id = users.user_id ORDER BY date_creation DESC';
         $result = $this->sql($posts);
-        $custom_array = [];
+        $customArray = [];
 
         while ($datas = $result->fetch(PDO::FETCH_ASSOC)) {
-            array_push($custom_array, new Post($datas));
+            array_push($customArray, new Post($datas));
         }
 
-        return $custom_array;
+        return $customArray;
     }
 
     /**

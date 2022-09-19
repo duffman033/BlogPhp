@@ -23,13 +23,13 @@ class CommentRespository extends Database
         $req = 'SELECT comment_id, author_id, comment, is_valid, post_id, users.username, DATE_FORMAT(comment_date, \'%d/%m/%Y\') AS commentdate FROM comments INNER JOIN users on comments.author_id=users.user_id WHERE is_valid = :is_valid ORDER BY commentdate DESC';
         $parameters = [':is_valid' => 0];
         $result = $this->sql($req, $parameters);
-        $custom_array = [];
+        $customArray = [];
 
         while ($datas = $result->fetch(PDO::FETCH_ASSOC)) {
-            array_push($custom_array, new Comment($datas));
+            array_push($customArray, new Comment($datas));
         }
 
-        return $custom_array;
+        return $customArray;
     }
 
     /**
@@ -87,13 +87,13 @@ class CommentRespository extends Database
         $validComments = 'SELECT comment_id, author_id, comment, is_valid, post_id, users.username, DATE_FORMAT(comment_date, \'%d/%m/%Y\') AS comment_date , users.user_img_url FROM comments INNER JOIN users on comments.author_id=users.user_id WHERE is_valid = :valid AND post_id = :postid ORDER BY comment_date DESC';
         $parameters = [':valid' => 1, ':postid' => $postId];
         $result = $this->sql($validComments, $parameters);
-        $custom_array = [];
+        $customArray = [];
 
         while ($datas = $result->fetch(PDO::FETCH_ASSOC)) {
-            array_push($custom_array, new Comment($datas));
+            array_push($customArray, new Comment($datas));
         }
 
-        return $custom_array;
+        return $customArray;
     }
 
     /**
@@ -106,12 +106,12 @@ class CommentRespository extends Database
         $invalidComments = 'SELECT *, author_id FROM comments INNER JOIN users on comments.author_id=users.user_id WHERE is_valid = :valid';
         $parameters = [':valid' => 0];
         $result = $this->sql($invalidComments, $parameters);
-        $custom_array = [];
+        $customArray = [];
 
         while ($datas = $result->fetch(PDO::FETCH_ASSOC)) {
-            array_push($custom_array, new Comment($datas));
+            array_push($customArray, new Comment($datas));
         }
-        return $custom_array;
+        return $customArray;
     }
 
     /**

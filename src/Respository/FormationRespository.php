@@ -21,13 +21,13 @@ class FormationRespository extends Database
     {
         $req = 'SELECT * FROM formation ORDER BY start_date DESC';
         $result = $this->sql($req);
-        $custom_array = [];
+        $customArray = [];
 
         while ($datas = $result->fetch(PDO::FETCH_ASSOC)) {
-            array_push($custom_array, new Formation($datas));
+            array_push($customArray, new Formation($datas));
         }
 
-        return $custom_array;
+        return $customArray;
     }
 
     /**
