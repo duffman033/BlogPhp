@@ -18,7 +18,7 @@ $router = new Router();
     $router->map('POST', '/comment/add', 'FrontController#addComment');
     $router->map('GET', '/contact', 'FrontController#contactView');
     $router->map('POST', '/contactForm', 'FrontController#contactForm');
-    $router->map('GET', '/cv', 'FrontController#cv');
+    $router->map('GET', '/cv', 'FrontController#cvDownload');
     $router->map('GET', '/mentions', 'FrontController#mentions');
     $router->map('GET', '/RGPD', 'FrontController#rgpd');
 
